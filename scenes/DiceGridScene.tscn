@@ -1,0 +1,71 @@
+[gd_scene load_steps=2 format=3 uid="uid://dbtd6w07pf5p5"]
+
+[ext_resource type="Script" uid="uid://dhfdstwga2bhh" path="res://scripts/DiceGrid.gd" id="1_efbfp"]
+
+[node name="DiceGridControl" type="Control"]
+layout_mode = 3
+anchor_left = 0.0277778
+anchor_top = 0.0493827
+anchor_right = 0.972222
+anchor_bottom = 0.641975
+offset_bottom = -6.10352e-05
+size_flags_horizontal = 3
+size_flags_vertical = 3
+metadata/_edit_use_anchors_ = true
+
+[node name="DiceGridContainer" type="AspectRatioContainer" parent="."]
+clip_contents = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 6
+size_flags_vertical = 4
+ratio = 2.775
+stretch_mode = 3
+alignment_horizontal = 0
+alignment_vertical = 0
+metadata/_edit_use_anchors_ = true
+
+[node name="Panel" type="Panel" parent="DiceGridContainer"]
+layout_mode = 2
+mouse_filter = 1
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="DiceGridContainer/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.979412
+ratio = 2.84
+metadata/_edit_use_anchors_ = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="DiceGridContainer/Panel/AspectRatioContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+metadata/_edit_use_anchors_ = true
+
+[node name="FaceScrollContainer" type="ScrollContainer" parent="DiceGridContainer/Panel/AspectRatioContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+horizontal_scroll_mode = 0
+
+[node name="FaceGrid" type="GridContainer" parent="DiceGridContainer/Panel/AspectRatioContainer/HBoxContainer/FaceScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+columns = 3
+
+[node name="DiceScrollContainer" type="ScrollContainer" parent="DiceGridContainer/Panel/AspectRatioContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+horizontal_scroll_mode = 0
+
+[node name="DiceGrid" type="GridContainer" parent="DiceGridContainer/Panel/AspectRatioContainer/HBoxContainer/DiceScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/h_separation = 3
+columns = 4
+script = ExtResource("1_efbfp")

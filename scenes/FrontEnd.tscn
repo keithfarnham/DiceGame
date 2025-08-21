@@ -1,0 +1,21 @@
+[gd_scene load_steps=2 format=3 uid="uid://yn4qvc7d7h4c"]
+
+[ext_resource type="Script" uid="uid://bclx4pscqvl6t" path="res://scripts/FrontEnd/StartButton.gd" id="1_tn2ti"]
+
+[node name="FrontEnd" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Start" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "CLICKHERETOSTART"
+script = ExtResource("1_tn2ti")

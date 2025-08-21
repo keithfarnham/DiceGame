@@ -1,0 +1,68 @@
+[gd_scene load_steps=5 format=3 uid="uid://d210inloam1xe"]
+
+[ext_resource type="Script" uid="uid://g3nja6tp7gka" path="res://scripts/DiceChoice/DiceChoice.gd" id="1_b7py0"]
+[ext_resource type="Script" uid="uid://tr3mbntjyjdo" path="res://scripts/DiceChoice/ChooseDieConfirm.gd" id="2_mlnkq"]
+[ext_resource type="Script" uid="uid://dnig0foq7f66" path="res://scripts/RewardChoice/RewardGrid.gd" id="2_pdemt"]
+[ext_resource type="PackedScene" uid="uid://dupfms6m2gsoy" path="res://scenes/DebugScene.tscn" id="3_o4338"]
+
+[node name="DieChoiceUI" type="Control"]
+clip_contents = true
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_b7py0")
+
+[node name="RewardGrid" type="GridContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.0833333
+anchor_top = 0.0987654
+anchor_right = 0.916667
+anchor_bottom = 0.641975
+grow_horizontal = 2
+grow_vertical = 2
+columns = 6
+script = ExtResource("2_pdemt")
+metadata/_edit_use_anchors_ = true
+
+[node name="ChooseDie" type="Control" parent="."]
+layout_mode = 1
+anchor_left = 0.242188
+anchor_top = 0.325617
+anchor_right = 0.704861
+anchor_bottom = 0.719136
+mouse_filter = 2
+script = ExtResource("2_mlnkq")
+metadata/_edit_use_anchors_ = true
+
+[node name="ChooseDieButton" type="Button" parent="ChooseDie"]
+visible = false
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -47.5
+offset_top = -31.0
+offset_right = 47.5
+grow_horizontal = 2
+grow_vertical = 0
+text = "Choose Die"
+
+[node name="ChooseDieConfirm" type="ConfirmationDialog" parent="ChooseDie"]
+title = "ChooseDieConfirm"
+initial_position = 1
+size = Vector2i(211, 100)
+borderless = true
+ok_button_text = "YES"
+dialog_text = "ROLL WITH THIS CHOICE?"
+cancel_button_text = "NO"
+
+[node name="DebugControls" parent="." instance=ExtResource("3_o4338")]
+layout_mode = 1

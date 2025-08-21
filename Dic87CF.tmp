@@ -1,0 +1,125 @@
+[gd_scene load_steps=8 format=3 uid="uid://wva2x2memvp"]
+
+[ext_resource type="Script" path="res://scripts/GameLogic.gd" id="1_r0yxl"]
+[ext_resource type="Script" path="res://scripts/RollButton.gd" id="2_csbvs"]
+[ext_resource type="Script" path="res://scripts/DiceBag.gd" id="2_wkfk8"]
+[ext_resource type="PackedScene" uid="uid://dupfms6m2gsoy" path="res://DebugScene.tscn" id="3_hskyg"]
+[ext_resource type="Script" path="res://scripts/SumInfo.gd" id="4_0ilmp"]
+
+[sub_resource type="GDScript" id="GDScript_8t060"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fi7fg"]
+size = Vector2(107, 85)
+script = SubResource("GDScript_8t060")
+
+[node name="Game" type="Node2D"]
+script = ExtResource("1_r0yxl")
+
+[node name="UI" type="Node2D" parent="."]
+
+[node name="RollButton" type="Button" parent="UI"]
+offset_left = 26.0
+offset_top = 539.0
+offset_right = 129.0
+offset_bottom = 619.0
+text = "Roll"
+script = ExtResource("2_csbvs")
+
+[node name="DiceBag" type="Node2D" parent="UI"]
+script = ExtResource("2_wkfk8")
+
+[node name="OpenDiceBag" type="Button" parent="UI/DiceBag"]
+offset_left = 957.0
+offset_top = 539.0
+offset_right = 1132.0
+offset_bottom = 626.0
+text = "Open Dice Bag"
+
+[node name="RoundLabel" type="RichTextLabel" parent="UI"]
+offset_left = 856.0
+offset_top = 4.0
+offset_right = 924.0
+offset_bottom = 31.0
+text = "Round: "
+
+[node name="DebugControls" parent="UI" instance=ExtResource("3_hskyg")]
+
+[node name="DiceGrid" type="GridContainer" parent="UI"]
+offset_left = 386.0
+offset_top = 126.0
+offset_right = 1053.0
+offset_bottom = 463.0
+columns = 6
+
+[node name="DieFaceGrid" type="GridContainer" parent="UI"]
+offset_left = 22.0
+offset_top = 127.0
+offset_right = 330.0
+offset_bottom = 504.0
+columns = 3
+
+[node name="RollSumInfo" type="RichTextLabel" parent="UI"]
+visible = false
+offset_left = 135.0
+offset_top = 377.0
+offset_right = 352.0
+offset_bottom = 453.0
+text = "extra_info_on_sum"
+
+[node name="SumInfoArea" type="Area2D" parent="UI"]
+position = Vector2(188, 491)
+script = ExtResource("4_0ilmp")
+
+[node name="SumCollisionShape2D" type="CollisionShape2D" parent="UI/SumInfoArea"]
+z_index = 1
+position = Vector2(-1.5, 5.5)
+shape = SubResource("RectangleShape2D_fi7fg")
+
+[node name="RollResultGrid" type="GridContainer" parent="UI"]
+offset_left = 26.0
+offset_top = 455.0
+offset_right = 675.0
+offset_bottom = 538.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+focus_mode = 2
+mouse_force_pass_scroll_events = false
+columns = 6
+
+[node name="RollResultLabel" type="RichTextLabel" parent="UI/RollResultGrid"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Roll Result: "
+
+[node name="RollSum" type="RichTextLabel" parent="UI/RollResultGrid"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 1
+mouse_force_pass_scroll_events = false
+text = "1234"
+
+[node name="RollMult" type="RichTextLabel" parent="UI/RollResultGrid"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "x"
+
+[node name="RollMultValue" type="RichTextLabel" parent="UI/RollResultGrid"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "4321"
+
+[node name="=" type="RichTextLabel" parent="UI/RollResultGrid"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "="
+
+[node name="RollResult" type="RichTextLabel" parent="UI/RollResultGrid"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "final_result"

@@ -1,0 +1,78 @@
+[gd_scene load_steps=2 format=3 uid="uid://dupfms6m2gsoy"]
+
+[ext_resource type="Script" path="res://scripts/DebugControls.gd" id="1_2owk6"]
+
+[node name="DebugControls" type="Node2D"]
+script = ExtResource("1_2owk6")
+
+[node name="NumFaces" type="HSlider" parent="."]
+offset_right = 179.0
+offset_bottom = 16.0
+tooltip_text = "Number of Faces"
+max_value = 20.0
+value = 1.0
+metadata/_edit_use_anchors_ = true
+
+[node name="AddDie" type="Button" parent="."]
+offset_left = 184.0
+offset_top = 98.0
+offset_right = 284.0
+offset_bottom = 198.0
+text = "Add Die"
+metadata/_edit_use_anchors_ = true
+
+[node name="FacesLabel" type="RichTextLabel" parent="."]
+offset_left = 185.0
+offset_top = 5.0
+offset_right = 246.0
+offset_bottom = 32.0
+text = "Faces: "
+metadata/_edit_use_anchors_ = true
+
+[node name="FacesNum" type="RichTextLabel" parent="FacesLabel"]
+top_level = true
+layout_mode = 0
+offset_left = 234.0
+offset_top = 6.0
+offset_right = 284.0
+offset_bottom = 30.0
+text = "0"
+metadata/_edit_use_anchors_ = true
+
+[node name="FaceDebugGrid" type="GridContainer" parent="."]
+custom_minimum_size = Vector2(10, 10)
+offset_left = 295.0
+offset_top = 18.0
+offset_right = 467.0
+offset_bottom = 38.0
+columns = 5
+
+[node name="FaceToModify" type="OptionButton" parent="FaceDebugGrid"]
+layout_mode = 2
+tooltip_text = "Face to modify"
+
+[node name="FaceType" type="OptionButton" parent="FaceDebugGrid"]
+layout_mode = 2
+tooltip_text = "Face type to set"
+
+[node name="FaceValue" type="HSlider" parent="FaceDebugGrid"]
+custom_minimum_size = Vector2(100, 10)
+layout_mode = 2
+min_value = 1.0
+value = 1.0
+
+[node name="ValueLabel" type="RichTextLabel" parent="FaceDebugGrid"]
+clip_contents = false
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+text = "Value:"
+metadata/_edit_use_anchors_ = true
+
+[node name="ValueNum" type="RichTextLabel" parent="FaceDebugGrid"]
+clip_contents = false
+layout_mode = 2
+text = "999"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+metadata/_edit_use_anchors_ = true

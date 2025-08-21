@@ -1,0 +1,203 @@
+[gd_scene load_steps=14 format=3 uid="uid://dupfms6m2gsoy"]
+
+[ext_resource type="Script" path="res://scripts/debug/DebugHideUIButton.gd" id="1_g5mlk"]
+[ext_resource type="Script" path="res://scripts/debug/DebugAddDieButton.gd" id="2_2eey6"]
+[ext_resource type="Script" path="res://scripts/debug/DebugNumFacesSlider.gd" id="2_7p8a0"]
+[ext_resource type="Script" path="res://scripts/debug/DebugDieToModify.gd" id="2_yocqy"]
+[ext_resource type="Script" path="res://scripts/debug/DebugFaceValueSlider.gd" id="4_0u0bl"]
+[ext_resource type="Script" path="res://scripts/debug/DebugFaceToModify.gd" id="4_eswyp"]
+[ext_resource type="Script" path="res://scripts/debug/DebugFaceType.gd" id="5_4vb6q"]
+[ext_resource type="Script" path="res://scripts/debug/DebugDeleteSelectedDie.gd" id="8_acl37"]
+[ext_resource type="Script" path="res://scripts/debug/DebugClearAllDice.gd" id="8_cyewm"]
+[ext_resource type="Script" path="res://scripts/debug/DebugPrintDiceArray.gd" id="10_qjexi"]
+[ext_resource type="Script" path="res://scripts/debug/DebugSelectedDieIndex.gd" id="11_rm383"]
+[ext_resource type="Script" path="res://scripts/debug/DebugRunDiceChoice.gd" id="12_6m4eu"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u6rbe"]
+bg_color = Color(0, 0.360784, 0.494118, 0.309804)
+
+[node name="DebugControls" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1.0
+offset_bottom = -485.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HideDebugUI" type="Button" parent="."]
+modulate = Color(1, 0.631817, 0.540099, 1)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -94.0
+offset_bottom = 31.0
+grow_horizontal = 0
+text = "HideDebug"
+script = ExtResource("1_g5mlk")
+
+[node name="DebugUI" type="Panel" parent="."]
+z_index = -1
+layout_mode = 0
+offset_right = 1154.0
+offset_bottom = 157.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_u6rbe")
+
+[node name="NumFaces" type="HSlider" parent="DebugUI"]
+layout_mode = 0
+offset_left = 11.0
+offset_top = 10.0
+offset_right = 190.0
+offset_bottom = 26.0
+tooltip_text = "Number of Faces"
+min_value = 1.0
+max_value = 20.0
+value = 1.0
+script = ExtResource("2_7p8a0")
+
+[node name="AddDie" type="Button" parent="DebugUI"]
+layout_mode = 0
+offset_left = 14.0
+offset_top = 34.0
+offset_right = 114.0
+offset_bottom = 134.0
+text = "Add Die"
+script = ExtResource("2_2eey6")
+
+[node name="DieToModify" type="OptionButton" parent="DebugUI"]
+layout_mode = 0
+offset_left = 125.0
+offset_top = 94.0
+offset_right = 227.0
+offset_bottom = 131.0
+selected = 0
+item_count = 1
+popup/item_0/text = "Add New"
+script = ExtResource("2_yocqy")
+
+[node name="FacesLabel" type="RichTextLabel" parent="DebugUI"]
+layout_mode = 1
+offset_left = 193.0
+offset_top = 2.0
+offset_right = 256.0
+offset_bottom = 29.0
+text = "Faces: "
+
+[node name="FacesNum" type="RichTextLabel" parent="DebugUI"]
+layout_mode = 1
+offset_left = 245.0
+offset_top = 2.0
+offset_right = 306.0
+offset_bottom = 29.0
+text = "0"
+
+[node name="FaceDebugGrid" type="GridContainer" parent="DebugUI"]
+custom_minimum_size = Vector2(10, 10)
+layout_mode = 0
+offset_left = 126.0
+offset_top = 38.0
+offset_right = 384.0
+offset_bottom = 88.0
+columns = 5
+
+[node name="FaceToModify" type="OptionButton" parent="DebugUI/FaceDebugGrid"]
+layout_mode = 2
+tooltip_text = "Face to modify"
+script = ExtResource("4_eswyp")
+
+[node name="FaceType" type="OptionButton" parent="DebugUI/FaceDebugGrid"]
+layout_mode = 2
+tooltip_text = "Face type to set"
+script = ExtResource("5_4vb6q")
+
+[node name="FaceValue" type="HSlider" parent="DebugUI/FaceDebugGrid"]
+custom_minimum_size = Vector2(100, 10)
+layout_mode = 2
+min_value = 1.0
+value = 1.0
+script = ExtResource("4_0u0bl")
+
+[node name="ValueLabel" type="RichTextLabel" parent="DebugUI/FaceDebugGrid"]
+clip_contents = false
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+text = "Value:"
+metadata/_edit_use_anchors_ = true
+
+[node name="ValueNum" type="RichTextLabel" parent="DebugUI/FaceDebugGrid"]
+clip_contents = false
+layout_mode = 2
+text = "999"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+metadata/_edit_use_anchors_ = true
+
+[node name="ClearAllDice" type="Button" parent="DebugUI"]
+layout_mode = 0
+offset_left = 853.0
+offset_top = 17.0
+offset_right = 954.0
+offset_bottom = 48.0
+text = "ClearAllDice"
+script = ExtResource("8_cyewm")
+
+[node name="DeleteSelectedDie" type="Button" parent="DebugUI"]
+layout_mode = 0
+offset_left = 853.0
+offset_top = 48.0
+offset_right = 954.0
+offset_bottom = 79.0
+text = "Kill Selected"
+script = ExtResource("8_acl37")
+
+[node name="PrintDiceArray" type="Button" parent="DebugUI"]
+layout_mode = 0
+offset_left = 1010.0
+offset_top = 67.0
+offset_right = 1142.0
+offset_bottom = 114.0
+text = "Print Dice Array"
+script = ExtResource("10_qjexi")
+
+[node name="SelectedDieIndex" type="Control" parent="DebugUI"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="SelectedIndexLabel" type="RichTextLabel" parent="DebugUI/SelectedDieIndex"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.125
+anchor_top = 3.35
+anchor_right = 2.775
+anchor_bottom = 3.95
+offset_bottom = -1.52588e-05
+text = "Selected Die:"
+
+[node name="SelectedIndexValue" type="RichTextLabel" parent="DebugUI/SelectedDieIndex"]
+layout_mode = 0
+offset_left = 109.0
+offset_top = 135.0
+offset_right = 168.0
+offset_bottom = 158.0
+text = "999"
+script = ExtResource("11_rm383")
+
+[node name="RunDiceChoice" type="Button" parent="DebugUI"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.608
+anchor_top = 0.121
+anchor_right = 0.722
+anchor_bottom = 0.318
+offset_left = 0.367981
+offset_top = 0.00299835
+offset_right = -0.188049
+offset_bottom = 0.0739975
+mouse_filter = 1
+text = "StartDiceChoice"
+script = ExtResource("12_6m4eu")

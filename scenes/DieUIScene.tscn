@@ -1,0 +1,101 @@
+[gd_scene load_steps=4 format=3 uid="uid://bl387q8mweydr"]
+
+[ext_resource type="Script" uid="uid://1hlk2a1qfid0" path="res://scripts/DieUI.gd" id="1_bik4m"]
+[ext_resource type="Gradient" uid="uid://ckp066dt2jy81" path="res://gradients/default_gradient.tres" id="1_ghbfk"]
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_01iub"]
+gradient = ExtResource("1_ghbfk")
+width = 128
+height = 128
+
+[node name="DieUI" type="Button"]
+anchors_preset = -1
+anchor_right = 0.111
+anchor_bottom = 0.198
+offset_right = 0.127991
+offset_bottom = -0.304016
+theme_override_colors/icon_hover_color = Color(0.0235294, 0.729412, 1, 0.741176)
+theme_override_colors/icon_pressed_color = Color(0.0235294, 0.258824, 1, 0.741176)
+theme_override_colors/icon_focus_color = Color(0.0222237, 0.2577, 0.999992, 0.741176)
+theme_override_constants/icon_max_width = 120
+icon = SubResource("GradientTexture2D_01iub")
+script = ExtResource("1_bik4m")
+
+[node name="FacesLabel" type="RichTextLabel" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.093
+anchor_top = 0.028
+anchor_right = 0.759
+anchor_bottom = 0.278
+offset_left = -0.0440006
+offset_top = -0.0240002
+offset_right = 0.0279922
+offset_bottom = -0.0240021
+mouse_filter = 2
+text = "Faces:"
+
+[node name="NumFaces" type="RichTextLabel" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.602
+anchor_top = 0.028
+anchor_right = 0.954
+anchor_bottom = 0.278
+offset_left = -0.0160065
+offset_top = -0.0240002
+offset_right = -0.0320053
+offset_bottom = -0.0240021
+mouse_filter = 2
+text = "99"
+
+[node name="DieIndexLabel" type="RichTextLabel" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.046
+anchor_top = 0.25
+anchor_right = 0.769
+anchor_bottom = 0.463
+offset_left = 0.0319996
+offset_right = -0.052002
+offset_bottom = -0.00400162
+mouse_filter = 2
+text = "DieIndex: "
+
+[node name="DieIndex" type="RichTextLabel" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.75
+anchor_top = 0.259
+anchor_right = 0.954
+anchor_bottom = 0.472
+offset_top = 0.0279999
+offset_right = -0.0320053
+offset_bottom = 0.0239983
+mouse_filter = 2
+text = "99"
+
+[node name="DieTypeLabel" type="RichTextLabel" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.898
+anchor_bottom = 0.87
+offset_left = 7.0
+offset_top = 47.0
+offset_right = -13.984
+offset_bottom = -21.96
+mouse_filter = 1
+text = "DieType:"
+
+[node name="DieType" type="RichTextLabel" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.296
+anchor_top = 0.62
+anchor_right = 0.806
+anchor_bottom = 0.852
+offset_left = -13.968
+offset_top = 0.0400009
+offset_right = -0.0480042
+offset_bottom = -0.0160065
+mouse_filter = 1
