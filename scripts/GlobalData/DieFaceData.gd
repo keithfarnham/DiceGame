@@ -26,7 +26,6 @@ enum EffectType #These faces have effects in addition to whatever scoring/multip
 
 enum RewardTypeValue
 {
-	#TODO idk if these should have a 0 value or start at 1
 	money = 0,
 	addDie = 1,
 	scoreReroll = 2,

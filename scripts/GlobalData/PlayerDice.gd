@@ -3,16 +3,18 @@ extends Node
 var ScoreDice : Array[Die]
 var RewardDice : Array[Die]
 var RewardStakes : Array[DieFace]
-var DebugDie : Die
 var Money : int
 var prevSelect := -1
 
 signal add_to_dice_grid
 
 func _ready():
-	DebugDie = Die.new([], DiceData.DiceTypes.score)
-	
+	print("[PlayerDice] Setting up starting dice")
+	ScoreDice = DiceData.StartingDice()
+	RewardDice = DiceData.GenerateRewardDice()
+
 func add_dice(newDice : Array[Die]):
+	print(newDice)
 	for newDie in newDice:
 		add_die(newDie)
 	
@@ -20,21 +22,21 @@ func add_die(newDie : Die):
 	#print_tree_pretty()
 	#print(get_tree().get_first_node_in_group('SceneRoot').get_tree_string_pretty())
 	#print("______________________")
-	var diceGrid = get_tree().get_first_node_in_group('SceneRoot').get_node('DiceGridControl').get_node('DiceGridContainer').get_node('Panel').get_node('AspectRatioContainer').get_node('HBoxContainer').get_node('DiceScrollContainer').get_node('DiceGrid') as DiceGrid
+	#var diceGrid = get_tree().get_first_node_in_group('SceneRoot').get_node('DiceGrid') as DiceGrid
 	#print(str(get_tree().get_first_node_in_group('SceneRoot').get_tree_string_pretty()))
+	print("[PlayerDice] Adding a new die")
 	ScoreDice.append(newDie)
-	var dieIndex = ScoreDice.size() - 1
-	diceGrid.add_die(newDie, dieIndex)
-	
+	#var dieIndex = ScoreDice.size() - 1
+	#diceGrid.add_die(newDie, dieIndex)
 	
 	#add_to_dice_grid.emit()
-	
+
 #TODO convert all this stuff to grab the scene tree and proper nodes
 func remove_die(dieIndexToRemove : int):
 	prevSelect = -1
 	ScoreDice.remove_at(dieIndexToRemove)
-	print(get_tree_string())
-	var diceGrid = get_tree().get_first_node_in_group('SceneRoot').get_node("DiceUI").get_node("DiceGridScroll").get_node("DiceGrid")
+	#print(get_tree_string())
+	#var diceGrid = get_tree().get_first_node_in_group('SceneRoot').get_node("DiceUI").get_node("DiceGridScroll").get_node("DiceGrid")
 	#var debugNode = get_tree().current_scene.get_node('DebugControls')
 	#var diceGrid = debugNode.get_node('DiceGrid')
 	#diceGrid.remove_child(diceGrid.get_child(dieIndexToRemove))

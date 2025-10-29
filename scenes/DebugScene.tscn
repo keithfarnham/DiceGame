@@ -1,17 +1,6 @@
-[gd_scene load_steps=14 format=3 uid="uid://dupfms6m2gsoy"]
+[gd_scene load_steps=3 format=3 uid="uid://dupfms6m2gsoy"]
 
-[ext_resource type="Script" uid="uid://cvmirqiuwcepv" path="res://scripts/debug/DebugHideUIButton.gd" id="1_g5mlk"]
-[ext_resource type="Script" uid="uid://v33rmstiwemg" path="res://scripts/debug/DebugAddDieButton.gd" id="2_2eey6"]
-[ext_resource type="Script" uid="uid://5j078qwsx2ku" path="res://scripts/debug/DebugNumFacesSlider.gd" id="2_7p8a0"]
-[ext_resource type="Script" uid="uid://dh87tk5e31rcx" path="res://scripts/debug/DebugDieToModify.gd" id="2_yocqy"]
-[ext_resource type="Script" uid="uid://0tb00ibpccg1" path="res://scripts/debug/DebugFaceValueSlider.gd" id="4_0u0bl"]
-[ext_resource type="Script" uid="uid://bn3sx4x0s6x2m" path="res://scripts/debug/DebugFaceToModify.gd" id="4_eswyp"]
-[ext_resource type="Script" uid="uid://dkck2k7oe1gcd" path="res://scripts/debug/DebugFaceType.gd" id="5_4vb6q"]
-[ext_resource type="Script" uid="uid://82hoh2wbcde8" path="res://scripts/debug/DebugDeleteSelectedDie.gd" id="8_acl37"]
-[ext_resource type="Script" uid="uid://ryo6ahog32qc" path="res://scripts/debug/DebugClearAllDice.gd" id="8_cyewm"]
-[ext_resource type="Script" uid="uid://cgijdd85x1ns1" path="res://scripts/debug/DebugPrintDiceArray.gd" id="10_qjexi"]
-[ext_resource type="Script" uid="uid://c5e358sg3offj" path="res://scripts/debug/DebugSelectedDieIndex.gd" id="11_rm383"]
-[ext_resource type="Script" uid="uid://p34mtuqe7bki" path="res://scripts/debug/DebugRunDiceChoice.gd" id="12_6m4eu"]
+[ext_resource type="Script" uid="uid://o7qlpdpx0hvd" path="res://scripts/debug/Debug.gd" id="1_6ijlv"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u6rbe"]
 bg_color = Color(0, 0.360784, 0.494118, 0.309804)
@@ -26,6 +15,7 @@ offset_bottom = -0.296005
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
+script = ExtResource("1_6ijlv")
 
 [node name="HideDebugUI" type="Button" parent="."]
 modulate = Color(1, 0.631817, 0.540099, 1)
@@ -38,7 +28,6 @@ offset_left = -94.0
 offset_bottom = 31.0
 grow_horizontal = 0
 text = "ShowDebug"
-script = ExtResource("1_g5mlk")
 
 [node name="DebugUI" type="Panel" parent="."]
 visible = false
@@ -61,7 +50,6 @@ tooltip_text = "Number of Faces"
 min_value = 1.0
 max_value = 20.0
 value = 1.0
-script = ExtResource("2_7p8a0")
 
 [node name="AddDie" type="Button" parent="DebugUI"]
 layout_mode = 0
@@ -70,7 +58,6 @@ offset_top = 34.0
 offset_right = 114.0
 offset_bottom = 134.0
 text = "Add Die"
-script = ExtResource("2_2eey6")
 
 [node name="DieToModify" type="OptionButton" parent="DebugUI"]
 layout_mode = 0
@@ -82,7 +69,6 @@ selected = 0
 item_count = 1
 popup/item_0/text = "Add New"
 popup/item_0/id = 0
-script = ExtResource("2_yocqy")
 
 [node name="FacesLabel" type="RichTextLabel" parent="DebugUI"]
 layout_mode = 1
@@ -112,19 +98,16 @@ columns = 5
 [node name="FaceToModify" type="OptionButton" parent="DebugUI/FaceDebugGrid"]
 layout_mode = 2
 tooltip_text = "Face to modify"
-script = ExtResource("4_eswyp")
 
 [node name="FaceType" type="OptionButton" parent="DebugUI/FaceDebugGrid"]
 layout_mode = 2
 tooltip_text = "Face type to set"
-script = ExtResource("5_4vb6q")
 
 [node name="FaceValue" type="HSlider" parent="DebugUI/FaceDebugGrid"]
 custom_minimum_size = Vector2(100, 10)
 layout_mode = 2
 min_value = 1.0
 value = 1.0
-script = ExtResource("4_0u0bl")
 
 [node name="ValueLabel" type="RichTextLabel" parent="DebugUI/FaceDebugGrid"]
 clip_contents = false
@@ -149,7 +132,6 @@ offset_top = 17.0
 offset_right = 954.0
 offset_bottom = 48.0
 text = "ClearAllDice"
-script = ExtResource("8_cyewm")
 
 [node name="DeleteSelectedDie" type="Button" parent="DebugUI"]
 layout_mode = 0
@@ -158,7 +140,6 @@ offset_top = 48.0
 offset_right = 954.0
 offset_bottom = 79.0
 text = "Kill Selected"
-script = ExtResource("8_acl37")
 
 [node name="PrintDiceArray" type="Button" parent="DebugUI"]
 layout_mode = 0
@@ -167,7 +148,6 @@ offset_top = 67.0
 offset_right = 1142.0
 offset_bottom = 114.0
 text = "Print Dice Array"
-script = ExtResource("10_qjexi")
 
 [node name="SelectedDieIndex" type="Control" parent="DebugUI"]
 layout_mode = 1
@@ -194,7 +174,6 @@ text = "Selected Die:"
 layout_mode = 2
 size_flags_horizontal = 3
 text = "999"
-script = ExtResource("11_rm383")
 
 [node name="RunDiceChoice" type="Button" parent="DebugUI"]
 layout_mode = 1
@@ -209,4 +188,16 @@ offset_right = -0.188049
 offset_bottom = 0.0739975
 mouse_filter = 1
 text = "StartDiceChoice"
-script = ExtResource("12_6m4eu")
+
+[connection signal="pressed" from="HideDebugUI" to="." method="_on_hide_debug_ui_pressed"]
+[connection signal="value_changed" from="DebugUI/NumFaces" to="." method="_on_num_faces_value_changed"]
+[connection signal="pressed" from="DebugUI/AddDie" to="." method="_on_add_die_pressed"]
+[connection signal="item_selected" from="DebugUI/DieToModify" to="." method="_on_die_to_modify_item_selected"]
+[connection signal="pressed" from="DebugUI/DieToModify" to="." method="_on_die_to_modify_pressed"]
+[connection signal="item_selected" from="DebugUI/FaceDebugGrid/FaceToModify" to="." method="_on_face_to_modify_item_selected"]
+[connection signal="item_selected" from="DebugUI/FaceDebugGrid/FaceType" to="." method="_on_face_type_item_selected"]
+[connection signal="value_changed" from="DebugUI/FaceDebugGrid/FaceValue" to="." method="_on_face_value_value_changed"]
+[connection signal="pressed" from="DebugUI/ClearAllDice" to="." method="_on_clear_all_dice_pressed"]
+[connection signal="pressed" from="DebugUI/DeleteSelectedDie" to="." method="_on_delete_selected_die_pressed"]
+[connection signal="pressed" from="DebugUI/PrintDiceArray" to="." method="_on_print_dice_array_pressed"]
+[connection signal="pressed" from="DebugUI/RunDiceChoice" to="." method="_on_run_dice_choice_pressed"]

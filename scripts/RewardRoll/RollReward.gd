@@ -1,35 +1,35 @@
 extends Control
-@onready var diceGrid = $DiceGridControl/DiceGridContainer/Panel/AspectRatioContainer/HBoxContainer/DiceScrollContainer/DiceGrid as DiceGrid
 #@onready var diceGrid = $DiceUI/DiceGridScroll/DiceGrid as DiceGrid
-@onready var faceGrid = $DiceGridControl/DiceGridContainer/Panel/AspectRatioContainer/HBoxContainer/FaceScrollContainer/FaceGrid as GridContainer
+#@onready var diceGrid = $DiceGrid/DiceGridContainer/Panel/AspectRatioContainer/HBoxContainer/DiceScrollContainer/DiceGrid as DiceGrid
+@onready var diceGrid = $DiceGrid as DiceGrid
+@onready var faceGrid = $DiceGrid/DiceGridContainer/Panel/AspectRatioContainer/HBoxContainer/FaceScrollContainer/FaceGrid as GridContainer
 @onready var debugControls = $DebugControls as Control
+@onready var resultGrid = $ResultGridScroll/ResultGrid as GridContainer
 
 var dieUIScene = preload("res://scenes/DieUIScene.tscn")
 var dieFaceUIScene = preload("res://scenes/DiceFaceUIScene.tscn")
-var rewardDice : Array[Die] = []
+#var rewardDice : Array[Die] = []
 var prevSelect := -1
 
-func _ready():
+#func _ready():
 	#generate result dice and populate DiceGrid
-	rewardDice = DiceData.GenerateRewardDice()
-	diceGrid.add_dice(rewardDice)
-	debugControls.get_node('DebugUI/PrintDiceArray').debug_print.connect(debug_print)
-	
+	#diceGrid.add_dice(PlayerDice.RewardDice)
+	#debugControls.get_node('DebugUI/PrintDiceArray').debug_print.connect(debug_print)
 
-func debug_print():
-	var string = ""
-	for dieIndex in rewardDice.size():
-		var numFaces = rewardDice[dieIndex].faces.size()
-		string += "\n[u]Reward Die " + str(dieIndex) + " w/ " + str(numFaces) + " faces: [/u]"
-		for faceIndex in rewardDice[dieIndex].faces.size():
-			match rewardDice[dieIndex].faces[faceIndex].type:
-				DieFaceData.FaceType.reward:
-					string += "[b]"
-			string += "[" + str(rewardDice[dieIndex].faces[faceIndex].value) + "]"
-			match rewardDice[dieIndex].faces[faceIndex].type:
-				DieFaceData.FaceType.reward:
-					string += "[/b]"
-	print_rich(string)
+#func debug_print():
+	#var string = ""
+	#for dieIndex in rewardDice.size():
+		#var numFaces = rewardDice[dieIndex].faces.size()
+		#string += "\n[u]Reward Die " + str(dieIndex) + " w/ " + str(numFaces) + " faces: [/u]"
+		#for faceIndex in rewardDice[dieIndex].faces.size():
+			#match rewardDice[dieIndex].faces[faceIndex].type:
+				#DieFaceData.FaceType.reward:
+					#string += "[b]"
+			#string += "[" + str(rewardDice[dieIndex].faces[faceIndex].value) + "]"
+			#match rewardDice[dieIndex].faces[faceIndex].type:
+				#DieFaceData.FaceType.reward:
+					#string += "[/b]"
+	#print_rich(string)
 
 	#TODO setup DiceGrid in the RollReward scene
 	
@@ -70,3 +70,30 @@ func debug_print():
 #func clear_die_face_grid():
 	#for child in get_node('DieFaceGrid').get_children():
 		#get_node('DieFaceGrid').remove_child(child)
+
+
+func _on_roll_pressed():
+	print("Rolling reward dice")
+	
+	PlayerDice.RewardStakes = []
+	for die in PlayerDice.RewardDice:
+		var rolledIndex = die.roll()
+		PlayerDice.RewardStakes.append(die.faces[rolledIndex])
+		var newFaceUIInstance = dieFaceUIScene.instantiate()# as DieFaceUI
+		var typeNode = newFaceUIInstance.find_child("FaceTypeValue") as Label
+		typeNode.text = str(DieFaceData.FaceType.keys()[die.faces[rolledIndex].type])
+		var faceIndexNode = newFaceUIInstance.find_child("FaceIndexValue") as Label
+		faceIndexNode.text = str(rolledIndex)
+		var valueNode = newFaceUIInstance.find_child("FaceValueValue") as Label
+		valueNode.text = str(DieFaceData.RewardTypeValue.keys()[die.faces[rolledIndex].value])
+		resultGrid.add_child(newFaceUIInstance)
+	
+	$Roll.visible = false
+	$Continue.visible = true
+	$ResultStakesText.visible = true
+	$DiceGrid.visible = false
+	$DiceGridLabel.visible = false
+
+
+func _on_continue_pressed():
+	get_tree().change_scene_to_file("res://scenes/RollScore.tscn")

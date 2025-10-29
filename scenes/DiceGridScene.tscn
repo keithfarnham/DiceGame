@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dhfdstwga2bhh" path="res://scripts/DiceGrid.gd" id="1_efbfp"]
 
-[node name="DiceGridControl" type="Control"]
+[node name="DiceGrid" type="Control"]
 layout_mode = 3
 anchor_left = 0.0277778
 anchor_top = 0.0493827
@@ -11,6 +11,7 @@ anchor_bottom = 0.641975
 offset_bottom = -6.10352e-05
 size_flags_horizontal = 3
 size_flags_vertical = 3
+script = ExtResource("1_efbfp")
 metadata/_edit_use_anchors_ = true
 
 [node name="DiceGridContainer" type="AspectRatioContainer" parent="."]
@@ -68,4 +69,3 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/h_separation = 3
 columns = 4
-script = ExtResource("1_efbfp")

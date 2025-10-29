@@ -13,7 +13,7 @@ func face_selected(selectedDie):
 	faceSelected.emit(selectedDie)
 
 func _pressed():
-	print("Face " + faceIndexUI.text + " pressed. Should match faceIndex " + str(faceIndexUI.text.to_int()))
+	print("[DieFaceUI] Face " + faceIndexUI.text + " pressed. Should match faceIndex " + str(faceIndexUI.text.to_int()))
 	face_selected(faceIndexUI.text.to_int())
 	
 #func with_data(newFaceIndex : int, newType : DieFaceData.FaceType, newValue : int):

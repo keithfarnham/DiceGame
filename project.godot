@@ -12,14 +12,14 @@ config_version=5
 
 config/name="DiceGame"
 run/main_scene="res://scenes/FrontEnd.tscn"
-config/features=PackedStringArray("4.4", "Forward Plus")
+config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
 
-PlayerDice="*res://scripts/GlobalData/PlayerDice.gd"
 DiceData="*res://scripts/GlobalData/DiceData.gd"
 DieFaceData="*res://scripts/GlobalData/DieFaceData.gd"
+PlayerDice="*res://scripts/GlobalData/PlayerDice.gd"
 
 [global_group]
 

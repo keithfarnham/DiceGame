@@ -27,6 +27,10 @@ func get_type_for_face(faceIndex) -> DieFaceData.FaceType:
 func clear_faces():
 	faces.clear()
 	
+func print():
+	#TODO override the print so I can easily print the die's data
+	pass
+
 func _init(faceData : Array[DieFace], dieType : DiceData.DiceTypes):
 	faces = faceData
 	type = dieType

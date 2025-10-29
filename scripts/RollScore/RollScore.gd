@@ -1,20 +1,41 @@
-extends Button
+extends Control
 
-@onready var rollResultGrid = $"../RollResultGrid" as GridContainer
-@onready var sumInfo = $"../SumInfo" as RichTextLabel
-@onready var multInfo = $"../MultInfo" as RichTextLabel
-@onready var continueButton = $"../Continue" as Button
+@onready var diceGridLabel = $DiceGridLabel as RichTextLabel
+@onready var rollResultGrid = $ScoreRollUI/RollResultGrid as GridContainer
+@onready var diceGrid = $DiceGrid as DiceGrid
+@onready var sumInfo = $ScoreRollUI/SumInfo as RichTextLabel
+@onready var multInfo = $ScoreRollUI/MultInfo as RichTextLabel
+@onready var rollButton = $ScoreRollUI/RollButton as Button
+@onready var continueButton  = $ScoreRollUI/Continue as Button
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
+#func _ready():
+	#diceGrid.clear()
+	#diceGrid.add_dice(PlayerDice.ScoreDice)
 
+func update_text():
+	if diceGrid.visible:
+		if diceGrid.prevSelect >= 0:
+			var dieUI = diceGrid.get_child(diceGrid.prevSelect) as DieUI
+			#grabbing focus to prev selected die, see button node's theme overrides for color mod on focus/hover
+			dieUI.grab_focus()
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
+func _on_sum_info_area_mouse_entered():
+	if !sumInfo.visible:
+		sumInfo.visible = true
 
-func _pressed():
+func _on_sum_info_area_mouse_exited():
+	if sumInfo.visible:
+		sumInfo.visible = false
+
+func _on_mult_info_area_mouse_entered():
+	if !multInfo.visible:
+		multInfo.visible = true
+
+func _on_mult_info_area_mouse_exited():
+	if multInfo.visible:
+		multInfo.visible = false
+
+func _on_roll_button_pressed():
 	print("Rolling Score dice")
 	if !rollResultGrid.visible:
 		rollResultGrid.visible = true
@@ -52,7 +73,10 @@ func _pressed():
 	var totalText := rollResultGrid.get_node("RollResult") as RichTextLabel
 	totalText.text = str(totalSum)
 	print("rolled value: " + str(preMultSum) + " * " + str(totalMult) + " = " + str(totalSum))
-	visible = false
+	rollButton.visible = false
 	continueButton.visible = true
-	if !rollResultGrid.visible:
-		rollResultGrid.visible = true
+	#TODO replace the DiceGrid being visible with the actual visual of the dice roll results
+
+func _on_continue_pressed():
+	print("Switching Scene to ChooseReward")
+	get_tree().change_scene_to_file("res://scenes/ChooseReward.tscn")

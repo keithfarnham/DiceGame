@@ -18,8 +18,8 @@ func cancelled():
 func confirmed():
 	#TODO set this up
 	#PlayerDice.Dice.append()
-	print("Chose reward die + " + str($RewardGrid.ChosenDie.find_child("FaceIndexValue")))
+	print("[ChooseDieConfirm] Chose reward die + " + str($RewardGrid.ChosenDie.find_child("FaceIndexValue")))
 	$RewardGrid.ChosenDie
-	print("Switching Scene to RollScore")
+	print("[ChooseDieConfirm] Switching Scene to RollScore")
 	get_tree().change_scene_to_file("res://scenes/RollScore.tscn")
 	

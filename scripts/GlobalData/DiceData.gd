@@ -58,7 +58,7 @@ func DebugSimpleRewardD6():
 	return Die.new(faces, DiceTypes.reward)
 
 func GenerateRewardDice() -> Array[Die]:
-	
+	print("Generating Reward Dice")
 	#TODO make this make random reward dice
 	#TODO rarity+weighting by powerlevel?
 	var dice : Array[Die] = []

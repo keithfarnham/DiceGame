@@ -11,9 +11,6 @@ signal dieSelected(dieIndex : int)
 func die_selected(selectedDie):
 	dieSelected.emit(selectedDie)
 
-func _ready():
-	pass
-
 func _pressed():
-	print("Die " + dieIndexUI.text + " pressed. Should match dieIndex " + str(dieIndexUI.text.to_int()))
+	print("[DieUI] Die " + dieIndexUI.text + " pressed. Should match dieIndex " + str(dieIndexUI.text.to_int()))
 	die_selected(dieIndexUI.text.to_int())
