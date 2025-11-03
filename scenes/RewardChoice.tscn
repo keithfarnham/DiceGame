@@ -1,0 +1,76 @@
+[gd_scene load_steps=4 format=3 uid="uid://d210inloam1xe"]
+
+[ext_resource type="Script" uid="uid://dnig0foq7f66" path="res://scripts/RewardChoice/RewardChoice.gd" id="1_5f0n4"]
+[ext_resource type="PackedScene" uid="uid://dupfms6m2gsoy" path="res://scenes/DebugScene.tscn" id="2_53gax"]
+[ext_resource type="PackedScene" uid="uid://dbtd6w07pf5p5" path="res://scenes/DiceGridScene.tscn" id="3_53gax"]
+
+[node name="RewardChoice" type="Control"]
+clip_contents = true
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_5f0n4")
+
+[node name="RewardGrid" type="GridContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.0833333
+anchor_top = 0.0987654
+anchor_right = 0.916667
+anchor_bottom = 0.641975
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 0
+columns = 6
+metadata/_edit_use_anchors_ = true
+
+[node name="ChooseDie" type="Control" parent="."]
+layout_mode = 1
+anchor_left = 0.242188
+anchor_top = 0.325617
+anchor_right = 0.704861
+anchor_bottom = 0.719136
+mouse_filter = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="ChooseDieButton" type="Button" parent="ChooseDie"]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.37992477
+anchor_top = 0.8784315
+anchor_right = 0.6200752
+anchor_bottom = 1.0
+offset_left = 16.5
+offset_right = -16.5
+grow_horizontal = 2
+grow_vertical = 0
+text = "Choose Reward"
+metadata/_edit_use_anchors_ = true
+
+[node name="ChooseDieConfirm" type="ConfirmationDialog" parent="ChooseDie"]
+oversampling_override = 1.0
+title = "ChooseDieConfirm"
+initial_position = 1
+size = Vector2i(211, 100)
+borderless = true
+ok_button_text = "YES"
+dialog_text = "ROLL WITH THIS CHOICE?"
+cancel_button_text = "NO"
+
+[node name="DebugControls" parent="." instance=ExtResource("2_53gax")]
+visible = false
+layout_mode = 1
+
+[node name="DiceGrid" parent="." instance=ExtResource("3_53gax")]
+visible = false
+layout_mode = 1
+
+[connection signal="pressed" from="ChooseDie/ChooseDieButton" to="." method="_on_choose_die_button_pressed"]
+[connection signal="canceled" from="ChooseDie/ChooseDieConfirm" to="." method="_on_choose_die_confirm_canceled"]
+[connection signal="confirmed" from="ChooseDie/ChooseDieConfirm" to="." method="_on_choose_die_confirm_confirmed"]

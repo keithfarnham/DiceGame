@@ -1,9 +1,9 @@
 [gd_scene load_steps=5 format=3 uid="uid://53qha6ha423j"]
 
-[ext_resource type="Script" uid="uid://g3nja6tp7gka" path="res://scripts/DiceChoice/DiceChoice.gd" id="1_spkjh"]
-[ext_resource type="Script" uid="uid://tr3mbntjyjdo" path="res://scripts/DiceChoice/ChooseDieConfirm.gd" id="2_beqxm"]
-[ext_resource type="Script" uid="uid://dhfdstwga2bhh" path="res://scripts/DiceGrid.gd" id="2_kljac"]
-[ext_resource type="PackedScene" uid="uid://dupfms6m2gsoy" path="res://scenes/DebugScene.tscn" id="4_j6ckn"]
+[ext_resource type="Script" uid="uid://g3nja6tp7gka" path="res://scripts/DiceChoice/DiceChoice.gd" id="1_g78sw"]
+[ext_resource type="Script" uid="uid://dhfdstwga2bhh" path="res://scripts/DiceGrid.gd" id="2_2h3ne"]
+[ext_resource type="Script" uid="uid://tr3mbntjyjdo" path="res://scripts/DiceChoice/ChooseDieConfirm.gd" id="3_ftfen"]
+[ext_resource type="PackedScene" uid="uid://dupfms6m2gsoy" path="res://scenes/DebugScene.tscn" id="4_4ymhg"]
 
 [node name="DieChoiceUI" type="Control"]
 clip_contents = true
@@ -13,7 +13,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_spkjh")
+script = ExtResource("1_g78sw")
 
 [node name="DiceGridScroll" type="ScrollContainer" parent="."]
 clip_contents = false
@@ -33,7 +33,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 columns = 4
-script = ExtResource("2_kljac")
+script = ExtResource("2_2h3ne")
 
 [node name="DiceGridLabel" type="RichTextLabel" parent="."]
 layout_mode = 0
@@ -69,7 +69,7 @@ offset_right = 0.191956
 offset_bottom = 0.0700073
 grow_horizontal = 2
 grow_vertical = 0
-script = ExtResource("2_beqxm")
+script = ExtResource("3_ftfen")
 
 [node name="ChooseDieButton" type="Button" parent="ChooseDie"]
 layout_mode = 1
@@ -94,5 +94,6 @@ ok_button_text = "YES"
 dialog_text = "ROLL WITH THIS CHOICE?"
 cancel_button_text = "NO"
 
-[node name="DebugControls" parent="." instance=ExtResource("4_j6ckn")]
+[node name="DebugControls" parent="." instance=ExtResource("4_4ymhg")]
+visible = false
 layout_mode = 1

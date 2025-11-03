@@ -27,6 +27,10 @@ func _ready():
 		
 	for type in DieFaceData.FaceType:
 		faceType.add_item(str(type))
+		
+func _process(delta):
+	if Input.is_action_just_pressed("ToggleDebug"):
+		visible = !visible
 
 func _on_add_die_pressed():
 	print("trying to add die with " + str(numFacesSlider.value) + " faces")

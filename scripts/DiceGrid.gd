@@ -82,7 +82,7 @@ func die_selected(dieIndex : int):
 		typeNode.text = str(DieFaceData.FaceType.keys()[PlayerDice.RewardDice[dieIndex].faces[faceIndex].type] \
 			if reward else DieFaceData.FaceType.keys()[PlayerDice.ScoreDice[dieIndex].faces[faceIndex].type])
 		var valueNode = newFaceUIInstance.find_child("FaceValueValue") as Label
-		valueNode.text = str(DieFaceData.RewardTypeValue.keys()[PlayerDice.RewardDice[dieIndex].faces[faceIndex].value] \
+		valueNode.text = str(DieFaceData.RewardType.keys()[PlayerDice.RewardDice[dieIndex].faces[faceIndex].value] \
 			if reward else PlayerDice.ScoreDice[dieIndex].faces[faceIndex].value)
 		faceGrid.add_child(newFaceUIInstance)
 

@@ -24,13 +24,18 @@ enum EffectType #These faces have effects in addition to whatever scoring/multip
 	glass = 3, #die destorys itself after scoring
 }
 
-enum RewardTypeValue
+enum RewardType
 {
-	money = 0,
-	addDie = 1,
-	scoreReroll = 2,
-	rewardReroll = 3,
-	upgradeDieValue = 4,
-	addRemoveFace = 5,
-	duplicateDie = 6
+	money,
+	addDie,
+	scoreReroll,
+	rewardReroll,
+	upgradeDieValue,
+	addRemoveFace,
+	plusMinusFaceValue,
+	duplicateDie,
+	addScoreD6,
+	addScoreCoin,
+	addScoreD20,
+	addRewardD6
 }

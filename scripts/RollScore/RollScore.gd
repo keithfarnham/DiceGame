@@ -78,5 +78,4 @@ func _on_roll_button_pressed():
 	#TODO replace the DiceGrid being visible with the actual visual of the dice roll results
 
 func _on_continue_pressed():
-	print("Switching Scene to ChooseReward")
-	get_tree().change_scene_to_file("res://scenes/ChooseReward.tscn")
+	get_tree().change_scene_to_file("res://scenes/RewardChoice.tscn")

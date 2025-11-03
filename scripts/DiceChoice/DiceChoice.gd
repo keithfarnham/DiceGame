@@ -6,7 +6,9 @@ extends Control
 @onready var rewardGrid = $RewardGrid as GridContainer
 
 var DieFaceUIScene = preload("res://scenes/DiceFaceUIScene.tscn")
-var ChosenDie
+var ChosenDie : Die
+
+#this is a more generic dice choice than the RewardChoice stuff, for choosing an entire die 
 
 func _ready():
 	#populate diceGrid with PlayerDice.RewardStakes faces
@@ -17,7 +19,7 @@ func _ready():
 		var faceIndexNode = newFaceUIInstance.find_child("FaceIndexValue") as Label
 		faceIndexNode.text = str(faceIndex)
 		var valueNode = newFaceUIInstance.find_child("FaceValueValue") as Label
-		valueNode.text = str(DieFaceData.RewardTypeValue.keys()[PlayerDice.RewardStakes[faceIndex].value])
+		valueNode.text = str(DieFaceData.RewardType.keys()[PlayerDice.RewardStakes[faceIndex].value])
 		add_child(newFaceUIInstance)
 		var buttonNode = newFaceUIInstance.find_child("Button") as DieFaceUI
 		buttonNode.connect("pressed", _on_face_pressed)

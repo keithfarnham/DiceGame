@@ -10,31 +10,20 @@ border_width_right = 8
 border_width_bottom = 8
 border_color = Color(0.25, 0.38, 0.8, 0.5)
 
-[node name="DiceFaceControl" type="Control"]
-layout_mode = 3
-anchor_right = 0.111111
-anchor_bottom = 0.197531
+[node name="Button" type="Button"]
+anchors_preset = -1
+anchor_right = 0.11111101
+anchor_bottom = 0.19753106
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-metadata/_edit_use_anchors_ = true
-
-[node name="Button" type="Button" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_right = -1.52588e-05
-offset_bottom = -1.52588e-05
-grow_horizontal = 2
-grow_vertical = 2
 focus_mode = 0
 disabled = true
 script = ExtResource("1_t4ssj")
 metadata/_edit_use_anchors_ = true
 
-[node name="AspectRatioContainer" type="AspectRatioContainer" parent="Button"]
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -42,12 +31,12 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Panel" type="Panel" parent="Button/AspectRatioContainer"]
+[node name="Panel" type="Panel" parent="AspectRatioContainer"]
 layout_mode = 2
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_dyby4")
 
-[node name="CenterContainer" type="CenterContainer" parent="Button/AspectRatioContainer/Panel"]
+[node name="CenterContainer" type="CenterContainer" parent="AspectRatioContainer/Panel"]
 custom_minimum_size = Vector2(90, 90)
 layout_mode = 1
 anchors_preset = -1
@@ -57,54 +46,65 @@ grow_horizontal = 2
 grow_vertical = 2
 metadata/_edit_use_anchors_ = true
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Button/AspectRatioContainer/Panel/CenterContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="AspectRatioContainer/Panel/CenterContainer"]
 layout_mode = 2
 
-[node name="FaceIndex" type="HBoxContainer" parent="Button/AspectRatioContainer/Panel/CenterContainer/VBoxContainer"]
+[node name="FaceIndex" type="HBoxContainer" parent="AspectRatioContainer/Panel/CenterContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 alignment = 1
 
-[node name="FaceIndexLabel" type="Label" parent="Button/AspectRatioContainer/Panel/CenterContainer/VBoxContainer/FaceIndex"]
+[node name="FaceIndexLabel" type="Label" parent="AspectRatioContainer/Panel/CenterContainer/VBoxContainer/FaceIndex"]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.87, 0.62, 1)
 text = "Face Index "
 horizontal_alignment = 1
 
-[node name="FaceIndexValue" type="Label" parent="Button/AspectRatioContainer/Panel/CenterContainer/VBoxContainer/FaceIndex"]
+[node name="FaceIndexValue" type="Label" parent="AspectRatioContainer/Panel/CenterContainer/VBoxContainer/FaceIndex"]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.87, 0.62, 1)
 text = "#"
 horizontal_alignment = 1
 
-[node name="FaceType" type="HBoxContainer" parent="Button/AspectRatioContainer/Panel/CenterContainer/VBoxContainer"]
+[node name="FaceType" type="HBoxContainer" parent="AspectRatioContainer/Panel/CenterContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="FaceTypeLabel" type="Label" parent="Button/AspectRatioContainer/Panel/CenterContainer/VBoxContainer/FaceType"]
+[node name="FaceTypeLabel" type="Label" parent="AspectRatioContainer/Panel/CenterContainer/VBoxContainer/FaceType"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "Type: "
 
-[node name="FaceTypeValue" type="Label" parent="Button/AspectRatioContainer/Panel/CenterContainer/VBoxContainer/FaceType"]
+[node name="FaceTypeValue" type="Label" parent="AspectRatioContainer/Panel/CenterContainer/VBoxContainer/FaceType"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "default_type"
 horizontal_alignment = 2
 
-[node name="FaceValue" type="HBoxContainer" parent="Button/AspectRatioContainer/Panel/CenterContainer/VBoxContainer"]
+[node name="FaceValue" type="HBoxContainer" parent="AspectRatioContainer/Panel/CenterContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="FaceValueLabel" type="Label" parent="Button/AspectRatioContainer/Panel/CenterContainer/VBoxContainer/FaceValue"]
+[node name="FaceValueLabel" type="Label" parent="AspectRatioContainer/Panel/CenterContainer/VBoxContainer/FaceValue"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "Value: "
 
-[node name="FaceValueValue" type="Label" parent="Button/AspectRatioContainer/Panel/CenterContainer/VBoxContainer/FaceValue"]
+[node name="FaceValueValue" type="Label" parent="AspectRatioContainer/Panel/CenterContainer/VBoxContainer/FaceValue"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
 text = "default_value"
 horizontal_alignment = 2
+
+[node name="DiceFaceControl" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchor_right = 0.111111
+anchor_bottom = 0.197531
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+metadata/_edit_use_anchors_ = true

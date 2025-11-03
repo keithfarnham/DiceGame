@@ -3,6 +3,8 @@ extends Node
 var ScoreDice : Array[Die]
 var RewardDice : Array[Die]
 var RewardStakes : Array[DieFace]
+var RerollScore : int
+var RerollReward : int
 var Money : int
 var prevSelect := -1
 
@@ -45,12 +47,6 @@ func remove_die(dieIndexToRemove : int):
 		#a.dieIndexUI.text = str(i)
 	#for child in dieFaceGrid.get_children():
 		#dieFaceGrid.remove_child(child)
-
-func add_money(add : int):
-	Money += add
-	
-func remove_money(remove : int):
-	Money -= remove
 
 func debug_print_dice_array(type = DiceData.DiceTypes.score):
 	var string = ""

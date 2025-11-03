@@ -26,7 +26,13 @@ var DieFaceCountWeight = {
 	DieFaceCount.D20: 10
 }
 
-#These are mostly used for quick setup of dice with all faces being a single FaceType
+var DiceTypesWeights = {
+	DiceTypes.score: 50,
+	DiceTypes.multiplier: 10,
+	DiceTypes.special: 5,
+	DiceTypes.reward: 1
+}
+
 enum DiceTypes
 {
 	score = 0,
@@ -35,20 +41,12 @@ enum DiceTypes
 	reward = 3
 }
 
-var DiceTypesWeights = {
-	DiceTypes.score: 50,
-	DiceTypes.multiplier: 10,
-	DiceTypes.special: 5,
-	DiceTypes.reward: 1
-}
-
 func MakeADie(numFaces : int, type := DiceTypes.score) -> Die:
 	print("MakeADie with " + str(numFaces) + " faces of type " + DiceTypes.keys()[type])
 	var faces : Array[DieFace]
 	for i in numFaces:
-		#TODO adjust the modulo value after adding more reward value types
-		#this is to prevent overrunning past the set reward values in DieFaceData.RewardTypeValue, i have 7 reward values currently setup
-		faces.append(DieFace.new(i % 7 if type == DiceTypes.reward else i + 1, type as DieFaceData.FaceType))
+		#modulo to prevent overrunning past the set reward values in DieFaceData.RewardType
+		faces.append(DieFace.new(i % DieFaceData.RewardType.size() if type == DiceTypes.reward else i + 1, type as DieFaceData.FaceType))
 	return Die.new(faces, type)
 
 func DebugSimpleRewardD6():
@@ -75,21 +73,6 @@ func StartingDice() -> Array[Die]:
 	dice.append(MakeADie(12))
 	dice.append(MakeADie(DieFaceCount.coin, DiceTypes.multiplier))
 	return dice
-
-#func Coin(type := DiceTypes.score) -> Die:
-	#var faces : Array[DieFace]
-	#var faceType := DieFaceData.FaceType.score
-	#match type:
-		#DiceTypes.score:
-			#faceType = DieFaceData.FaceType.score
-		#DiceTypes.multiplier:
-			#faceType = DieFaceData.FaceType.multiplier
-		#DiceTypes.reward:
-			#faceType = DieFaceData.FaceType.reward
-	#for i in DieFaceCount.coin:
-		#faces.append(DieFace.new(i + 1, faceType))
-	#print("making Coin with type " + str(DiceTypes.keys()[type]))
-	#return Die.new(faces, type)
 
 func D6(type := DiceTypes.score) -> Die:
 	#TODO modify to support creation of reward D6 as well

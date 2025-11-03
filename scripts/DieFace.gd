@@ -4,7 +4,7 @@ class_name DieFace
 
 var type := DieFaceData.FaceType.score
 
-var value : int #the numerical value associated with face
+var value
 
 var chance
 
@@ -16,4 +16,4 @@ func _init(faceValue : int, faceType := DieFaceData.FaceType.score):
 		DieFaceData.FaceType.multiplier:
 			value = faceValue
 		DieFaceData.FaceType.reward:
-			value = faceValue as DieFaceData.RewardTypeValue
+			value = faceValue as DieFaceData.RewardType
