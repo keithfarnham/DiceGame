@@ -9,6 +9,7 @@ var DieFaceUIScene = preload("res://scenes/DiceFaceUIScene.tscn")
 var ChosenDie : Die
 
 #this is a more generic dice choice than the RewardChoice stuff, for choosing an entire die 
+#not currently used
 
 func _ready():
 	#populate diceGrid with PlayerDice.RewardStakes faces
@@ -37,8 +38,6 @@ func _on_choose_die_confirm_canceled():
 	choiceConfirm.visible = false
 
 func _on_choose_die_confirm_confirmed():
-	#TODO set this up
-	#PlayerDice.Dice.append()
 	print("[DiceChoice] Chose reward die + " + str(rewardGrid.ChosenDie.find_child("FaceIndexValue")))
 	rewardGrid.ChosenDie
 	print("[DiceChoice] Switching Scene to RollScore")

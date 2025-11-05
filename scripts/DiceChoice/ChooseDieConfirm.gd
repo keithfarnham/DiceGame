@@ -16,10 +16,7 @@ func cancelled():
 	confirmDialog.visible = false
 
 func confirmed():
-	#TODO set this up
-	#PlayerDice.Dice.append()
 	print("[ChooseDieConfirm] Chose reward die + " + str($RewardGrid.ChosenDie.find_child("FaceIndexValue")))
 	$RewardGrid.ChosenDie
 	print("[ChooseDieConfirm] Switching Scene to RollScore")
 	get_tree().change_scene_to_file("res://scenes/RollScore.tscn")
-	

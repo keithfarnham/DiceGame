@@ -2,10 +2,8 @@ extends Node
 
 class_name DieFace
 
-var type := DieFaceData.FaceType.score
-
+var type : DieFaceData.FaceType
 var value
-
 var chance
 
 func _init(faceValue : int, faceType := DieFaceData.FaceType.score):

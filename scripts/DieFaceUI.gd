@@ -8,11 +8,10 @@ class_name DieFaceUI
 
 var dieFaceData : DieFace
 
-signal faceSelected(rewardType : DieFaceData.RewardType)
+signal faceSelected(faceIndex : int)
 
-#TODO rewardType here might be too specific if i want other die face choices outside of RewardChoice
-func face_selected(rewardType : int):
-	faceSelected.emit(rewardType as DieFaceData.RewardType)
+func face_selected(faceIndex : int):
+	faceSelected.emit(faceIndex)
 
 func _pressed():
 	print("[DieFaceUI] Face " + faceIndexUI.text + " pressed. Should match faceIndex " + str(faceIndexUI.text.to_int()))

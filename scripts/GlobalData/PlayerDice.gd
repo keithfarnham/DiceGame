@@ -6,9 +6,6 @@ var RewardStakes : Array[DieFace]
 var RerollScore : int
 var RerollReward : int
 var Money : int
-var prevSelect := -1
-
-signal add_to_dice_grid
 
 func _ready():
 	print("[PlayerDice] Setting up starting dice")
@@ -28,14 +25,9 @@ func add_die(newDie : Die):
 	#print(str(get_tree().get_first_node_in_group('SceneRoot').get_tree_string_pretty()))
 	print("[PlayerDice] Adding a new die")
 	ScoreDice.append(newDie)
-	#var dieIndex = ScoreDice.size() - 1
-	#diceGrid.add_die(newDie, dieIndex)
-	
-	#add_to_dice_grid.emit()
 
 #TODO convert all this stuff to grab the scene tree and proper nodes
 func remove_die(dieIndexToRemove : int):
-	prevSelect = -1
 	ScoreDice.remove_at(dieIndexToRemove)
 	#print(get_tree_string())
 	#var diceGrid = get_tree().get_first_node_in_group('SceneRoot').get_node("DiceUI").get_node("DiceGridScroll").get_node("DiceGrid")
@@ -48,9 +40,9 @@ func remove_die(dieIndexToRemove : int):
 	#for child in dieFaceGrid.get_children():
 		#dieFaceGrid.remove_child(child)
 
-func debug_print_dice_array(type = DiceData.DiceTypes.score):
+func debug_print_dice_array(type = DiceData.DiceType.score):
 	var string = ""
-	var Dice = RewardDice if type == DiceData.DiceTypes.reward else ScoreDice
+	var Dice = RewardDice if type == DiceData.DiceType.reward else ScoreDice
 	for dieIndex in Dice.size():
 		var numFaces = Dice[dieIndex].faces.size()
 		string += "\n[u]Die " + str(dieIndex) + " w/ " + str(numFaces) + " faces: [/u]"

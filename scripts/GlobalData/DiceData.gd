@@ -27,13 +27,13 @@ var DieFaceCountWeight = {
 }
 
 var DiceTypesWeights = {
-	DiceTypes.score: 50,
-	DiceTypes.multiplier: 10,
-	DiceTypes.special: 5,
-	DiceTypes.reward: 1
+	DiceType.score: 50,
+	DiceType.multiplier: 10,
+	DiceType.special: 5,
+	DiceType.reward: 1
 }
 
-enum DiceTypes
+enum DiceType
 {
 	score = 0,
 	multiplier = 1,
@@ -41,28 +41,28 @@ enum DiceTypes
 	reward = 3
 }
 
-func MakeADie(numFaces : int, type := DiceTypes.score) -> Die:
-	print("MakeADie with " + str(numFaces) + " faces of type " + DiceTypes.keys()[type])
+func MakeADie(numFaces : int, type := DiceType.score) -> Die:
+	print("MakeADie with " + str(numFaces) + " faces of type " + DiceType.keys()[type])
 	var faces : Array[DieFace]
 	for i in numFaces:
 		#modulo to prevent overrunning past the set reward values in DieFaceData.RewardType
-		faces.append(DieFace.new(i % DieFaceData.RewardType.size() if type == DiceTypes.reward else i + 1, type as DieFaceData.FaceType))
+		faces.append(DieFace.new(i % DieFaceData.RewardType.size() if type == DiceType.reward else i + 1, type as DieFaceData.FaceType))
 	return Die.new(faces, type)
 
 func DebugSimpleRewardD6():
 	var faces : Array[DieFace]
 	for i in DieFaceCount.D6:
 		faces.append(DieFace.new(i + 1, DieFaceData.FaceType.reward))
-	return Die.new(faces, DiceTypes.reward)
+	return Die.new(faces, DiceType.reward)
 
 func GenerateRewardDice() -> Array[Die]:
 	print("Generating Reward Dice")
 	#TODO make this make random reward dice
-	#TODO rarity+weighting by powerlevel?
+	#rarity+weighting by powerlevel?
 	var dice : Array[Die] = []
 	dice.append(DebugSimpleRewardD6())
-	dice.append(MakeADie(2, DiceTypes.reward))
-	dice.append(MakeADie(12, DiceTypes.reward))
+	dice.append(MakeADie(2, DiceType.reward))
+	dice.append(MakeADie(12, DiceType.reward))
 	return dice
 
 func StartingDice() -> Array[Die]:
@@ -71,20 +71,20 @@ func StartingDice() -> Array[Die]:
 	var dice : Array[Die] = []
 	dice.append(D6())
 	dice.append(MakeADie(12))
-	dice.append(MakeADie(DieFaceCount.coin, DiceTypes.multiplier))
+	dice.append(MakeADie(DieFaceCount.coin, DiceType.multiplier))
 	return dice
 
-func D6(type := DiceTypes.score) -> Die:
+func D6(type := DiceType.score) -> Die:
 	#TODO modify to support creation of reward D6 as well
 	#maybe add a few default dice types to create, like all a D6 with all money reward faces from $1-6
 	var faces : Array[DieFace]
 	var faceType := DieFaceData.FaceType.score
 	match type:
-		DiceTypes.score:
+		DiceType.score:
 			faceType = DieFaceData.FaceType.score
-		DiceTypes.reward:
+		DiceType.reward:
 			faceType = DieFaceData.FaceType.reward
 	for i in DieFaceCount.D6:
 		faces.append(DieFace.new(i + 1, faceType))
-	print("making D6 with type " + str(DiceTypes.keys()[type]))
+	print("making D6 with type " + str(DiceType.keys()[type]))
 	return Die.new(faces, type)

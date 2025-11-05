@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://d210inloam1xe"]
+[gd_scene load_steps=5 format=3 uid="uid://d210inloam1xe"]
 
 [ext_resource type="Script" uid="uid://dnig0foq7f66" path="res://scripts/RewardChoice/RewardChoice.gd" id="1_5f0n4"]
 [ext_resource type="PackedScene" uid="uid://dupfms6m2gsoy" path="res://scenes/DebugScene.tscn" id="2_53gax"]
 [ext_resource type="PackedScene" uid="uid://dbtd6w07pf5p5" path="res://scenes/DiceGridScene.tscn" id="3_53gax"]
+[ext_resource type="Script" uid="uid://4f5l6op4yve8" path="res://scripts/RewardChoice/RewardHandlers.gd" id="4_muyx4"]
 
 [node name="RewardChoice" type="Control"]
 clip_contents = true
@@ -14,6 +15,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+mouse_filter = 2
 script = ExtResource("1_5f0n4")
 
 [node name="RewardGrid" type="GridContainer" parent="."]
@@ -29,7 +31,7 @@ mouse_filter = 0
 columns = 6
 metadata/_edit_use_anchors_ = true
 
-[node name="ChooseDie" type="Control" parent="."]
+[node name="ChooseReward" type="Control" parent="."]
 layout_mode = 1
 anchor_left = 0.242188
 anchor_top = 0.325617
@@ -38,7 +40,7 @@ anchor_bottom = 0.719136
 mouse_filter = 2
 metadata/_edit_use_anchors_ = true
 
-[node name="ChooseDieButton" type="Button" parent="ChooseDie"]
+[node name="ChooseRewardButton" type="Button" parent="ChooseReward"]
 visible = false
 layout_mode = 1
 anchors_preset = -1
@@ -53,7 +55,7 @@ grow_vertical = 0
 text = "Choose Reward"
 metadata/_edit_use_anchors_ = true
 
-[node name="ChooseDieConfirm" type="ConfirmationDialog" parent="ChooseDie"]
+[node name="ChooseRewardConfirm" type="ConfirmationDialog" parent="ChooseReward"]
 oversampling_override = 1.0
 title = "ChooseDieConfirm"
 initial_position = 1
@@ -67,10 +69,128 @@ cancel_button_text = "NO"
 visible = false
 layout_mode = 1
 
-[node name="DiceGrid" parent="." instance=ExtResource("3_53gax")]
+[node name="Continue" type="Button" parent="."]
+visible = false
+z_index = 1
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.4861111
+anchor_top = 0.79012346
+anchor_right = 0.5755208
+anchor_bottom = 0.8626543
+text = "Continue"
+metadata/_edit_use_anchors_ = true
+
+[node name="ContinueLabel" type="RichTextLabel" parent="Continue"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -1.0873786
+anchor_top = -1.3617021
+anchor_right = 2.0194175
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="RewardHandlerUI" type="Control" parent="."]
+visible = false
+anchors_preset = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+script = ExtResource("4_muyx4")
+metadata/_edit_use_anchors_ = true
+
+[node name="addRemoveFace" type="Control" parent="RewardHandlerUI"]
 visible = false
 layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
 
-[connection signal="pressed" from="ChooseDie/ChooseDieButton" to="." method="_on_choose_die_button_pressed"]
-[connection signal="canceled" from="ChooseDie/ChooseDieConfirm" to="." method="_on_choose_die_confirm_canceled"]
-[connection signal="confirmed" from="ChooseDie/ChooseDieConfirm" to="." method="_on_choose_die_confirm_confirmed"]
+[node name="AddFace" type="Button" parent="RewardHandlerUI/addRemoveFace"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.33333334
+anchor_top = 0.6913581
+anchor_right = 0.44444445
+anchor_bottom = 0.79012346
+offset_top = -3.0517578e-05
+text = "Duplicate Face"
+metadata/_edit_use_anchors_ = true
+
+[node name="RemoveFace" type="Button" parent="RewardHandlerUI/addRemoveFace"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5555556
+anchor_top = 0.691358
+anchor_right = 0.6666667
+anchor_bottom = 0.79012346
+offset_top = 3.0517578e-05
+text = "Remove Face"
+metadata/_edit_use_anchors_ = true
+
+[node name="plusMinusFaceValue" type="Control" parent="RewardHandlerUI"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PlusFace" type="Button" parent="RewardHandlerUI/plusMinusFaceValue"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.33333334
+anchor_top = 0.6913581
+anchor_right = 0.44444445
+anchor_bottom = 0.79012346
+offset_top = -3.0517578e-05
+text = "+1 Face Value"
+metadata/_edit_use_anchors_ = true
+
+[node name="MinusFace" type="Button" parent="RewardHandlerUI/plusMinusFaceValue"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5555556
+anchor_top = 0.691358
+anchor_right = 0.6666667
+anchor_bottom = 0.79012346
+offset_top = 3.0517578e-05
+text = "-1 Face Value"
+metadata/_edit_use_anchors_ = true
+
+[node name="duplicateDie" type="Control" parent="RewardHandlerUI"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="DuplicateDie" type="Button" parent="RewardHandlerUI/duplicateDie"]
+layout_mode = 0
+offset_left = 512.0
+offset_top = 448.0
+offset_right = 640.0
+offset_bottom = 512.0
+text = "Duplicate Die"
+
+[node name="DiceGrid" parent="RewardHandlerUI" instance=ExtResource("3_53gax")]
+visible = false
+layout_mode = 1
+gridType = 2
+
+[connection signal="pressed" from="ChooseReward/ChooseRewardButton" to="." method="_on_choose_die_button_pressed"]
+[connection signal="canceled" from="ChooseReward/ChooseRewardConfirm" to="." method="_on_choose_die_confirm_canceled"]
+[connection signal="confirmed" from="ChooseReward/ChooseRewardConfirm" to="." method="_on_choose_die_confirm_confirmed"]
+[connection signal="pressed" from="Continue" to="." method="_on_continue_pressed"]
+[connection signal="pressed" from="RewardHandlerUI/addRemoveFace/AddFace" to="RewardHandlerUI" method="_on_add_face_pressed"]
+[connection signal="pressed" from="RewardHandlerUI/addRemoveFace/RemoveFace" to="RewardHandlerUI" method="_on_remove_face_pressed"]
+[connection signal="pressed" from="RewardHandlerUI/plusMinusFaceValue/PlusFace" to="RewardHandlerUI" method="_on_plus_face_pressed"]
+[connection signal="pressed" from="RewardHandlerUI/plusMinusFaceValue/MinusFace" to="RewardHandlerUI" method="_on_minus_face_pressed"]
+[connection signal="pressed" from="RewardHandlerUI/duplicateDie/DuplicateDie" to="RewardHandlerUI" method="_on_duplicate_die_pressed"]

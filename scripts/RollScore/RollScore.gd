@@ -8,14 +8,10 @@ extends Control
 @onready var rollButton = $ScoreRollUI/RollButton as Button
 @onready var continueButton  = $ScoreRollUI/Continue as Button
 
-#func _ready():
-	#diceGrid.clear()
-	#diceGrid.add_dice(PlayerDice.ScoreDice)
-
 func update_text():
 	if diceGrid.visible:
-		if diceGrid.prevSelect >= 0:
-			var dieUI = diceGrid.get_child(diceGrid.prevSelect) as DieUI
+		if diceGrid.selectedDie >= 0:
+			var dieUI = diceGrid.get_child(diceGrid.selectedDie) as DieUI
 			#grabbing focus to prev selected die, see button node's theme overrides for color mod on focus/hover
 			dieUI.grab_focus()
 

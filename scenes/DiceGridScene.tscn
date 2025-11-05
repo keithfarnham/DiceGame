@@ -11,7 +11,35 @@ anchor_bottom = 0.641975
 offset_bottom = -6.10352e-05
 size_flags_horizontal = 3
 size_flags_vertical = 3
+mouse_filter = 1
 script = ExtResource("1_efbfp")
+metadata/_edit_use_anchors_ = true
+
+[node name="DiceTabs" type="Control" parent="."]
+visible = false
+anchors_preset = 0
+offset_top = 384.0
+offset_right = 351.99997
+offset_bottom = 448.0
+
+[node name="Score Dice" type="Button" parent="DiceTabs"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 2.5000002
+anchor_right = 2.7727275
+anchor_bottom = 0.5
+toggle_mode = true
+text = "Score Dice"
+metadata/_edit_use_anchors_ = true
+
+[node name="Reward Dice" type="Button" parent="DiceTabs"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 2.7727275
+anchor_right = 3.0909092
+anchor_bottom = 0.5
+toggle_mode = true
+text = "Reward Dice"
 metadata/_edit_use_anchors_ = true
 
 [node name="DiceGridContainer" type="AspectRatioContainer" parent="."]
@@ -58,14 +86,31 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 columns = 3
 
-[node name="DiceScrollContainer" type="ScrollContainer" parent="DiceGridContainer/Panel/AspectRatioContainer/HBoxContainer"]
+[node name="ScoreDiceScrollContainer" type="ScrollContainer" parent="DiceGridContainer/Panel/AspectRatioContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 horizontal_scroll_mode = 0
 
-[node name="DiceGrid" type="GridContainer" parent="DiceGridContainer/Panel/AspectRatioContainer/HBoxContainer/DiceScrollContainer"]
+[node name="ScoreDiceGrid" type="GridContainer" parent="DiceGridContainer/Panel/AspectRatioContainer/HBoxContainer/ScoreDiceScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/h_separation = 3
 columns = 4
+
+[node name="RewardDiceScrollContainer" type="ScrollContainer" parent="DiceGridContainer/Panel/AspectRatioContainer/HBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+horizontal_scroll_mode = 0
+
+[node name="RewardDiceGrid" type="GridContainer" parent="DiceGridContainer/Panel/AspectRatioContainer/HBoxContainer/RewardDiceScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/h_separation = 3
+columns = 4
+
+[connection signal="pressed" from="DiceTabs/Score Dice" to="." method="_on_score_dice_pressed"]
+[connection signal="toggled" from="DiceTabs/Score Dice" to="." method="_on_score_dice_toggled"]
+[connection signal="toggled" from="DiceTabs/Reward Dice" to="." method="_on_reward_dice_toggled"]

@@ -1,4 +1,5 @@
 extends Control
+
 @onready var diceGrid = $DiceGrid as DiceGrid
 @onready var debugControls = $DebugControls as Control
 @onready var resultGrid = $ResultGridScroll/ResultGrid as GridContainer
@@ -6,11 +7,6 @@ extends Control
 var dieUIScene = preload("res://scenes/DieUIScene.tscn")
 var dieFaceUIScene = preload("res://scenes/DiceFaceUIScene.tscn")
 var prevSelect := -1
-
-#func _ready():
-	#generate result dice and populate DiceGrid
-	#diceGrid.add_dice(PlayerDice.RewardDice)
-	#debugControls.get_node('DebugUI/PrintDiceArray').debug_print.connect(debug_print)
 
 func _on_roll_pressed():
 	print("[RollReward] Rolling reward dice")
@@ -26,6 +22,7 @@ func _on_roll_pressed():
 		faceIndexNode.text = str(rolledIndex)
 		var valueNode = newFaceUIInstance.find_child("FaceValueValue") as Label
 		valueNode.text = str(DieFaceData.RewardType.keys()[die.faces[rolledIndex].value])
+		newFaceUIInstance.focus_mode = Control.FOCUS_NONE
 		resultGrid.add_child(newFaceUIInstance)
 	
 	$Roll.visible = false
@@ -33,7 +30,6 @@ func _on_roll_pressed():
 	$ResultStakesText.visible = true
 	diceGrid.visible = false
 	$DiceGridLabel.visible = false
-
 
 func _on_continue_pressed():
 	get_tree().change_scene_to_file("res://scenes/RollScore.tscn")

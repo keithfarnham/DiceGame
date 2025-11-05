@@ -3,7 +3,7 @@ extends Node
 class_name Die
 
 var faces : Array[DieFace]
-var type : DiceData.DiceTypes
+var type : DiceData.DiceType
 
 func roll():
 	#returns the face index, not the value or type
@@ -31,6 +31,6 @@ func print():
 	#TODO override the print so I can easily print the die's data
 	pass
 
-func _init(faceData : Array[DieFace], dieType : DiceData.DiceTypes):
+func _init(faceData : Array[DieFace], dieType : DiceData.DiceType):
 	faces = faceData
 	type = dieType

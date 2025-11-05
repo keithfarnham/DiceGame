@@ -30,12 +30,7 @@ enum RewardType
 	addDie,
 	scoreReroll,
 	rewardReroll,
-	upgradeDieValue,
 	addRemoveFace,
 	plusMinusFaceValue,
-	duplicateDie,
-	addScoreD6,
-	addScoreCoin,
-	addScoreD20,
-	addRewardD6
+	duplicateScoreDie,
 }

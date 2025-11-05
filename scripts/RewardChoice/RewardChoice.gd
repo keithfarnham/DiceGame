@@ -1,8 +1,11 @@
 extends Control
 
 @onready var rewardGrid = $RewardGrid as GridContainer
-@onready var chooseDieButton = $ChooseDie/ChooseDieButton as Button
-@onready var chooseDieConfirm = $ChooseDie/ChooseDieConfirm as ConfirmationDialog
+@onready var chooseRewardButton = $ChooseReward/ChooseRewardButton as Button
+@onready var chooseRewardConfirm = $ChooseReward/ChooseRewardConfirm as ConfirmationDialog
+@onready var rewardHandlerUI = $RewardHandlerUI as Control
+@onready var diceGrid = $RewardHandlerUI/DiceGrid as DiceGrid
+@onready var continueButton = $Continue as Button
 
 var DieFaceUIScene = preload("res://scenes/DiceFaceUIScene.tscn")
 var ChosenReward : DieFaceData.RewardType
@@ -25,38 +28,63 @@ func _ready():
 		newFaceUIInstance.connect("faceSelected", _on_pressed)
 
 func handle_rewards(chosenReward : DieFaceData.RewardType):
+	var rewardText = $Continue/ContinueLabel as RichTextLabel
 	match chosenReward:
 		DieFaceData.RewardType.money:
 			#TODO make this variable based on value rolled or level
-			PlayerDice.Money += 10
+			var amountToAdd = 10
+			PlayerDice.Money += amountToAdd
+			rewardText.text = "+" + str(amountToAdd) + " Money Added"
+			continueButton.visible = true
 		DieFaceData.RewardType.addDie:
 			var newDie = DiceData.MakeADie(6)
 			PlayerDice.add_die(newDie)
+			rewardText.text = "Added a fresh D6!"
+			continueButton.visible = true
 		DieFaceData.RewardType.scoreReroll:
 			PlayerDice.RerollScore += 1
+			continueButton.visible = true
+			rewardText.text = "Got a free Score Reroll Token!"
 		DieFaceData.RewardType.rewardReroll:
 			PlayerDice.RerollReward += 1
+			continueButton.visible = true
+			rewardText.text = "Got a free Reward Reroll Token!"
 		#DieFaceData.RewardType.upgradeDieValue:
-		#DieFaceData.RewardType.addRemoveFace:
-		#DieFaceData.RewardType.plusMinusFaceValue:
-		#DieFaceData.RewardType.duplicateDie:
-		
+		DieFaceData.RewardType.addRemoveFace:
+			rewardHandlerUI.visible = true
+			$RewardHandlerUI/addRemoveFace.visible = true
+			diceGrid.visible = true
+			diceGrid.set_type(DiceGrid.GridType.allDiceFaceChoice)
+		DieFaceData.RewardType.plusMinusFaceValue:
+			rewardHandlerUI.visible = true
+			$RewardHandlerUI/plusMinusFaceValue.visible = true
+			diceGrid.visible = true
+			diceGrid.set_type(DiceGrid.GridType.faceChoice)
+		DieFaceData.RewardType.duplicateScoreDie:
+			rewardHandlerUI.visible = true
+			$RewardHandlerUI/duplicateDie.visible = true
+			diceGrid.visible = true
+			diceGrid.currentTab = DiceGrid.GridTabs.score
+			diceGrid.set_type(DiceGrid.GridType.dieChoice)
 
 func _on_pressed(rewardType : DieFaceData.RewardType):
-	if chooseDieButton.visible == false:
-		chooseDieButton.visible = true
+	if chooseRewardButton.visible == false:
+		chooseRewardButton.visible = true
 	ChosenReward = rewardType
 
 func _on_choose_die_button_pressed():
-	chooseDieButton.visible = false
-	chooseDieConfirm.visible = true
+	chooseRewardButton.visible = false
+	chooseRewardConfirm.visible = true
 
 func _on_choose_die_confirm_confirmed():
 	print("[RewardChoice] chosen reward is " + str(DieFaceData.RewardType.keys()[ChosenReward]))
+	rewardGrid.visible = false
 	handle_rewards(ChosenReward)
-	get_tree().change_scene_to_file("res://scenes/RollReward.tscn")
-	#TODO handle whatever the reward choice outcome is - should this be a separate scene? 
 
 func _on_choose_die_confirm_canceled():
-	chooseDieConfirm.visible = false
-	chooseDieButton.visible = true
+	chooseRewardConfirm.visible = false
+	chooseRewardButton.visible = true
+
+func _on_continue_pressed():
+	#TODO this will end up going to a shop phase
+	get_tree().change_scene_to_file("res://scenes/RollReward.tscn")
