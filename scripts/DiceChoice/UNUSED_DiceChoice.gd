@@ -9,7 +9,8 @@ var DieFaceUIScene = preload("res://scenes/DiceFaceUIScene.tscn")
 var ChosenDie : Die
 
 #this is a more generic dice choice than the RewardChoice stuff, for choosing an entire die 
-#not currently used
+
+##### NOT CURRENTLY IN USE #####
 
 func _ready():
 	#populate diceGrid with PlayerDice.RewardStakes faces

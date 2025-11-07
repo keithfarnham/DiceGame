@@ -51,7 +51,7 @@ func _on_minus_face_pressed():
 
 func _on_duplicate_die_pressed():
 	rewardText.text = "Duplicated selected die"
-	#TODO this duplicates the instance, but i need to create and a new instance with the same values and append that instead
+	#TODO this duplicates the instance, but i need to create a new instance with the same values and append that instead
 	#same for the face duplicate as well
 	PlayerDice.ScoreDice.append(PlayerDice.ScoreDice[diceGrid.selectedDie])
 	$duplicateDie.visible = false

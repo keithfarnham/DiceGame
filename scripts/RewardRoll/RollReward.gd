@@ -15,14 +15,18 @@ func _on_roll_pressed():
 	for die in PlayerDice.RewardDice:
 		var rolledIndex = die.roll()
 		PlayerDice.RewardStakes.append(die.faces[rolledIndex])
-		var newFaceUIInstance = dieFaceUIScene.instantiate()# as DieFaceUI
-		var typeNode = newFaceUIInstance.find_child("FaceTypeValue") as Label
-		typeNode.text = str(DieFaceData.FaceType.keys()[die.faces[rolledIndex].type])
-		var faceIndexNode = newFaceUIInstance.find_child("FaceIndexValue") as Label
-		faceIndexNode.text = str(rolledIndex)
-		var valueNode = newFaceUIInstance.find_child("FaceValueValue") as Label
-		valueNode.text = str(DieFaceData.RewardType.keys()[die.faces[rolledIndex].value])
-		newFaceUIInstance.focus_mode = Control.FOCUS_NONE
+		var newFaceUIInstance = dieFaceUIScene.instantiate() as DieFaceUI
+		var type = die.faces[rolledIndex].type
+		var value = die.faces[rolledIndex].value
+		var dieFace = DieFace.new(value, type)
+		var enableFocus = false
+		newFaceUIInstance.initialize(dieFace, rolledIndex, enableFocus)
+		#var typeNode = newFaceUIInstance.find_child("FaceTypeValue") as Label
+		#typeNode.text = str(DieFaceData.FaceType.keys()[die.faces[rolledIndex].type])
+		#var faceIndexNode = newFaceUIInstance.find_child("FaceIndexValue") as Label
+		#faceIndexNode.text = str(rolledIndex)
+		#var valueNode = newFaceUIInstance.find_child("FaceValueValue") as Label
+		#valueNode.text = str(DieFaceData.RewardType.keys()[die.faces[rolledIndex].value])
 		resultGrid.add_child(newFaceUIInstance)
 	
 	$Roll.visible = false

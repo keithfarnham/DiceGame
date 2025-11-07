@@ -14,18 +14,11 @@ func _ready():
 	#populate grid with PlayerDice.RewardStakes faces
 	for faceIndex in PlayerDice.RewardStakes.size():
 		var newFaceUIInstance = DieFaceUIScene.instantiate() as DieFaceUI
-		var typeNode = newFaceUIInstance.find_child("FaceTypeValue") as Label
-		typeNode.text = str(DieFaceData.FaceType.keys()[PlayerDice.RewardStakes[faceIndex].type])
-		var faceIndexNode = newFaceUIInstance.find_child("FaceIndexValue") as Label
-		faceIndexNode.text = str(faceIndex)
-		var valueNode = newFaceUIInstance.find_child("FaceValueValue") as Label
-		valueNode.text = str(DieFaceData.RewardType.keys()[PlayerDice.RewardStakes[faceIndex].value])
+		var dieFace = DieFace.new(PlayerDice.RewardStakes[faceIndex].value, PlayerDice.RewardStakes[faceIndex].type)
+		var enableFocus = true
+		newFaceUIInstance.initialize(dieFace, faceIndex, enableFocus)
+		newFaceUIInstance.faceSelected.connect(_on_pressed)
 		rewardGrid.add_child(newFaceUIInstance)
-		#var buttonNode = newFaceUIInstance.find_child("Button") as DieFaceUI
-		newFaceUIInstance.dieFaceData = PlayerDice.RewardStakes[faceIndex]
-		newFaceUIInstance.disabled = false
-		newFaceUIInstance.focus_mode = Control.FOCUS_CLICK
-		newFaceUIInstance.connect("faceSelected", _on_pressed)
 
 func handle_rewards(chosenReward : DieFaceData.RewardType):
 	var rewardText = $Continue/ContinueLabel as RichTextLabel
@@ -51,6 +44,7 @@ func handle_rewards(chosenReward : DieFaceData.RewardType):
 			rewardText.text = "Got a free Reward Reroll Token!"
 		#DieFaceData.RewardType.upgradeDieValue:
 		DieFaceData.RewardType.addRemoveFace:
+			#TODO switching between Score and Reward tabs is busted - face grid only shows score dice
 			rewardHandlerUI.visible = true
 			$RewardHandlerUI/addRemoveFace.visible = true
 			diceGrid.visible = true
@@ -67,10 +61,11 @@ func handle_rewards(chosenReward : DieFaceData.RewardType):
 			diceGrid.currentTab = DiceGrid.GridTabs.score
 			diceGrid.set_type(DiceGrid.GridType.dieChoice)
 
-func _on_pressed(rewardType : DieFaceData.RewardType):
+func _on_pressed(rewardIndex : int):
+	print("[RewardChoice] face pressed index " + str(rewardIndex) + " selected reward type " + str(DieFaceData.RewardType.keys()[PlayerDice.RewardStakes[rewardIndex].value]))
 	if chooseRewardButton.visible == false:
 		chooseRewardButton.visible = true
-	ChosenReward = rewardType
+	ChosenReward = PlayerDice.RewardStakes[rewardIndex].value as DieFaceData.RewardType
 
 func _on_choose_die_button_pressed():
 	chooseRewardButton.visible = false

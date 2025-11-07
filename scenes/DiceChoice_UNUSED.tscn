@@ -1,9 +1,9 @@
 [gd_scene load_steps=5 format=3 uid="uid://53qha6ha423j"]
 
-[ext_resource type="Script" uid="uid://g3nja6tp7gka" path="res://scripts/DiceChoice/DiceChoice.gd" id="1_g78sw"]
-[ext_resource type="Script" uid="uid://dhfdstwga2bhh" path="res://scripts/DiceGrid.gd" id="2_2h3ne"]
-[ext_resource type="Script" uid="uid://tr3mbntjyjdo" path="res://scripts/DiceChoice/ChooseDieConfirm.gd" id="3_ftfen"]
-[ext_resource type="PackedScene" uid="uid://dupfms6m2gsoy" path="res://scenes/DebugScene.tscn" id="4_4ymhg"]
+[ext_resource type="Script" uid="uid://g3nja6tp7gka" path="res://scripts/DiceChoice/UNUSED_DiceChoice.gd" id="1_pc85b"]
+[ext_resource type="Script" uid="uid://dhfdstwga2bhh" path="res://scripts/DiceGrid.gd" id="2_gox7k"]
+[ext_resource type="Script" uid="uid://tr3mbntjyjdo" path="res://scripts/DiceChoice/ChooseDieConfirm.gd" id="3_m3cfw"]
+[ext_resource type="PackedScene" uid="uid://dupfms6m2gsoy" path="res://scenes/DebugScene.tscn" id="4_vhytd"]
 
 [node name="DieChoiceUI" type="Control"]
 clip_contents = true
@@ -13,7 +13,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_g78sw")
+script = ExtResource("1_pc85b")
 
 [node name="DiceGridScroll" type="ScrollContainer" parent="."]
 clip_contents = false
@@ -33,7 +33,8 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 columns = 4
-script = ExtResource("2_2h3ne")
+script = ExtResource("2_gox7k")
+gridType = null
 
 [node name="DiceGridLabel" type="RichTextLabel" parent="."]
 layout_mode = 0
@@ -69,7 +70,7 @@ offset_right = 0.191956
 offset_bottom = 0.0700073
 grow_horizontal = 2
 grow_vertical = 0
-script = ExtResource("3_ftfen")
+script = ExtResource("3_m3cfw")
 
 [node name="ChooseDieButton" type="Button" parent="ChooseDie"]
 layout_mode = 1
@@ -94,6 +95,6 @@ ok_button_text = "YES"
 dialog_text = "ROLL WITH THIS CHOICE?"
 cancel_button_text = "NO"
 
-[node name="DebugControls" parent="." instance=ExtResource("4_4ymhg")]
+[node name="DebugControls" parent="." instance=ExtResource("4_vhytd")]
 visible = false
 layout_mode = 1

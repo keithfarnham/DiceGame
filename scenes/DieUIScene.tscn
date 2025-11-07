@@ -4,6 +4,7 @@
 [ext_resource type="Gradient" uid="uid://ckp066dt2jy81" path="res://gradients/default_gradient.tres" id="1_ghbfk"]
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_01iub"]
+resource_local_to_scene = true
 gradient = ExtResource("1_ghbfk")
 width = 128
 height = 128
@@ -14,9 +15,9 @@ anchor_right = 0.111
 anchor_bottom = 0.198
 offset_right = 0.127991
 offset_bottom = -0.304016
-theme_override_colors/icon_hover_color = Color(0.0235294, 0.729412, 1, 0.741176)
-theme_override_colors/icon_pressed_color = Color(0.0235294, 0.258824, 1, 0.741176)
 theme_override_colors/icon_focus_color = Color(0.0222237, 0.2577, 0.999992, 0.741176)
+theme_override_colors/icon_pressed_color = Color(0.0235294, 0.258824, 1, 0.741176)
+theme_override_colors/icon_hover_color = Color(0.0235294, 0.729412, 1, 0.741176)
 theme_override_constants/icon_max_width = 120
 icon = SubResource("GradientTexture2D_01iub")
 script = ExtResource("1_bik4m")

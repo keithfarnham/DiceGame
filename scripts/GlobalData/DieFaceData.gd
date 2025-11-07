@@ -2,10 +2,10 @@ extends Node
 
 enum FaceType
 {
-	score = 0, #default type, any scoring number value
-	multiplier = 1, #adds to multiplier value
-	special = 2, #does some special thing
-	reward = 3 #face is for a reward die, tied to RewardType
+	score, #default type, any scoring number value
+	multiplier, #adds to multiplier value
+	reward, #face is for a reward die, tied to RewardType
+	special, #does some special thing
 }
 
 enum SpecialType #These faces have do something completely different from scoring/multiplier
