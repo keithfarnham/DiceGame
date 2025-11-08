@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://bop7ubjuhbyhf"]
 
-[ext_resource type="Script" uid="uid://c6svhv3tumnl5" path="res://scripts/DiceBag.gd" id="1_5lryp"]
+[ext_resource type="Script" uid="uid://c6svhv3tumnl5" path="res://scripts/DiceBag_UNUSED.gd" id="1_5lryp"]
 [ext_resource type="PackedScene" uid="uid://dbtd6w07pf5p5" path="res://scenes/DiceGridScene.tscn" id="2_au12h"]
 
 [node name="DiceBag" type="Control"]

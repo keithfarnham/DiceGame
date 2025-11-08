@@ -10,7 +10,6 @@ var prevSelect := -1
 
 func _on_roll_pressed():
 	print("[RollReward] Rolling reward dice")
-	
 	PlayerDice.RewardStakes = []
 	for die in PlayerDice.RewardDice:
 		var rolledIndex = die.roll()
@@ -21,12 +20,6 @@ func _on_roll_pressed():
 		var dieFace = DieFace.new(value, type)
 		var enableFocus = false
 		newFaceUIInstance.initialize(dieFace, rolledIndex, enableFocus)
-		#var typeNode = newFaceUIInstance.find_child("FaceTypeValue") as Label
-		#typeNode.text = str(DieFaceData.FaceType.keys()[die.faces[rolledIndex].type])
-		#var faceIndexNode = newFaceUIInstance.find_child("FaceIndexValue") as Label
-		#faceIndexNode.text = str(rolledIndex)
-		#var valueNode = newFaceUIInstance.find_child("FaceValueValue") as Label
-		#valueNode.text = str(DieFaceData.RewardType.keys()[die.faces[rolledIndex].value])
 		resultGrid.add_child(newFaceUIInstance)
 	
 	$Roll.visible = false

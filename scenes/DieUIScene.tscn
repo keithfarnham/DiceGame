@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://bl387q8mweydr"]
 
-[ext_resource type="Script" uid="uid://1hlk2a1qfid0" path="res://scripts/DieUI.gd" id="1_bik4m"]
+[ext_resource type="Script" uid="uid://1hlk2a1qfid0" path="res://scripts/Dice/DieUI.gd" id="1_bik4m"]
 [ext_resource type="Gradient" uid="uid://ckp066dt2jy81" path="res://gradients/default_gradient.tres" id="1_ghbfk"]
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_01iub"]
