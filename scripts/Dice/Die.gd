@@ -28,8 +28,7 @@ func clear_faces():
 	faces.clear()
 	
 func print():
-	#TODO override the print so I can easily print the die's data
-	pass
+	print("Die of type: " + str(DiceData.DiceType.keys()[type]) + " has " + str(num_faces()) + " faces")
 
 func _init(faceData : Array[DieFace], dieType : DiceData.DiceType):
 	faces = faceData

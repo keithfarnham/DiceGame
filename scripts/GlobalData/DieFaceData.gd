@@ -34,3 +34,14 @@ enum RewardType
 	plusMinusFaceValue,
 	duplicateScoreDie,
 }
+
+#TODO give proper weight values
+var RewardTypeWeights = {
+	RewardType.money: 				{DiceData.DieRarity.common:1, DiceData.DieRarity.uncommon:2, DiceData.DieRarity.rare:3, DiceData.DieRarity.legendary:4},
+	RewardType.addDie:				{DiceData.DieRarity.common:1, DiceData.DieRarity.uncommon:2, DiceData.DieRarity.rare:3, DiceData.DieRarity.legendary:4},
+	RewardType.scoreReroll:			{DiceData.DieRarity.common:1, DiceData.DieRarity.uncommon:2, DiceData.DieRarity.rare:3, DiceData.DieRarity.legendary:4},
+	RewardType.rewardReroll:		{DiceData.DieRarity.common:1, DiceData.DieRarity.uncommon:2, DiceData.DieRarity.rare:3, DiceData.DieRarity.legendary:4},
+	RewardType.addRemoveFace:		{DiceData.DieRarity.common:1, DiceData.DieRarity.uncommon:2, DiceData.DieRarity.rare:3, DiceData.DieRarity.legendary:4},
+	RewardType.plusMinusFaceValue:	{DiceData.DieRarity.common:1, DiceData.DieRarity.uncommon:2, DiceData.DieRarity.rare:3, DiceData.DieRarity.legendary:4},
+	RewardType.duplicateScoreDie:	{DiceData.DieRarity.common:1, DiceData.DieRarity.uncommon:2, DiceData.DieRarity.rare:3, DiceData.DieRarity.legendary:4},
+}

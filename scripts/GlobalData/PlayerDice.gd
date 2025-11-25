@@ -7,10 +7,10 @@ var RerollScore : int
 var RerollReward : int
 var Money : int
 
-func _ready():
-	print("[PlayerDice] Setting up starting dice")
-	ScoreDice = DiceData.StartingDice()
-	RewardDice = DiceData.GenerateRewardDice()
+#func _ready():
+	#print("[PlayerDice] Setting up starting dice")
+	#ScoreDice = DiceData.StartingDice()
+	#RewardDice = DiceData.GenerateRewardDice()
 
 func add_dice(newDice : Array[Die]):
 	print(newDice)
