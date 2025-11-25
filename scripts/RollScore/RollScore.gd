@@ -8,6 +8,9 @@ extends Control
 @onready var rollButton = $ScoreRollUI/RollButton as Button
 @onready var continueButton  = $ScoreRollUI/Continue as Button
 
+func _ready():
+	diceGrid.populate_grid()
+
 func update_text():
 	if diceGrid.visible:
 		if diceGrid.selectedDie >= 0:

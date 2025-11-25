@@ -27,7 +27,7 @@ metadata/_edit_use_anchors_ = true
 
 [node name="DiceGrid" parent="." instance=ExtResource("8_dl1t1")]
 layout_mode = 1
-gridType = 1
+gridType = 2
 
 [node name="ResultStakesText" type="RichTextLabel" parent="."]
 visible = false

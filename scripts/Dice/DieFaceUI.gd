@@ -5,6 +5,7 @@ class_name DieFaceUI
 @onready var faceIndexUI = $AspectRatioContainer/Panel/CenterContainer/VBoxContainer/FaceIndex/FaceIndexValue as Label
 @onready var faceTypeUI = $AspectRatioContainer/Panel/CenterContainer/VBoxContainer/FaceType/FaceTypeValue as Label
 @onready var faceValueUI = $AspectRatioContainer/Panel/CenterContainer/VBoxContainer/FaceValue/FaceValueValue as Label
+@onready var panel = $AspectRatioContainer/Panel as Panel
 
 var dieFaceData : DieFace
 var faceIndex : int
@@ -27,6 +28,18 @@ func _ready():
 		if dieFaceData.type == DieFaceData.FaceType.reward else dieFaceData.value)
 	focus_mode = Control.FOCUS_CLICK if enableFocus else Control.FOCUS_NONE
 	disabled = disableButton
+	
+	var style
+	match dieFaceData.type:
+		DieFaceData.FaceType.score:
+			style = load("res://gradients/scoreface_stylebox.tres") as StyleBoxFlat
+			panel.add_theme_stylebox_override("panel", style)
+		DieFaceData.FaceType.multiplier:
+			style = load("res://gradients/multface_stylebox.tres") as StyleBoxFlat
+			panel.add_theme_stylebox_override("panel", style)
+		DieFaceData.FaceType.reward:
+			style = load("res://gradients/rewardface_stylebox.tres") as StyleBoxFlat
+			panel.add_theme_stylebox_override("panel", style)
 	
 func initialize(newFace : DieFace, newIndex : int, newEnableFocus := true):
 	dieFaceData = newFace

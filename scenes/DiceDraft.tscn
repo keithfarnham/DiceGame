@@ -1,8 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://b8mhxihebh2lu"]
+[gd_scene load_steps=3 format=3 uid="uid://b8mhxihebh2lu"]
 
-[ext_resource type="Script" uid="uid://b6ghwu7ntvyug" path="res://scripts/DiceDraft/DiceDraft.gd" id="1_0y0e0"]
+[ext_resource type="Script" uid="uid://bh51s0bldbvvv" path="res://scripts/DiceDraft/DiceDraft.gd" id="1_0y0e0"]
+[ext_resource type="PackedScene" uid="uid://dbtd6w07pf5p5" path="res://scenes/DiceGridScene.tscn" id="2_0y0e0"]
 
-[node name="DiceDraft" type="Control"]
+[node name="DiceDraft" type="Control" groups=["DiceDraft"]]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -25,112 +26,8 @@ text = "Draft your Dice"
 horizontal_alignment = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="DiceGrid" type="Control" parent="."]
+[node name="DiceGrid" parent="." instance=ExtResource("2_0y0e0")]
 layout_mode = 1
-anchor_left = 0.0277778
-anchor_top = 0.0493827
-anchor_right = 0.972222
-anchor_bottom = 0.641975
-offset_bottom = -6.1035156e-05
-size_flags_horizontal = 3
-size_flags_vertical = 3
-mouse_filter = 1
-metadata/_edit_use_anchors_ = true
-
-[node name="DiceTabs" type="Control" parent="DiceGrid"]
-anchors_preset = 0
-offset_top = 384.0
-offset_right = 351.99997
-offset_bottom = 448.0
-
-[node name="Score Dice" type="Button" parent="DiceGrid/DiceTabs"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 2.5000002
-anchor_right = 2.7727275
-anchor_bottom = 0.5
-toggle_mode = true
-text = "Score Dice"
-metadata/_edit_use_anchors_ = true
-
-[node name="Reward Dice" type="Button" parent="DiceGrid/DiceTabs"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 2.7727275
-anchor_right = 3.0909092
-anchor_bottom = 0.5
-toggle_mode = true
-text = "Reward Dice"
-metadata/_edit_use_anchors_ = true
-
-[node name="DiceGridContainer" type="AspectRatioContainer" parent="DiceGrid"]
-clip_contents = true
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 6
-size_flags_vertical = 4
-ratio = 2.775
-stretch_mode = 3
-alignment_horizontal = 0
-alignment_vertical = 0
-metadata/_edit_use_anchors_ = true
-
-[node name="Panel" type="Panel" parent="DiceGrid/DiceGridContainer"]
-layout_mode = 2
-mouse_filter = 1
-
-[node name="AspectRatioContainer" type="AspectRatioContainer" parent="DiceGrid/DiceGridContainer/Panel"]
-layout_mode = 1
-anchors_preset = -1
-anchor_right = 1.0
-anchor_bottom = 0.979412
-ratio = 2.84
-metadata/_edit_use_anchors_ = true
-
-[node name="HBoxContainer" type="HBoxContainer" parent="DiceGrid/DiceGridContainer/Panel/AspectRatioContainer"]
-layout_mode = 2
-theme_override_constants/separation = 8
-metadata/_edit_use_anchors_ = true
-
-[node name="FaceScrollContainer" type="ScrollContainer" parent="DiceGrid/DiceGridContainer/Panel/AspectRatioContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-horizontal_scroll_mode = 0
-
-[node name="FaceGrid" type="GridContainer" parent="DiceGrid/DiceGridContainer/Panel/AspectRatioContainer/HBoxContainer/FaceScrollContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-columns = 3
-
-[node name="ScoreDiceScrollContainer" type="ScrollContainer" parent="DiceGrid/DiceGridContainer/Panel/AspectRatioContainer/HBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-horizontal_scroll_mode = 0
-
-[node name="ScoreDiceGrid" type="GridContainer" parent="DiceGrid/DiceGridContainer/Panel/AspectRatioContainer/HBoxContainer/ScoreDiceScrollContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme_override_constants/h_separation = 3
-columns = 4
-
-[node name="RewardDiceScrollContainer" type="ScrollContainer" parent="DiceGrid/DiceGridContainer/Panel/AspectRatioContainer/HBoxContainer"]
-visible = false
-layout_mode = 2
-size_flags_horizontal = 3
-horizontal_scroll_mode = 0
-
-[node name="RewardDiceGrid" type="GridContainer" parent="DiceGrid/DiceGridContainer/Panel/AspectRatioContainer/HBoxContainer/RewardDiceScrollContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme_override_constants/h_separation = 3
-columns = 4
 
 [node name="TextControl" type="Control" parent="."]
 layout_mode = 1
@@ -177,11 +74,12 @@ metadata/_edit_use_anchors_ = true
 
 [node name="Continue" type="Button" parent="."]
 visible = false
-layout_mode = 0
-anchor_left = 0.7222222
-anchor_top = 0.69135803
-anchor_right = 0.9444444
-anchor_bottom = 0.8888889
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.6666667
+anchor_top = 0.7407407
+anchor_right = 0.8888889
+anchor_bottom = 0.9382716
 text = "Continue"
 metadata/_edit_use_anchors_ = true
 
@@ -192,10 +90,8 @@ anchor_left = 0.7222222
 anchor_top = 0.79012346
 anchor_right = 0.8888889
 anchor_bottom = 0.8888889
-text = "Select A Die"
+text = "Select a Die"
 metadata/_edit_use_anchors_ = true
 
-[connection signal="toggled" from="DiceGrid/DiceTabs/Score Dice" to="." method="_on_score_dice_toggled"]
-[connection signal="toggled" from="DiceGrid/DiceTabs/Reward Dice" to="." method="_on_reward_dice_toggled"]
 [connection signal="pressed" from="Continue" to="." method="_on_continue_pressed"]
 [connection signal="pressed" from="ChooseDie" to="." method="_on_choose_die_pressed"]

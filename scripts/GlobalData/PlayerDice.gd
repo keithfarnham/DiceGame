@@ -2,6 +2,8 @@ extends Node
 
 var ScoreDice : Array[Die]
 var RewardDice : Array[Die]
+var DraftScoreDice : Array[Die]
+var DraftRewardDice : Array[Die]
 var RewardStakes : Array[DieFace]
 var RerollScore : int
 var RerollReward : int

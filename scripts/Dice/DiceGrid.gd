@@ -12,6 +12,7 @@ var DieFaceUIScene = preload("res://scenes/DiceFaceUIScene.tscn")
 @export var gridType : GridType
 
 enum GridType {
+	draft,
 	scoreRoll,
 	rewardRoll,
 	rewardChoice,#below are the different reward choice types
@@ -36,12 +37,18 @@ var selectedFace := -1 #index of selected face in face grid for currently select
 var currentTab : GridTabs
 
 func _ready():
-	set_type(gridType)
+	pass
+	#now calling populate_grid() from scene's base script to ensure the PlayerDice dice arrays (particularly the DraftDice arrays) are populated before doing add_dice
+	#set_type(gridType)
 
-func set_type(newType : GridType):
-	gridType = newType
-	print("[DiceGrid] Grid set to " + str(GridType.keys()[newType]))
-	match newType:
+func populate_grid():
+	match gridType:
+		GridType.draft:
+			set_tab(GridTabs.score)
+			$DiceTabs.visible = true
+			add_dice(PlayerDice.DraftScoreDice)
+			add_dice(PlayerDice.DraftRewardDice)
+			faceGrid.focus_mode = Control.FOCUS_NONE
 		GridType.scoreRoll:
 			set_tab(GridTabs.score)
 			add_dice(PlayerDice.ScoreDice)
@@ -50,7 +57,6 @@ func set_type(newType : GridType):
 			add_dice(PlayerDice.RewardDice)
 		GridType.allDiceChoice:
 			$DiceTabs.visible = true
-			#add_die handles which GridTab the dice get inserted into based on the Die's Type/DiceData.DiceType
 			add_dice(PlayerDice.ScoreDice)
 			add_dice(PlayerDice.RewardDice)
 			faceGrid.focus_mode = Control.FOCUS_NONE
@@ -70,19 +76,25 @@ func set_type(newType : GridType):
 				DiceGrid.GridTabs.reward:
 					add_dice(PlayerDice.RewardDice)
 
+func set_type(newType : GridType):
+	gridType = newType
+	print("[DiceGrid] Grid type set to " + str(GridType.keys()[newType]))
+	populate_grid()
+
 func set_tab(newTab : GridTabs):
 	currentTab = newTab
 	print("[DiceGrid] set_tab to " + str(GridTabs.keys()[newTab]))
+	clear_face_grid()
+	selectedDie = -1
+	selectedFace = -1
 	match newTab:
 		GridTabs.score:
-			selectedDie = -1
-			selectedFace = -1
+			$"DiceTabs/Score Dice".set_pressed_no_signal(true)
 			$"DiceTabs/Reward Dice".set_pressed_no_signal(false)
 			$DiceGridContainer/Panel/AspectRatioContainer/HBoxContainer/RewardDiceScrollContainer.visible = false
 			$DiceGridContainer/Panel/AspectRatioContainer/HBoxContainer/ScoreDiceScrollContainer.visible = true
 		GridTabs.reward:
-			selectedDie = -1
-			selectedFace = -1
+			$"DiceTabs/Reward Dice".set_pressed_no_signal(true)
 			$"DiceTabs/Score Dice".set_pressed_no_signal(false)
 			$DiceGridContainer/Panel/AspectRatioContainer/HBoxContainer/ScoreDiceScrollContainer.visible = false
 			$DiceGridContainer/Panel/AspectRatioContainer/HBoxContainer/RewardDiceScrollContainer.visible = true
@@ -110,9 +122,17 @@ func add_dice(dice : Array[Die]):
 
 func die_selected(dieIndex : int):
 	print("[DiceGrid] die_selected prev selected " + str(selectedDie) + " with die index " + str(dieIndex))
+	var draftNode
+	if gridType == GridType.draft:
+		draftNode = get_tree().get_first_node_in_group("DiceDraft")
 	if selectedDie == dieIndex and faceGrid.visible:
 		#hide face UI and unfocus if reselecting the previously selected die
+		selectedDie = -1
 		faceGrid.visible = false
+		if gridType == GridType.draft:
+			draftNode.find_child("ChooseDie").text = "Select a Die"
+			draftNode.find_child("ChooseDie").disabled = true
+			draftNode.find_child("ChooseDie").focus_mode = Control.FOCUS_NONE
 		match currentTab:
 			GridTabs.score:
 				scoreDiceGrid.get_child(dieIndex).release_focus()
@@ -122,46 +142,57 @@ func die_selected(dieIndex : int):
 	else:
 		faceGrid.visible = true
 	
+	if gridType == GridType.draft:
+		draftNode.find_child("ChooseDie").text = "Choose Selected Die"
+		draftNode.find_child("ChooseDie").disabled = false
+		draftNode.find_child("ChooseDie").visible = true
+		draftNode.find_child("ChooseDie").focus_mode = Control.FOCUS_CLICK
+	
 	selectedDie = dieIndex
 	clear_face_grid()
-	var rewardRoll = gridType == GridType.rewardRoll
-	for faceIndex in (PlayerDice.RewardDice[dieIndex].num_faces() if rewardRoll else PlayerDice.ScoreDice[dieIndex].num_faces()):
+	var rewardTab = currentTab == GridTabs.reward
+	var scoreDice = PlayerDice.DraftScoreDice if gridType == GridType.draft else PlayerDice.ScoreDice
+	var rewardDice = PlayerDice.DraftRewardDice if gridType == GridType.draft else PlayerDice.RewardDice
+	
+	for faceIndex in (rewardDice[dieIndex].num_faces() if rewardTab else scoreDice[dieIndex].num_faces()):
 		var newFaceUIInstance = DieFaceUIScene.instantiate() as DieFaceUI
-		var type = PlayerDice.RewardDice[dieIndex].faces[faceIndex].type \
-			if rewardRoll else PlayerDice.ScoreDice[dieIndex].faces[faceIndex].type
-		var value = PlayerDice.RewardDice[dieIndex].faces[faceIndex].value \
-			if rewardRoll else PlayerDice.ScoreDice[dieIndex].faces[faceIndex].value
+		var type = rewardDice[dieIndex].faces[faceIndex].type \
+			if rewardTab else scoreDice[dieIndex].faces[faceIndex].type
+		var value = rewardDice[dieIndex].faces[faceIndex].value \
+			if rewardTab else scoreDice[dieIndex].faces[faceIndex].value
 		var dieFace = DieFace.new(value, type)
 		var enableFocus = true if gridType == GridType.allDiceFaceChoice or gridType == GridType.faceChoice else false
 		newFaceUIInstance.initialize(dieFace, faceIndex, enableFocus)
-		newFaceUIInstance.faceSelected.connect(face_selected)
-		faceGrid.add_child(newFaceUIInstance)
 		
 		match gridType:
 			GridType.faceChoice,\
 			GridType.allDiceFaceChoice:
+				newFaceUIInstance.faceSelected.connect(face_selected)
 				newFaceUIInstance.focus_mode = Control.FOCUS_CLICK
 			_:
 				newFaceUIInstance.focus_mode = Control.FOCUS_NONE
+				
+		faceGrid.add_child(newFaceUIInstance)
 
 func face_selected(faceIndex : int):
 	print("[DiceGrid] face_selected prev selected " + str(selectedFace) + " with face index " + str(faceIndex))
 	selectedFace = faceIndex
-	
-func refresh_grids():
-	match currentTab:
-		GridTabs.score:
-			clear()
-			add_dice(PlayerDice.ScoreDice)
-			die_selected(selectedDie)
-		GridTabs.reward:
-			clear()
-			add_dice(PlayerDice.RewardDice)
-			die_selected(selectedDie)
 
-func clear():
-	scoreDiceGrid.queue_free()
-	rewardDiceGrid.queue_free()
+func refresh_grids():
+	clear_face_grid()
+	remove_die(currentTab)
+	#wait to clear the selectedDie value until after refresh so we have index of die to remove
+	selectedDie = -1
+
+func remove_die(tab : GridTabs):
+	#this doesn't actually remove the die from the grid but instead makes it invisible so I don't have to recalculate the zindexes
+	match tab:
+		GridTabs.score:
+			var child = scoreDiceGrid.get_child(selectedDie)
+			child.visible = false
+		GridTabs.reward:
+			var child = rewardDiceGrid.get_child(selectedDie)
+			child.visible = false
 
 func clear_face_grid():
 	for child in faceGrid.get_children():
@@ -171,11 +202,17 @@ func clear_face_grid():
 func _on_score_dice_toggled(toggled_on):
 	if toggled_on:
 		set_tab(GridTabs.score)
+		if gridType == GridType.draft:
+			var draftNode = get_tree().get_first_node_in_group("DiceDraft")
+			draftNode.find_child("ChooseDie").visible = true if draftNode.scoreDraftCount > 0 else false
 	else:
 		$"DiceTabs/Score Dice".set_pressed_no_signal(true)
 
 func _on_reward_dice_toggled(toggled_on):
 	if toggled_on:
 		set_tab(GridTabs.reward)
+		if gridType == GridType.draft:
+			var draftNode = get_tree().get_first_node_in_group("DiceDraft")
+			draftNode.find_child("ChooseDie").visible = true if draftNode.rewardDraftCount > 0 else false
 	else:
 		$"DiceTabs/Reward Dice".set_pressed_no_signal(true)

@@ -53,7 +53,7 @@ func _on_clear_all_dice_pressed():
 	#PlayerDice.remove_all_dice()
 
 func _on_delete_selected_die_pressed():
-	#TODO this
+	#TODO set this up
 	print(get_tree_string())
 	#diceBag.remove_selected_die()
 

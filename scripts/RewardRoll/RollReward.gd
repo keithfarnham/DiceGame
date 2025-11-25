@@ -8,6 +8,9 @@ var dieUIScene = preload("res://scenes/DieUIScene.tscn")
 var dieFaceUIScene = preload("res://scenes/DiceFaceUIScene.tscn")
 var prevSelect := -1
 
+func _ready():
+	diceGrid.populate_grid()
+
 func _on_roll_pressed():
 	print("[RollReward] Rolling reward dice")
 	PlayerDice.RewardStakes = []

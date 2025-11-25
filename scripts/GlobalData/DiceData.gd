@@ -112,13 +112,6 @@ func sum_face_type_weights_for_rarity(rarity : DieRarity):
 		var weightForRarity = weights.get(rarity)
 		sum += weightForRarity
 	return sum
-
-func sum_score_face_weights_for_rarity(numFaces : DieFaceCount, rarity : DieRarity):
-	#TODO make lower values less likely for higher rarity
-	var sum = 0
-	for value in numFaces:
-		sum += value
-	return sum
 	
 func sum_reward_face_weights_for_rarity(rarity : DieRarity):
 	var sum = 0
@@ -140,15 +133,34 @@ func random_num_faces_from_rarity(rarity : DieRarity):
 		r -= facesWeight
 	print("ERROR random_num_faces_from_rarity hit something we shouldn't")
 
-func random_score_face_value_from_rarity(numFaces, rarity : DieRarity):
-	var r = randi_range(0, sum_score_face_weights_for_rarity(numFaces, rarity))
-	for value in numFaces:
-		var facesWeight = numFaces + 1 - value #doing +1 so we don't get numFaces - value = 0
-		if r < facesWeight:
-			print("[DiceData][score_face_value] - random num chosen " + str(r) + " for numFaces " + str(numFaces) +  " from rarity " + str(DieRarity.keys()[rarity]) + " returning the value" + str(value))
-			return value
-		r -= facesWeight
-	print("ERROR random_score_face_value_from_rarity hit something we shouldn't")
+
+func random_score_face_value_from_rarity(numFaces, rarity : DieRarity) -> int:
+	#weight of v^p where p depends on rarity, p==0 => uniform distribution
+	#might want to change this to make lower rarity have less of a chance to give higher values rather than uniform dist
+	var power_map = {
+		DieRarity.common: 0.0,
+		DieRarity.uncommon: 0.3,
+		DieRarity.rare: 0.6,
+		DieRarity.legendary: 1.0
+	}
+	var p = power_map.get(rarity)
+
+	var weights = []
+	var total = 0.0
+	for v in range(1, int(numFaces) + 1):
+		var w = pow(float(v), p)
+		weights.append(w)
+		total += w
+
+	var r = randf() * total
+	for i in range(weights.size()):
+		if r < weights[i]:
+			var chosen = i + 1
+			print("[DiceData][score_face_value] - random float " + str(r) + " total " + str(total) + " rarity " + str(DieRarity.keys()[rarity]) + " returning " + str(chosen))
+			return chosen
+		r -= weights[i]
+		
+	return int(numFaces)
 	
 func random_reward_face_value_from_rarity(rarity : DieRarity):
 	#TODO re-enable
