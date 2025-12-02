@@ -123,7 +123,7 @@ func sum_reward_face_weights_for_rarity(rarity : DieRarity):
 
 func random_num_faces_from_rarity(rarity : DieRarity):
 	var sum = sum_face_count_weights_for_rarity(rarity)
-	var r = randi_range(0, sum)
+	var r = randi_range(0, sum - 1)
 	for numFaces in DieFaceCountWeight.keys():
 		var weights = DieFaceCountWeight.get(numFaces)
 		var facesWeight = weights.get(rarity)
@@ -131,7 +131,7 @@ func random_num_faces_from_rarity(rarity : DieRarity):
 			print("[DiceData][num_faces] - random num chosen " + str(r) + " for faces from rarity " + str(DieRarity.keys()[rarity]) + " returning numFaces " + str(numFaces))
 			return numFaces
 		r -= facesWeight
-	print("ERROR random_num_faces_from_rarity hit something we shouldn't")
+	push_error("ERROR random_num_faces_from_rarity hit something we shouldn't")
 
 
 func random_score_face_value_from_rarity(numFaces, rarity : DieRarity) -> int:
@@ -224,9 +224,6 @@ func generate_draft_reward_dice(numOfDice : int) -> Array[Die]:
 	dice.append(simple_reward_D6())
 	dice.append(random_reward_die(DieRarity.common))
 	#dice.append(random_reward_die(DieRarity.common))
-	#dice.append(MakeADie(2, MakeADieType.reward))
-	#dice.append(DebugMakeACoin(DiceData.DiceType.reward, DieFace.new(DieFaceData.RewardType.addRemoveFace, DieFaceData.FaceType.reward), DieFace.new(DieFaceData.RewardType.addRemoveFace, DieFaceData.FaceType.reward)))
-	#dice.append(MakeADie(12, MakeADieType.reward))
 	return dice
 
 func generate_starting_dice():
@@ -234,8 +231,6 @@ func generate_starting_dice():
 	#this will be expanded to allow different starting dice to be chosen
 	PlayerDice.ScoreDice.append(D6())
 	PlayerDice.RewardDice.append(simple_reward_D6())
-	#dice.append(MakeADie(12))
-	#dice.append(MakeADie(DieFaceCount.Coin, MakeADieType.multiplier))
 
 func D6(type := DiceType.score) -> Die:
 	#TODO modify to support creation of reward D6 as well

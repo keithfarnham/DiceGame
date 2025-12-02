@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://wva2x2memvp"]
+[gd_scene load_steps=8 format=3 uid="uid://wva2x2memvp"]
 
 [ext_resource type="Script" uid="uid://dwv3lcjrogtj8" path="res://scripts/RollScore/RollScore.gd" id="1_gakaj"]
 [ext_resource type="PackedScene" uid="uid://dupfms6m2gsoy" path="res://scenes/DebugScene.tscn" id="2_uiuj2"]
@@ -12,6 +12,9 @@ script = SubResource("GDScript_78gr1")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mkgj2"]
 size = Vector2(129, 79)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bo5pu"]
+bg_color = Color(0, 0, 0, 1)
 
 [node name="RollScore" type="Control" groups=["SceneRoot"]]
 layout_mode = 3
@@ -54,31 +57,27 @@ mouse_filter = 1
 
 [node name="MultInfo" type="RichTextLabel" parent="ScoreRollUI"]
 visible = false
-layout_mode = 0
-anchor_left = 0.451
-anchor_top = 0.023
-anchor_right = 0.716
-anchor_bottom = 0.533
-offset_left = -0.0310059
-offset_top = 0.0779996
-offset_right = 0.0039978
-offset_bottom = -0.0620117
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.45094663
+anchor_top = 0.023386136
+anchor_right = 0.7986231
+anchor_bottom = 0.16831718
 mouse_filter = 1
 text = "extra_info_on_mult"
+metadata/_edit_use_anchors_ = true
 
 [node name="SumInfo" type="RichTextLabel" parent="ScoreRollUI"]
 visible = false
-layout_mode = 0
-anchor_left = 0.215
-anchor_top = 0.014
-anchor_right = 0.473
-anchor_bottom = 0.5
-offset_left = 0.0849991
-offset_top = 0.00399995
-offset_right = 0.186981
-offset_bottom = 2.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.2151463
+anchor_top = 0.014019801
+anchor_right = 0.5370052
+anchor_bottom = 0.16831718
 mouse_filter = 1
 text = "extra_info_on_sum"
+metadata/_edit_use_anchors_ = true
 
 [node name="RollResultGrid" type="GridContainer" parent="ScoreRollUI"]
 visible = false
@@ -89,10 +88,10 @@ anchor_left = 0.083
 anchor_top = 0.308
 anchor_right = 0.964
 anchor_bottom = 0.607
-offset_left = -0.223003
-offset_top = 0.0879974
-offset_right = -0.0840454
-offset_bottom = 0.10199
+offset_left = -0.22300339
+offset_top = -28.215927
+offset_right = -0.08404541
+offset_bottom = -28.201935
 grow_horizontal = 2
 grow_vertical = 0
 size_flags_horizontal = 3
@@ -186,6 +185,33 @@ size_flags_horizontal = 0
 size_flags_vertical = 8
 text = "Continue"
 
+[node name="InfoPanel" type="Panel" parent="ScoreRollUI"]
+visible = false
+layout_mode = 0
+anchor_left = 0.08261618
+anchor_top = 0.48514897
+anchor_right = 0.90877795
+anchor_bottom = 1.0000006
+metadata/_edit_use_anchors_ = true
+
+[node name="SumInfo" type="HBoxContainer" parent="ScoreRollUI/InfoPanel"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MultInfo" type="HBoxContainer" parent="ScoreRollUI/InfoPanel"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
 [node name="DebugControls" parent="." instance=ExtResource("2_uiuj2")]
 visible = false
 z_index = 0
@@ -219,6 +245,27 @@ anchor_right = 1.0
 anchor_bottom = 0.875
 theme_override_font_sizes/normal_font_size = 32
 text = "1"
+metadata/_edit_use_anchors_ = true
+
+[node name="GameOver" type="Panel" parent="."]
+visible = false
+layout_mode = 0
+anchor_left = 0.29166666
+anchor_top = 0.16049382
+anchor_right = 0.7430556
+anchor_bottom = 0.5308642
+theme_override_styles/panel = SubResource("StyleBoxFlat_bo5pu")
+metadata/_edit_use_anchors_ = true
+
+[node name="GameOverText" type="RichTextLabel" parent="GameOver"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_font_sizes/normal_font_size = 72
+text = "GAME OVER"
+horizontal_alignment = 1
+vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
 [connection signal="mouse_entered" from="ScoreRollUI/RollResultGrid/RollSum/SumInfoArea" to="." method="_on_sum_info_area_mouse_entered"]

@@ -1,6 +1,24 @@
-[gd_scene load_steps=2 format=3 uid="uid://dbtd6w07pf5p5"]
+[gd_scene load_steps=5 format=3 uid="uid://dbtd6w07pf5p5"]
 
 [ext_resource type="Script" uid="uid://dhfdstwga2bhh" path="res://scripts/Dice/DiceGrid.gd" id="1_efbfp"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_7shd0"]
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 8.0
+content_margin_bottom = 4.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_oqbgi"]
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 8.0
+content_margin_bottom = 4.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jv8cd"]
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 8.0
+content_margin_bottom = 4.0
 
 [node name="DiceGrid" type="Control"]
 layout_mode = 3
@@ -76,8 +94,10 @@ theme_override_constants/separation = 8
 metadata/_edit_use_anchors_ = true
 
 [node name="FaceScrollContainer" type="ScrollContainer" parent="DiceGridContainer/Panel/AspectRatioContainer/HBoxContainer"]
+clip_contents = false
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxEmpty_7shd0")
 horizontal_scroll_mode = 0
 
 [node name="FaceGrid" type="GridContainer" parent="DiceGridContainer/Panel/AspectRatioContainer/HBoxContainer/FaceScrollContainer"]
@@ -89,6 +109,7 @@ columns = 3
 [node name="ScoreDiceScrollContainer" type="ScrollContainer" parent="DiceGridContainer/Panel/AspectRatioContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxEmpty_oqbgi")
 horizontal_scroll_mode = 0
 
 [node name="ScoreDiceGrid" type="GridContainer" parent="DiceGridContainer/Panel/AspectRatioContainer/HBoxContainer/ScoreDiceScrollContainer"]
@@ -102,6 +123,7 @@ columns = 4
 visible = false
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxEmpty_jv8cd")
 horizontal_scroll_mode = 0
 
 [node name="RewardDiceGrid" type="GridContainer" parent="DiceGridContainer/Panel/AspectRatioContainer/HBoxContainer/RewardDiceScrollContainer"]

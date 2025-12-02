@@ -42,11 +42,14 @@ func _on_choose_die_pressed():
 	PlayerDice.add_die(dieToAdd)
 	diceGrid.refresh_grids()
 	$ChooseDie.text = "Select a Die"
+	$ChooseDie.disabled = true
 	
 	if scoreDraftCount == 0 and rewardDraftCount == 0:
 		$ChooseDie.visible = false
 		$Continue.visible = true
 		$DraftLabel.text = "All Dice Drafted"
+		$"DiceGrid/DiceTabs/Score Dice".visible = false
+		$"DiceGrid/DiceTabs/Reward Dice".visible = false
 	elif scoreDraftCount == 0 and rewardDraftCount > 0:
 		$"DiceGrid/DiceTabs/Score Dice".visible = false
 		diceGrid.set_tab(DiceGrid.GridTabs.reward)

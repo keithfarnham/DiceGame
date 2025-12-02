@@ -1,5 +1,7 @@
 extends Control
 
+var DieFaceUIScene = preload("res://scenes/DiceFaceUIScene.tscn")
+
 @onready var diceGridLabel = $DiceGridLabel as RichTextLabel
 @onready var rollResultGrid = $ScoreRollUI/RollResultGrid as GridContainer
 @onready var diceGrid = $DiceGrid as DiceGrid
@@ -8,8 +10,12 @@ extends Control
 @onready var rollButton = $ScoreRollUI/RollButton as Button
 @onready var continueButton  = $ScoreRollUI/Continue as Button
 
+var goalValue = PlayerDice.Round * PlayerDice.Round
+var gameOver := false
+
 func _ready():
 	diceGrid.populate_grid()
+	$Control/GoalValue.text = str(goalValue)
 
 func update_text():
 	if diceGrid.visible:
@@ -21,28 +27,41 @@ func update_text():
 func _on_sum_info_area_mouse_entered():
 	if !sumInfo.visible:
 		sumInfo.visible = true
+	if !$ScoreRollUI/InfoPanel/SumInfo.visible:
+		$ScoreRollUI/InfoPanel/SumInfo.visible = true
 
 func _on_sum_info_area_mouse_exited():
 	if sumInfo.visible:
 		sumInfo.visible = false
+	if $ScoreRollUI/InfoPanel/SumInfo.visible:
+		$ScoreRollUI/InfoPanel/SumInfo.visible = false
 
 func _on_mult_info_area_mouse_entered():
 	if !multInfo.visible:
 		multInfo.visible = true
+	if !$ScoreRollUI/InfoPanel/MultInfo.visible:
+		$ScoreRollUI/InfoPanel/MultInfo.visible = true
 
 func _on_mult_info_area_mouse_exited():
 	if multInfo.visible:
 		multInfo.visible = false
+	if $ScoreRollUI/InfoPanel/MultInfo.visible:
+		$ScoreRollUI/InfoPanel/MultInfo.visible = false
 
 func _on_roll_button_pressed():
 	print("Rolling Score dice")
 	if !rollResultGrid.visible:
 		rollResultGrid.visible = true
+	if !$ScoreRollUI/InfoPanel.visible:
+		$ScoreRollUI/InfoPanel.visible = true
 	var totalSum : int
-	var preMultSum := 0
-	var totalMult := 0
-	sumInfo.text = ""
-	multInfo.text = ""
+	var preMultSum := 1
+	var totalMult := 1
+	var index := 0
+	#var sumFaces : Array[DieFace] = []
+	#var multFaces : Array[DieFace] = []
+	sumInfo.text = "1"
+	multInfo.text = "1"
 	for die in PlayerDice.ScoreDice:
 		var rolledIndex = die.roll()
 		print("rolled index " + str(rolledIndex))
@@ -53,15 +72,23 @@ func _on_roll_button_pressed():
 				if sumInfo.text != "" :
 					sumInfo.text += " + "
 				sumInfo.text += str(die.get_value_for_face(rolledIndex))
+				var faceInstance = DieFaceUIScene.instantiate() as DieFaceUI
+				var dieFace = die.get_face(rolledIndex)
+				faceInstance.initialize(dieFace, index, false)
+				$ScoreRollUI/InfoPanel/SumInfo.add_child(faceInstance)
 			DieFaceData.FaceType.multiplier:
 				print("rolling mult " + str(die.get_value_for_face(rolledIndex)))
 				totalMult += die.get_value_for_face(rolledIndex)
 				if multInfo.text != "":
 					multInfo.text += " + "
 				multInfo.text += str(die.get_value_for_face(rolledIndex))
+				var faceInstance = DieFaceUIScene.instantiate() as DieFaceUI
+				var dieFace = die.get_face(rolledIndex)
+				faceInstance.initialize(dieFace, index, false)
+				$ScoreRollUI/InfoPanel/MultInfo.add_child(faceInstance)
 			DieFaceData.FaceType.special:
 				print("special")
-				
+		index += 1
 	sumInfo.text += " = " + str(preMultSum)
 	multInfo.text += " = " + str(totalMult)
 	totalSum = preMultSum * totalMult
@@ -74,7 +101,15 @@ func _on_roll_button_pressed():
 	print("rolled value: " + str(preMultSum) + " * " + str(totalMult) + " = " + str(totalSum))
 	rollButton.visible = false
 	continueButton.visible = true
+	if totalSum < goalValue:
+		$GameOver.visible = true
+		gameOver = true
+		continueButton.text = "Back To Start"
 	#TODO replace the DiceGrid being visible with the actual visual of the dice roll results
 
 func _on_continue_pressed():
-	get_tree().change_scene_to_file("res://scenes/RewardChoice.tscn")
+	if gameOver:
+		get_tree().change_scene_to_file("res://scenes/FrontEnd.tscn")
+	else:
+		PlayerDice.Round += 1
+		get_tree().change_scene_to_file("res://scenes/RewardChoice.tscn")

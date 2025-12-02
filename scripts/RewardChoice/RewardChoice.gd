@@ -30,7 +30,7 @@ func handle_rewards(chosenReward : DieFaceData.RewardType):
 			rewardText.text = "+" + str(amountToAdd) + " Money Added"
 			continueButton.visible = true
 		DieFaceData.RewardType.addDie:
-			var newDie = DiceData.MakeADie(6)
+			var newDie = DiceData.make_a_die(6)
 			PlayerDice.add_die(newDie)
 			rewardText.text = "Added a fresh D6!"
 			continueButton.visible = true

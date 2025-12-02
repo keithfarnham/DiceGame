@@ -18,6 +18,9 @@ func set_face(faceIndex: int, faceValue: int, faceType:= DieFaceData.FaceType.sc
 func num_faces() -> int:
 	return faces.size()
 	
+func get_face(faceIndex) -> DieFace:
+	return faces[faceIndex]
+	
 func get_value_for_face(faceIndex) -> int:
 	return faces[faceIndex].value
 	
