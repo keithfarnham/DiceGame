@@ -44,7 +44,6 @@ func handle_rewards(chosenReward : DieFaceData.RewardType):
 			rewardText.text = "Got a free Reward Reroll Token!"
 		#DieFaceData.RewardType.upgradeDieValue:
 		DieFaceData.RewardType.addRemoveFace:
-			#TODO switching between Score and Reward tabs is busted - face grid only shows score dice
 			rewardHandlerUI.visible = true
 			$RewardHandlerUI/addRemoveFace.visible = true
 			diceGrid.visible = true

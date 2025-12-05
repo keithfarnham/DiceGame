@@ -1,0 +1,68 @@
+[gd_scene load_steps=2 format=3 uid="uid://0mwxj873nos1"]
+
+[ext_resource type="Script" uid="uid://c1trpr2kodejp" path="res://scripts/MoveBoard/MoveBoard.gd" id="1_0qfav"]
+
+[node name="MoveBoard" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_0qfav")
+
+[node name="MoveGrid" type="GridContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.09876543
+anchor_right = 0.9444444
+anchor_bottom = 0.8888889
+metadata/_edit_use_anchors_ = true
+
+[node name="Goal" type="RichTextLabel" parent="."]
+layout_mode = 0
+anchor_left = 0.6111111
+anchor_right = 0.8333333
+anchor_bottom = 0.09876543
+theme_override_font_sizes/normal_font_size = 32
+text = "GOAL"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="Start" type="RichTextLabel" parent="."]
+layout_mode = 0
+anchor_left = 0.6111111
+anchor_top = 0.8888889
+anchor_right = 0.8333333
+anchor_bottom = 0.9876543
+theme_override_font_sizes/normal_font_size = 32
+text = "START"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="MoveCount" type="Control" parent="."]
+anchors_preset = 0
+anchor_left = 0.11111111
+anchor_top = 0.19753087
+anchor_right = 0.2777778
+anchor_bottom = 0.2962963
+metadata/_edit_use_anchors_ = true
+
+[node name="MovesLeftLabel" type="RichTextLabel" parent="MoveCount"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.5
+anchor_bottom = 0.5
+text = "Moves Left:"
+metadata/_edit_use_anchors_ = true
+
+[node name="MovesLeftValue" type="RichTextLabel" parent="MoveCount"]
+layout_mode = 0
+anchor_left = 0.5
+anchor_right = 0.8333333
+anchor_bottom = 0.375
+text = "6"
+metadata/_edit_use_anchors_ = true

@@ -32,13 +32,13 @@ func _ready():
 	var style
 	match dieFaceData.type:
 		DieFaceData.FaceType.score:
-			style = load("res://gradients/scoreface_stylebox.tres") as StyleBoxFlat
+			style = load("res://styleboxes/diefaces/scoreface_stylebox.tres") as StyleBoxFlat
 			panel.add_theme_stylebox_override("panel", style)
 		DieFaceData.FaceType.multiplier:
-			style = load("res://gradients/multface_stylebox.tres") as StyleBoxFlat
+			style = load("res://styleboxes/diefaces/multface_stylebox.tres") as StyleBoxFlat
 			panel.add_theme_stylebox_override("panel", style)
 		DieFaceData.FaceType.reward:
-			style = load("res://gradients/rewardface_stylebox.tres") as StyleBoxFlat
+			style = load("res://styleboxes/diefaces/rewardface_stylebox.tres") as StyleBoxFlat
 			panel.add_theme_stylebox_override("panel", style)
 	
 func initialize(newFace : DieFace, newIndex : int, newEnableFocus := true):

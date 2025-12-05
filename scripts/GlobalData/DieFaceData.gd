@@ -33,6 +33,8 @@ enum RewardType
 	addRemoveFace,
 	plusMinusFaceValue,
 	duplicateScoreDie,
+	increaseLowestBy3,
+	replaceLowestWithHighest
 }
 
 #TODO give proper weight values

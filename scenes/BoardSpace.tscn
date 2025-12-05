@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://cl1jm8mb3ddpn"]
+
+[ext_resource type="Script" uid="uid://4mse611gndq8" path="res://scripts/MoveBoard/BoardSpace.gd" id="1_p1ssn"]
+[ext_resource type="StyleBox" uid="uid://ttrt3n3628ll" path="res://styleboxes/boardspaces/emptyboard_style.tres" id="2_ho337"]
+
+[node name="BoardSpace" type="Button"]
+anchors_preset = -1
+anchor_right = 0.11111111
+anchor_bottom = 0.19753087
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/normal = ExtResource("2_ho337")
+script = ExtResource("1_p1ssn")
+metadata/_edit_use_anchors_ = true
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="pressed" from="." to="." method="_on_pressed"]
