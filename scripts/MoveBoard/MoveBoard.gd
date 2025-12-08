@@ -3,10 +3,11 @@ extends Control
 @onready var moveGrid = $MoveGrid as GridContainer
 
 static var boardSpace = preload("res://scenes/BoardSpace.tscn")
-#var gridArray = []
+
 var gridSize := 8
 var movesLeft := 6
 var lastMoveIndex := Vector2i(-1, -1)
+var pendingPath : Array[Vector2i] = []
 
 func _ready():
 	moveGrid.columns = gridSize
@@ -17,15 +18,17 @@ func _ready():
 			var spaceInstance = boardSpace.instantiate() as BoardSpace
 			spaceInstance.index = index
 			spaceInstance.spaceSelected.connect(space_pressed)
+			spaceInstance.spaceHovered.connect(space_hovered)
 			moveGrid.add_child(spaceInstance)
 			row.append(spaceInstance)
-		#gridArray.append(row)
 		
 func space_hovered(index : Vector2i):
-	#TODO change hovered to run the search in space_pressed and change BoardSpace.State to pending, and change space_pressed to apply that path
-	pass
-
-func space_pressed(index : Vector2i):
+	if !pendingPath.is_empty():
+		for pos in pendingPath:
+			var space = _space_at(pos)
+			space.set_state(BoardSpace.State.empty)
+		pendingPath = []
+	
 	#start is either lastMoveIndex or bottom of the column
 	var start = lastMoveIndex
 	if start == Vector2i(-1, -1):
@@ -76,26 +79,36 @@ func space_pressed(index : Vector2i):
 		return
 
 	#Reconstruct path (excluding start, including target)
-	var path := []
+	var path : Array[Vector2i] = []
 	var cur = index
 	while cur != start:
 		path.insert(0, cur)
 		cur = came_from[_key_of(cur)]
 
 	var steps_needed = path.size()
+	$MoveCount/Minus.visible = true
+	$MoveCount/StepsNeeded.visible = true
+	$MoveCount/StepsNeeded.text = str(steps_needed)
 	if movesLeft < steps_needed:
 		print("[MoveBoard] not enough movesLeft to reach target: have " + str(movesLeft) + " need " + str(steps_needed))
+		$MoveCount/Minus.add_theme_color_override("default_color", Color(1.0, 0.0, 0.0))
+		$MoveCount/StepsNeeded.add_theme_color_override("default_color", Color(1.0, 0.0, 0.0))
 		return
-
-	#Apply movement: set each space along the path to landed and decrement movesLeft
+		
+	$MoveCount/Minus.add_theme_color_override("default_color", Color(0.0, 0.0, 0.0))
+	$MoveCount/StepsNeeded.add_theme_color_override("default_color", Color(0.0, 0.0, 0.0))
+	
 	for pos in path:
 		var node = _space_at(pos)
-		if node == null:
-			push_error("[MoveBoard] node became null during traversal: " + str(pos))
-			break
+		node.set_state(BoardSpace.State.pending)
+	pendingPath = path
+
+func space_pressed(index : Vector2i):
+	#Apply movement: set each space along the path to landed and decrement movesLeft
+	for pos in pendingPath:
+		var node = _space_at(pos)
 		node.set_state(BoardSpace.State.landed)
 		movesLeft -= 1
-
 	lastMoveIndex = index
 
 func _key_of(v : Vector2i) -> String:
