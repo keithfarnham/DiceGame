@@ -3,30 +3,72 @@ extends Control
 @onready var moveGrid = $MoveGrid as GridContainer
 
 static var boardSpace = preload("res://scenes/BoardSpace.tscn")
+static var itemSpace = preload("res://scenes/ItemSpace.tscn")
 
 var gridSize := 8
 var movesLeft := 6
 var lastMoveIndex := Vector2i(-1, -1)
 var pendingPath : Array[Vector2i] = []
+var itemSpaces := {}
+var numItems := 6
 
 func _ready():
 	moveGrid.columns = gridSize
+	itemSpaces = setup_items(numItems)
 	for column in gridSize:
 		var row : Array[BoardSpace] = []
 		for space in gridSize:
 			var index = Vector2i(space, column)
-			var spaceInstance = boardSpace.instantiate() as BoardSpace
+			var spaceInstance
+			var k = _key_of(index)
+			if itemSpaces.has(k):
+				var itemType = itemSpaces.get(k).type
+				spaceInstance = itemSpace.instantiate() as ItemSpace
+				spaceInstance.type = itemType
+			else:
+				spaceInstance = boardSpace.instantiate() as BoardSpace
 			spaceInstance.index = index
 			spaceInstance.spaceSelected.connect(space_pressed)
 			spaceInstance.spaceHovered.connect(space_hovered)
 			moveGrid.add_child(spaceInstance)
 			row.append(spaceInstance)
-		
+
+func setup_items(numItems : int) -> Dictionary:
+	var items := {}
+	for i in numItems:
+		var index = Vector2i(randi() % gridSize, randi() % gridSize)
+		var type = ItemSpace.item_type.money #TODO setup random here
+		if items.is_empty():
+			var newItem = ItemSpace.new()
+			newItem.initialize(index, type)
+			items[_key_of(index)] = newItem
+			continue
+		var valid = false
+		while !valid:
+			valid = true
+			if items.has(_key_of(index)):
+				#if we already have the newly generate index in the list, regen and check again
+				index = Vector2i(randi() % gridSize, randi() % gridSize)
+				valid = false
+				continue
+		var newItem = ItemSpace.new()
+		newItem.initialize(index, type)
+		items[_key_of(index)] = newItem
+	return items
+
 func space_hovered(index : Vector2i):
+	if movesLeft == 0:
+		pendingPath = []
+		return
+		
 	if !pendingPath.is_empty():
 		for pos in pendingPath:
 			var space = _space_at(pos)
-			space.set_state(BoardSpace.State.empty)
+			var state = BoardSpace.State.empty
+			if itemSpaces.has(_key_of(pos)):
+				state = BoardSpace.State.item
+				#TODO prob need to set the item type here as well
+			space.set_state(state)
 		pendingPath = []
 	
 	#start is either lastMoveIndex or bottom of the column
@@ -86,17 +128,16 @@ func space_hovered(index : Vector2i):
 		cur = came_from[_key_of(cur)]
 
 	var steps_needed = path.size()
-	$MoveCount/Minus.visible = true
-	$MoveCount/StepsNeeded.visible = true
-	$MoveCount/StepsNeeded.text = str(steps_needed)
-	if movesLeft < steps_needed:
-		print("[MoveBoard] not enough movesLeft to reach target: have " + str(movesLeft) + " need " + str(steps_needed))
-		$MoveCount/Minus.add_theme_color_override("default_color", Color(1.0, 0.0, 0.0))
-		$MoveCount/StepsNeeded.add_theme_color_override("default_color", Color(1.0, 0.0, 0.0))
-		return
-		
-	$MoveCount/Minus.add_theme_color_override("default_color", Color(0.0, 0.0, 0.0))
-	$MoveCount/StepsNeeded.add_theme_color_override("default_color", Color(0.0, 0.0, 0.0))
+	if movesLeft > 0:
+		$MoveCount/MovesMinus.visible = true
+		$MoveCount/MovesMinus/StepsNeeded.text = str(steps_needed)
+		if movesLeft < steps_needed:
+			$MoveCount/MovesMinus/Minus.add_theme_color_override("default_color", Color(1.0, 0.0, 0.0))
+			$MoveCount/MovesMinus/StepsNeeded.add_theme_color_override("default_color", Color(1.0, 0.0, 0.0))
+			return
+			
+		$MoveCount/MovesMinus/Minus.add_theme_color_override("default_color", Color(0.0, 0.0, 0.0))
+		$MoveCount/MovesMinus/StepsNeeded.add_theme_color_override("default_color", Color(0.0, 0.0, 0.0))
 	
 	for pos in path:
 		var node = _space_at(pos)
@@ -104,11 +145,16 @@ func space_hovered(index : Vector2i):
 	pendingPath = path
 
 func space_pressed(index : Vector2i):
+	if movesLeft == 0:
+		return
 	#Apply movement: set each space along the path to landed and decrement movesLeft
 	for pos in pendingPath:
 		var node = _space_at(pos)
 		node.set_state(BoardSpace.State.landed)
 		movesLeft -= 1
+	$MoveCount/MovesLeftValue.text = str(movesLeft)
+	if movesLeft == 0:
+		$MoveCount/MovesMinus.visible = false
 	lastMoveIndex = index
 
 func _key_of(v : Vector2i) -> String:

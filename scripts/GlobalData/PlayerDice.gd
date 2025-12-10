@@ -9,7 +9,7 @@ var RerollScore : int
 var RerollReward : int
 var Money : int
 
-var Round = 1
+var Round := 1
 
 #func _ready():
 	#print("[PlayerDice] Setting up starting dice")

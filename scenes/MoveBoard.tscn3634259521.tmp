@@ -69,28 +69,24 @@ text = "6"
 horizontal_alignment = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="MovesMinus" type="Control" parent="MoveCount"]
-anchors_preset = 0
-anchor_left = 0.625
-anchor_right = 0.8333333
-anchor_bottom = 0.375
-metadata/_edit_use_anchors_ = true
-
-[node name="Minus" type="RichTextLabel" parent="MoveCount/MovesMinus"]
+[node name="Minus" type="RichTextLabel" parent="MoveCount"]
+visible = false
 layout_mode = 1
 anchors_preset = -1
-anchor_right = 0.4
-anchor_bottom = 1.0
+anchor_left = 0.625
+anchor_right = 0.7083333
+anchor_bottom = 0.375
 text = "-"
 horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="StepsNeeded" type="RichTextLabel" parent="MoveCount/MovesMinus"]
+[node name="StepsNeeded" type="RichTextLabel" parent="MoveCount"]
+visible = false
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.4
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchor_left = 0.7083333
+anchor_right = 0.8333333
+anchor_bottom = 0.375
 text = "0"
 metadata/_edit_use_anchors_ = true
