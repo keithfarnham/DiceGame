@@ -16,3 +16,18 @@ var type : item_type
 func initialize(newIndex, newType):
 	index = newIndex
 	type = newType
+
+func set_item_name_visible(visible : bool):
+	$ItemName.visible = visible
+
+func set_type(newType : item_type):
+	type = newType
+	var itemName : String
+	match type:
+		item_type.money:
+			itemName = "MONEY"
+		item_type.addDie:
+			itemName = "ADD DIE"
+		item_type.addRemoveFace:
+			itemName = "ADD/REMOVE FACE"
+	$ItemName.text = itemName

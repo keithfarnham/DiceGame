@@ -1,18 +1,22 @@
 extends Control
 
-@onready var moveGrid = $MoveGrid as GridContainer
+@onready var moveGrid = $Board/MoveGrid as GridContainer
+@onready var eventText = $ItemEvent/EventText as RichTextLabel
 
 static var boardSpace = preload("res://scenes/BoardSpace.tscn")
 static var itemSpace = preload("res://scenes/ItemSpace.tscn")
 
 var gridSize := 8
-var movesLeft := 6
+var movesLeft := 12
 var lastMoveIndex := Vector2i(-1, -1)
 var pendingPath : Array[Vector2i] = []
 var itemSpaces := {}
+var landedItems : Array[ItemSpace] = []
+var landedGridNodeCopies = []
 var numItems := 6
 
 func _ready():
+	$MoveCount/MovesLeftValue.text = str(movesLeft)
 	moveGrid.columns = gridSize
 	itemSpaces = setup_items(numItems)
 	for column in gridSize:
@@ -22,9 +26,10 @@ func _ready():
 			var spaceInstance
 			var k = _key_of(index)
 			if itemSpaces.has(k):
-				var itemType = itemSpaces.get(k).type
+				var item = itemSpaces.get(k) as ItemSpace
+				var itemType = item.type
 				spaceInstance = itemSpace.instantiate() as ItemSpace
-				spaceInstance.type = itemType
+				spaceInstance.set_type(itemType)
 			else:
 				spaceInstance = boardSpace.instantiate() as BoardSpace
 			spaceInstance.index = index
@@ -37,7 +42,7 @@ func setup_items(numItems : int) -> Dictionary:
 	var items := {}
 	for i in numItems:
 		var index = Vector2i(randi() % gridSize, randi() % gridSize)
-		var type = ItemSpace.item_type.money #TODO setup random here
+		var type = randi() % ItemSpace.item_type.size() as ItemSpace.item_type
 		if items.is_empty():
 			var newItem = ItemSpace.new()
 			newItem.initialize(index, type)
@@ -67,7 +72,7 @@ func space_hovered(index : Vector2i):
 			var state = BoardSpace.State.empty
 			if itemSpaces.has(_key_of(pos)):
 				state = BoardSpace.State.item
-				#TODO prob need to set the item type here as well
+				space.set_item_name_visible(true)
 			space.set_state(state)
 		pendingPath = []
 	
@@ -150,12 +155,41 @@ func space_pressed(index : Vector2i):
 	#Apply movement: set each space along the path to landed and decrement movesLeft
 	for pos in pendingPath:
 		var node = _space_at(pos)
+		var posKey = _key_of(pos)
+		if itemSpaces.has(posKey):
+			landedItems.push_back(itemSpaces.get(posKey))
+			var spaceCopy = _space_at(pos).duplicate()
+			landedGridNodeCopies.append(spaceCopy)
+			$LandedItems.add_child(spaceCopy)
 		node.set_state(BoardSpace.State.landed)
 		movesLeft -= 1
 	$MoveCount/MovesLeftValue.text = str(movesLeft)
+	lastMoveIndex = index
 	if movesLeft == 0:
 		$MoveCount/MovesMinus.visible = false
-	lastMoveIndex = index
+		#after all moves are used handle the items that were landed on
+		if !landedItems.is_empty():
+			item_queue()
+		
+func item_queue():
+	if !$ItemEvent.visible:
+		$Board.visible = false
+		$ItemEvent.visible = true
+	item_handler(landedItems.pop_front())
+	
+func item_handler(item : ItemSpace):
+	match item.type:
+		ItemSpace.item_type.money:
+			var amount = randi() % 20 + 1
+			eventText.text = "Someone dropped $" + str(amount) + " that you grab off the ground."
+			PlayerDice.Money += amount
+		ItemSpace.item_type.addDie:
+			var newDie = DiceData.make_a_die(6)
+			PlayerDice.add_die(newDie)
+			eventText.text = "You found a D6 on the floor and added it to your dice bag."
+		ItemSpace.item_type.addRemoveFace:
+			#TODO prob want to make the RewardHandler in RewardChoice a separate scene to instance in any case we're doing rewards like this
+			pass
 
 func _key_of(v : Vector2i) -> String:
 	return str(v.x) + ":" + str(v.y)
@@ -164,4 +198,8 @@ func _space_at(pos : Vector2i) -> BoardSpace:
 	var child_idx = pos.y * gridSize + pos.x
 	if child_idx < 0 or child_idx >= moveGrid.get_child_count():
 		return null
-	return moveGrid.get_child(child_idx) as BoardSpace
+	return moveGrid.get_child(child_idx)
+
+func _on_item_event_continue_pressed():
+	$LandedItems.remove_child(landedGridNodeCopies.pop_front())
+	item_queue()
