@@ -1,7 +1,9 @@
 extends Control
 
 @onready var moveGrid = $Board/MoveGrid as GridContainer
-@onready var eventText = $ItemEvent/EventText as RichTextLabel
+@onready var eventText = $EventText as RichTextLabel
+@onready var rewardHandlerUI = $RewardHandlerUI
+@onready var diceGrid = $RewardHandlerUI/DiceGrid as DiceGrid
 
 static var boardSpace = preload("res://scenes/BoardSpace.tscn")
 static var itemSpace = preload("res://scenes/ItemSpace.tscn")
@@ -16,7 +18,11 @@ var landedGridNodeCopies = []
 var numItems := 6
 
 func _ready():
-	$MoveCount/MovesLeftValue.text = str(movesLeft)
+	#DEBUG ONLY TODO REMOVE EVENTUALLY
+	if PlayerDice.ScoreDice.is_empty():
+		DiceData.generate_starting_dice()
+	
+	$Board/MoveCount/MovesLeftValue.text = str(movesLeft)
 	moveGrid.columns = gridSize
 	itemSpaces = setup_items(numItems)
 	for column in gridSize:
@@ -62,6 +68,7 @@ func setup_items(numItems : int) -> Dictionary:
 	return items
 
 func space_hovered(index : Vector2i):
+	print("hovering over space at index " + str(index))
 	if movesLeft == 0:
 		pendingPath = []
 		return
@@ -134,15 +141,15 @@ func space_hovered(index : Vector2i):
 
 	var steps_needed = path.size()
 	if movesLeft > 0:
-		$MoveCount/MovesMinus.visible = true
-		$MoveCount/MovesMinus/StepsNeeded.text = str(steps_needed)
+		$Board/MoveCount/MovesMinus.visible = true
+		$Board/MoveCount/MovesMinus/StepsNeeded.text = str(steps_needed)
 		if movesLeft < steps_needed:
-			$MoveCount/MovesMinus/Minus.add_theme_color_override("default_color", Color(1.0, 0.0, 0.0))
-			$MoveCount/MovesMinus/StepsNeeded.add_theme_color_override("default_color", Color(1.0, 0.0, 0.0))
+			$Board/MoveCount/MovesMinus/Minus.add_theme_color_override("default_color", Color(1.0, 0.0, 0.0))
+			$Board/MoveCount/MovesMinus/StepsNeeded.add_theme_color_override("default_color", Color(1.0, 0.0, 0.0))
 			return
 			
-		$MoveCount/MovesMinus/Minus.add_theme_color_override("default_color", Color(0.0, 0.0, 0.0))
-		$MoveCount/MovesMinus/StepsNeeded.add_theme_color_override("default_color", Color(0.0, 0.0, 0.0))
+		$Board/MoveCount/MovesMinus/Minus.add_theme_color_override("default_color", Color(0.0, 0.0, 0.0))
+		$Board/MoveCount/MovesMinus/StepsNeeded.add_theme_color_override("default_color", Color(0.0, 0.0, 0.0))
 	
 	for pos in path:
 		var node = _space_at(pos)
@@ -150,7 +157,7 @@ func space_hovered(index : Vector2i):
 	pendingPath = path
 
 func space_pressed(index : Vector2i):
-	if movesLeft == 0:
+	if movesLeft == 0 or pendingPath.is_empty():
 		return
 	#Apply movement: set each space along the path to landed and decrement movesLeft
 	for pos in pendingPath:
@@ -163,33 +170,46 @@ func space_pressed(index : Vector2i):
 			$LandedItems.add_child(spaceCopy)
 		node.set_state(BoardSpace.State.landed)
 		movesLeft -= 1
-	$MoveCount/MovesLeftValue.text = str(movesLeft)
+	$Board/MoveCount/MovesLeftValue.text = str(movesLeft)
 	lastMoveIndex = index
 	if movesLeft == 0:
-		$MoveCount/MovesMinus.visible = false
+		$Board/MoveCount/MovesMinus.visible = false
 		#after all moves are used handle the items that were landed on
 		if !landedItems.is_empty():
+			$Board.visible = false
 			item_queue()
-		
+	if _is_space_goal(lastMoveIndex) and landedItems.is_empty():
+		$NextArea.visible = true
+	else:
+		$NextArea.visible = false
+
 func item_queue():
-	if !$ItemEvent.visible:
-		$Board.visible = false
-		$ItemEvent.visible = true
 	item_handler(landedItems.pop_front())
-	
+
 func item_handler(item : ItemSpace):
+	rewardHandlerUI.diceGrid.clear_grids()
 	match item.type:
 		ItemSpace.item_type.money:
 			var amount = randi() % 20 + 1
 			eventText.text = "Someone dropped $" + str(amount) + " that you grab off the ground."
 			PlayerDice.Money += amount
+			$EventText.visible = true
+			$Continue.visible = true
 		ItemSpace.item_type.addDie:
 			var newDie = DiceData.make_a_die(6)
 			PlayerDice.add_die(newDie)
 			eventText.text = "You found a D6 on the floor and added it to your dice bag."
+			$EventText.visible = true
+			$Continue.visible = true
 		ItemSpace.item_type.addRemoveFace:
-			#TODO prob want to make the RewardHandler in RewardChoice a separate scene to instance in any case we're doing rewards like this
-			pass
+			#TODO hitting two of these in a row breaks the dicegrid
+			$Continue.visible = false
+			eventText.text = "You found a tool allowing you to duplicate or remove a die face."
+			rewardHandlerUI.visible = true
+			$RewardHandlerUI/addRemoveFace.visible = true
+			diceGrid.visible = true
+			diceGrid.set_type(DiceGrid.GridType.allDiceFaceChoice)
+			
 
 func _key_of(v : Vector2i) -> String:
 	return str(v.x) + ":" + str(v.y)
@@ -200,6 +220,23 @@ func _space_at(pos : Vector2i) -> BoardSpace:
 		return null
 	return moveGrid.get_child(child_idx)
 
+func _is_space_goal(pos : Vector2i) -> bool:
+	if pos.y == 0:
+		return true
+	return false
+
 func _on_item_event_continue_pressed():
 	$LandedItems.remove_child(landedGridNodeCopies.pop_front())
-	item_queue()
+	$RewardHandlerUI.visible = false
+	if !landedItems.is_empty():
+		item_queue()
+	elif movesLeft == 0 and _is_space_goal(lastMoveIndex):
+		$Board.visible
+		$NextArea.visible
+	elif movesLeft == 0:
+		#once items are handled and player has no more moves go to roll scene
+		get_tree().change_scene_to_file("res://scenes/RollReward.tscn")
+
+func _on_next_area_pressed():
+	#TODO this will prob go to a sort of map area selection - for now it's just going to reset the MoveBoard
+	get_tree().change_scene_to_file("res://scenes/MoveBoard.tscn")

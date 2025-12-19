@@ -1,5 +1,7 @@
 extends Node
 
+class_name DieFaceData
+
 enum FaceType
 {
 	score, #default type, any scoring number value
@@ -38,7 +40,7 @@ enum RewardType
 }
 
 #TODO give proper weight values
-var RewardTypeWeights = {
+static var RewardTypeWeights = {
 	RewardType.money: 				{DiceData.DieRarity.common:1, DiceData.DieRarity.uncommon:2, DiceData.DieRarity.rare:3, DiceData.DieRarity.legendary:4},
 	RewardType.addDie:				{DiceData.DieRarity.common:1, DiceData.DieRarity.uncommon:2, DiceData.DieRarity.rare:3, DiceData.DieRarity.legendary:4},
 	RewardType.scoreReroll:			{DiceData.DieRarity.common:1, DiceData.DieRarity.uncommon:2, DiceData.DieRarity.rare:3, DiceData.DieRarity.legendary:4},

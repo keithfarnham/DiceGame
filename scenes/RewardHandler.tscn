@@ -1,0 +1,108 @@
+[gd_scene load_steps=3 format=3 uid="uid://by0hqbc5elxlt"]
+
+[ext_resource type="Script" uid="uid://4f5l6op4yve8" path="res://scripts/RewardChoice/RewardHandlers.gd" id="1_oiyel"]
+[ext_resource type="PackedScene" uid="uid://dbtd6w07pf5p5" path="res://scenes/DiceGridScene.tscn" id="2_qkmf1"]
+
+[node name="RewardHandlerUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_oiyel")
+metadata/_edit_use_anchors_ = true
+
+[node name="addRemoveFace" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="AddFace" type="Button" parent="addRemoveFace"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.6666667
+anchor_top = 0.79012346
+anchor_right = 0.7777778
+anchor_bottom = 0.8888889
+offset_top = -3.0517578e-05
+disabled = true
+text = "Duplicate Face"
+metadata/_edit_use_anchors_ = true
+
+[node name="RemoveFace" type="Button" parent="addRemoveFace"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.8333333
+anchor_top = 0.7901234
+anchor_right = 0.9444444
+anchor_bottom = 0.8888889
+offset_top = 3.0517578e-05
+disabled = true
+text = "Remove Face"
+metadata/_edit_use_anchors_ = true
+
+[node name="plusMinusFaceValue" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PlusFace" type="Button" parent="plusMinusFaceValue"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.6666667
+anchor_top = 0.79012346
+anchor_right = 0.7777778
+anchor_bottom = 0.8888889
+offset_top = -3.0517578e-05
+text = "+1 Face Value"
+metadata/_edit_use_anchors_ = true
+
+[node name="MinusFace" type="Button" parent="plusMinusFaceValue"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.8333333
+anchor_top = 0.7901234
+anchor_right = 0.9444444
+anchor_bottom = 0.8888889
+offset_top = 3.0517578e-05
+text = "-1 Face Value"
+metadata/_edit_use_anchors_ = true
+
+[node name="duplicateDie" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="DuplicateDie" type="Button" parent="duplicateDie"]
+layout_mode = 0
+offset_left = 864.0
+offset_top = 512.0
+offset_right = 992.0
+offset_bottom = 576.0
+text = "Duplicate Die"
+
+[node name="DiceGrid" parent="." instance=ExtResource("2_qkmf1")]
+visible = false
+layout_mode = 1
+gridType = 2
+
+[connection signal="pressed" from="addRemoveFace/AddFace" to="." method="_on_add_face_pressed"]
+[connection signal="pressed" from="addRemoveFace/RemoveFace" to="." method="_on_remove_face_pressed"]
+[connection signal="pressed" from="plusMinusFaceValue/PlusFace" to="." method="_on_plus_face_pressed"]
+[connection signal="pressed" from="plusMinusFaceValue/MinusFace" to="." method="_on_minus_face_pressed"]
+[connection signal="pressed" from="duplicateDie/DuplicateDie" to="." method="_on_duplicate_die_pressed"]

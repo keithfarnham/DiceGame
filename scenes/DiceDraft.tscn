@@ -85,11 +85,12 @@ metadata/_edit_use_anchors_ = true
 
 [node name="ChooseDie" type="Button" parent="."]
 visible = false
-layout_mode = 0
-anchor_left = 0.7222222
-anchor_top = 0.79012346
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.6666667
+anchor_top = 0.7407407
 anchor_right = 0.8888889
-anchor_bottom = 0.8888889
+anchor_bottom = 0.9382716
 text = "Select a Die"
 metadata/_edit_use_anchors_ = true
 

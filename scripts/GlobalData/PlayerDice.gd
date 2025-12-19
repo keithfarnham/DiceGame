@@ -11,11 +11,6 @@ var Money : int
 
 var Round := 1
 
-#func _ready():
-	#print("[PlayerDice] Setting up starting dice")
-	#ScoreDice = DiceData.StartingDice()
-	#RewardDice = DiceData.GenerateRewardDice()
-
 func add_dice(newDice : Array[Die]):
 	print(newDice)
 	for newDie in newDice:

@@ -9,6 +9,9 @@ class_name DiceGrid
 var DieUIScene = preload("res://scenes/DieUIScene.tscn")
 var DieFaceUIScene = preload("res://scenes/DiceFaceUIScene.tscn")
 
+signal faceSelected(faceIndex : int)
+signal dieSelected(dieIndex : int)
+
 @export var gridType : GridType
 
 enum GridType {
@@ -121,6 +124,7 @@ func add_dice(dice : Array[Die]):
 		add_die(dice[dieIndex], dieIndex)
 
 func die_selected(dieIndex : int):
+	dieSelected.emit(dieIndex)
 	print("[DiceGrid] die_selected prev selected " + str(selectedDie) + " with die index " + str(dieIndex))
 	var draftNode
 	if gridType == GridType.draft:
@@ -176,6 +180,9 @@ func die_selected(dieIndex : int):
 
 func face_selected(faceIndex : int):
 	print("[DiceGrid] face_selected prev selected " + str(selectedFace) + " with face index " + str(faceIndex))
+	#TODO if DiceGrid's type is a face selection we enable/disable the buttons to actually select once a face is chosen or unchosen
+	#if gridType == GridType.faceChoice or gridType == GridType.allDiceFaceChoice:
+	faceSelected.emit(faceIndex)
 	selectedFace = faceIndex
 
 func refresh_grids():
@@ -193,6 +200,16 @@ func remove_die(tab : GridTabs):
 		GridTabs.reward:
 			var child = rewardDiceGrid.get_child(selectedDie)
 			child.visible = false
+
+func clear_dice_grid():
+	for child in scoreDiceGrid.get_children():
+		child.queue_free()
+	for child in rewardDiceGrid.get_children():
+		child.queue_free()
+
+func clear_grids():
+	clear_face_grid()
+	clear_dice_grid()
 
 func clear_face_grid():
 	for child in faceGrid.get_children():

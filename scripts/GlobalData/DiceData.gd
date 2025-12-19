@@ -1,6 +1,8 @@
 #extends Resource?
 extends Node
 
+#class_name DiceData
+
 enum DieFaceCount
 {
 	Coin = 2,
@@ -24,7 +26,7 @@ enum DieRarity
 	legendary
 }
 
-var DieFaceCountWeight = {
+static var DieFaceCountWeight = {
 	DieFaceCount.Coin: 	{DieRarity.common:1, DieRarity.uncommon:2, DieRarity.rare:3, DieRarity.legendary:4},
 	DieFaceCount.D3: 	{DieRarity.common:2, DieRarity.uncommon:2, DieRarity.rare:3, DieRarity.legendary:4},
 	DieFaceCount.D4:	{DieRarity.common:3, DieRarity.uncommon:2, DieRarity.rare:3, DieRarity.legendary:4},
@@ -37,7 +39,7 @@ var DieFaceCountWeight = {
 	DieFaceCount.D20: 	{DieRarity.common:1, DieRarity.uncommon:2, DieRarity.rare:3, DieRarity.legendary:4}
 }
 
-var DieFaceTypeWeight = {
+static var DieFaceTypeWeight = {
 	DieFaceData.FaceType.score: 		{DieRarity.common:8, DieRarity.uncommon:6, DieRarity.rare:5, DieRarity.legendary:3},
 	DieFaceData.FaceType.multiplier: 	{DieRarity.common:2, DieRarity.uncommon:4, DieRarity.rare:5, DieRarity.legendary:7}
 }

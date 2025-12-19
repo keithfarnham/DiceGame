@@ -21,39 +21,44 @@ func _ready():
 		rewardGrid.add_child(newFaceUIInstance)
 
 func handle_rewards(chosenReward : DieFaceData.RewardType):
-	var rewardText = $Continue/ContinueLabel as RichTextLabel
+	var eventText = $EventText as RichTextLabel
+	eventText.visible = true
 	match chosenReward:
 		DieFaceData.RewardType.money:
 			#TODO make this variable based on value rolled or level
 			var amountToAdd = 10
 			PlayerDice.Money += amountToAdd
-			rewardText.text = "+" + str(amountToAdd) + " Money Added"
+			eventText.text = "+" + str(amountToAdd) + " Money Added"
 			continueButton.visible = true
 		DieFaceData.RewardType.addDie:
 			var newDie = DiceData.make_a_die(6)
 			PlayerDice.add_die(newDie)
-			rewardText.text = "Added a fresh D6!"
+			eventText.text = "Added a fresh D6!"
 			continueButton.visible = true
 		DieFaceData.RewardType.scoreReroll:
 			PlayerDice.RerollScore += 1
 			continueButton.visible = true
-			rewardText.text = "Got a free Score Reroll Token!"
+			eventText.text = "Got a free Score Reroll Token!"
 		DieFaceData.RewardType.rewardReroll:
 			PlayerDice.RerollReward += 1
 			continueButton.visible = true
-			rewardText.text = "Got a free Reward Reroll Token!"
+			eventText.text = "Got a free Reward Reroll Token!"
 		#DieFaceData.RewardType.upgradeDieValue:
 		DieFaceData.RewardType.addRemoveFace:
+			eventText.text = "Choose a Die to add or remove a face"
 			rewardHandlerUI.visible = true
+			rewardHandlerUI.set_reward_type(rewardHandlerUI.RewardType.addRemoveFace)
 			$RewardHandlerUI/addRemoveFace.visible = true
 			diceGrid.visible = true
 			diceGrid.set_type(DiceGrid.GridType.allDiceFaceChoice)
 		DieFaceData.RewardType.plusMinusFaceValue:
+			eventText.text = "Got a free Reward Reroll Token!"
 			rewardHandlerUI.visible = true
 			$RewardHandlerUI/plusMinusFaceValue.visible = true
 			diceGrid.visible = true
 			diceGrid.set_type(DiceGrid.GridType.faceChoice)
 		DieFaceData.RewardType.duplicateScoreDie:
+			eventText.text = "Choose a score die to duplicate"
 			rewardHandlerUI.visible = true
 			$RewardHandlerUI/duplicateDie.visible = true
 			diceGrid.visible = true
@@ -80,5 +85,4 @@ func _on_choose_die_confirm_canceled():
 	chooseRewardButton.visible = true
 
 func _on_continue_pressed():
-	#TODO this will end up going to a shop phase
-	get_tree().change_scene_to_file("res://scenes/RollReward.tscn")
+	get_tree().change_scene_to_file("res://scenes/MoveBoard.tscn")
