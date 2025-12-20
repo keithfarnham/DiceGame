@@ -9,6 +9,7 @@ var dieFaceUIScene = preload("res://scenes/DiceFaceUIScene.tscn")
 var prevSelect := -1
 
 func _ready():
+	$DiceGrid/DiceTabs.visible = false
 	diceGrid.populate_grid()
 
 func _on_roll_pressed():

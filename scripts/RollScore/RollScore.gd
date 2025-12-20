@@ -15,6 +15,7 @@ var gameOver := false
 
 func _ready():
 	diceGrid.populate_grid()
+	$DiceGrid/DiceTabs.visible = false
 	$Control/GoalValue.text = str(goalValue)
 
 func update_text():

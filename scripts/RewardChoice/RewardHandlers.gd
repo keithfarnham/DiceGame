@@ -17,7 +17,6 @@ enum RewardType {
 
 func set_reward_type(newType : RewardType):
 	type = newType
-	
 
 func _ready():
 	diceGrid.faceSelected.connect(_face_selected)
@@ -50,6 +49,8 @@ func _on_add_face_pressed():
 		DiceGrid.GridTabs.reward:
 			PlayerDice.RewardDice[diceGrid.selectedDie].faces.append(PlayerDice.RewardDice[diceGrid.selectedDie].faces[diceGrid.selectedFace])
 	$addRemoveFace.visible = false
+	$addRemoveFace/AddFace.disabled = true
+	$addRemoveFace/RemoveFace.disabled = true
 	diceGrid.mouse_behavior_recursive = Control.MOUSE_BEHAVIOR_DISABLED
 	diceGrid.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	continueButton.visible = true
@@ -64,6 +65,8 @@ func _on_remove_face_pressed():
 		DiceGrid.GridTabs.reward:
 			PlayerDice.RewardDice[diceGrid.selectedDie].faces.remove_at(diceGrid.selectedFace)
 	$addRemoveFace.visible = false
+	$addRemoveFace/AddFace.disabled = true
+	$addRemoveFace/RemoveFace.disabled = true
 	diceGrid.mouse_behavior_recursive = Control.MOUSE_BEHAVIOR_DISABLED
 	diceGrid.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	continueButton.visible = true

@@ -9,7 +9,7 @@ static var boardSpace = preload("res://scenes/BoardSpace.tscn")
 static var itemSpace = preload("res://scenes/ItemSpace.tscn")
 
 var gridSize := 8
-var movesLeft := 12
+var movesLeft := 6
 var lastMoveIndex := Vector2i(-1, -1)
 var pendingPath : Array[Vector2i] = []
 var itemSpaces := {}
@@ -227,12 +227,17 @@ func _is_space_goal(pos : Vector2i) -> bool:
 
 func _on_item_event_continue_pressed():
 	$LandedItems.remove_child(landedGridNodeCopies.pop_front())
-	$RewardHandlerUI.visible = false
+	rewardHandlerUI.visible = false
 	if !landedItems.is_empty():
+		diceGrid.selectedDie = -1
+		diceGrid.mouse_behavior_recursive = Control.MOUSE_BEHAVIOR_ENABLED
+		diceGrid.mouse_filter = Control.MOUSE_FILTER_STOP
 		item_queue()
 	elif movesLeft == 0 and _is_space_goal(lastMoveIndex):
-		$Board.visible
-		$NextArea.visible
+		$Board.visible = false
+		$NextArea.visible = true
+		$Continue.visible = false
+		$ItemsCollectedLabel.visible = false
 	elif movesLeft == 0:
 		#once items are handled and player has no more moves go to roll scene
 		get_tree().change_scene_to_file("res://scenes/RollReward.tscn")
