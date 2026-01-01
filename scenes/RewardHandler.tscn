@@ -94,6 +94,7 @@ anchors_preset = -1
 anchor_left = 0.3
 anchor_right = 0.7
 anchor_bottom = 1.000001
+disabled = true
 text = "Duplicate Die"
 metadata/_edit_use_anchors_ = true
 

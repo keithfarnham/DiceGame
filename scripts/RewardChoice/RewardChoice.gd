@@ -52,8 +52,9 @@ func handle_rewards(chosenReward : DieFaceData.RewardType):
 			diceGrid.visible = true
 			diceGrid.set_type(DiceGrid.GridType.allDiceFaceChoice)
 		DieFaceData.RewardType.plusMinusFaceValue:
-			eventText.text = "Got a free Reward Reroll Token!"
+			eventText.text = "Choose a Die Face to +1 or -1 value"
 			rewardHandlerUI.visible = true
+			rewardHandlerUI.set_reward_type(rewardHandlerUI.RewardType.plusMinusFace)
 			$RewardHandlerUI/plusMinusFaceValue.visible = true
 			diceGrid.visible = true
 			diceGrid.set_type(DiceGrid.GridType.faceChoice)

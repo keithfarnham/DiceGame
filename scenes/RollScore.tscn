@@ -1,17 +1,16 @@
-[gd_scene load_steps=8 format=3 uid="uid://wva2x2memvp"]
+[gd_scene load_steps=7 format=3 uid="uid://wva2x2memvp"]
 
 [ext_resource type="Script" uid="uid://dwv3lcjrogtj8" path="res://scripts/RollScore/RollScore.gd" id="1_gakaj"]
-[ext_resource type="PackedScene" uid="uid://dupfms6m2gsoy" path="res://scenes/DebugScene.tscn" id="2_uiuj2"]
 [ext_resource type="PackedScene" uid="uid://dbtd6w07pf5p5" path="res://scenes/DiceGridScene.tscn" id="5_25h00"]
 
 [sub_resource type="GDScript" id="GDScript_78gr1"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fi7fg"]
-size = Vector2(130, 78)
+size = Vector2(104, 62)
 script = SubResource("GDScript_78gr1")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mkgj2"]
-size = Vector2(129, 79)
+size = Vector2(120, 61.5)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bo5pu"]
 bg_color = Color(0, 0, 0, 1)
@@ -59,10 +58,10 @@ mouse_filter = 1
 visible = false
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.45094663
-anchor_top = 0.023386136
-anchor_right = 0.7986231
-anchor_bottom = 0.16831718
+anchor_left = 0.302926
+anchor_top = 0.009901291
+anchor_right = 0.6506024
+anchor_bottom = 0.15483233
 mouse_filter = 1
 text = "extra_info_on_mult"
 metadata/_edit_use_anchors_ = true
@@ -71,10 +70,10 @@ metadata/_edit_use_anchors_ = true
 visible = false
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.2151463
-anchor_top = 0.014019801
-anchor_right = 0.5370052
-anchor_bottom = 0.16831718
+anchor_left = 0.068846814
+anchor_top = 0.009901287
+anchor_right = 0.39070567
+anchor_bottom = 0.16419867
 mouse_filter = 1
 text = "extra_info_on_sum"
 metadata/_edit_use_anchors_ = true
@@ -84,14 +83,10 @@ visible = false
 layout_direction = 2
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.083
-anchor_top = 0.308
-anchor_right = 0.964
-anchor_bottom = 0.607
-offset_left = -0.22300339
-offset_top = -28.215927
-offset_right = -0.08404541
-offset_bottom = -28.201935
+anchor_left = -0.13769363
+anchor_top = 0.16831715
+anchor_right = 0.74354553
+anchor_bottom = 0.48514894
 grow_horizontal = 2
 grow_vertical = 0
 size_flags_horizontal = 3
@@ -100,6 +95,7 @@ focus_mode = 2
 mouse_filter = 2
 mouse_force_pass_scroll_events = false
 columns = 6
+metadata/_edit_use_anchors_ = true
 
 [node name="RollResultLabel" type="RichTextLabel" parent="ScoreRollUI/RollResultGrid"]
 layout_mode = 2
@@ -120,7 +116,7 @@ position = Vector2(59, 40)
 
 [node name="SumCollisionShape2D" type="CollisionShape2D" parent="ScoreRollUI/RollResultGrid/RollSum/SumInfoArea"]
 visible = false
-position = Vector2(0, 1)
+position = Vector2(-8, -7)
 shape = SubResource("RectangleShape2D_fi7fg")
 
 [node name="RollMult" type="RichTextLabel" parent="ScoreRollUI/RollResultGrid"]
@@ -142,6 +138,7 @@ position = Vector2(57, 42)
 
 [node name="MultCollisionShape2D" type="CollisionShape2D" parent="ScoreRollUI/RollResultGrid/RollMultValue/MultInfoArea"]
 visible = false
+position = Vector2(1, -8.75)
 shape = SubResource("RectangleShape2D_mkgj2")
 
 [node name="=" type="RichTextLabel" parent="ScoreRollUI/RollResultGrid"]
@@ -156,41 +153,13 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "final_result"
 
-[node name="RollButton" type="Button" parent="ScoreRollUI"]
-layout_mode = 0
-anchor_left = -0.468
-anchor_top = 0.327
-anchor_right = -0.028
-anchor_bottom = 1.0
-offset_left = -0.0920105
-offset_top = -0.0539856
-offset_right = 0.268
-offset_bottom = 6.10352e-05
-size_flags_horizontal = 0
-size_flags_vertical = 8
-text = "Roll"
-
-[node name="Continue" type="Button" parent="ScoreRollUI"]
-visible = false
-layout_mode = 0
-anchor_left = -0.415
-anchor_top = 0.481
-anchor_right = -0.138
-anchor_bottom = 0.977
-offset_left = 0.115005
-offset_top = 0.0659943
-offset_right = 0.178009
-offset_bottom = -0.0780182
-size_flags_horizontal = 0
-size_flags_vertical = 8
-text = "Continue"
-
 [node name="InfoPanel" type="Panel" parent="ScoreRollUI"]
 visible = false
-layout_mode = 0
-anchor_left = 0.08261618
+layout_mode = 1
+anchors_preset = -1
+anchor_left = -0.13769363
 anchor_top = 0.48514897
-anchor_right = 0.90877795
+anchor_right = 0.68846816
 anchor_bottom = 1.0000006
 metadata/_edit_use_anchors_ = true
 
@@ -212,13 +181,44 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="DebugControls" parent="." instance=ExtResource("2_uiuj2")]
-visible = false
-z_index = 0
+[node name="Instructions" type="RichTextLabel" parent="ScoreRollUI/InfoPanel"]
 layout_mode = 1
-mouse_filter = 2
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Hover over score and multiplier result numbers to check rolled dice values"
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="Control" type="Control" parent="."]
+[node name="RollButton" type="Button" parent="ScoreRollUI"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.798623
+anchor_top = 0.32673302
+anchor_right = 1.2392426
+anchor_bottom = 1.0000007
+offset_bottom = 1.5258789e-05
+size_flags_horizontal = 0
+size_flags_vertical = 8
+text = "Roll"
+metadata/_edit_use_anchors_ = true
+
+[node name="Continue" type="Button" parent="ScoreRollUI"]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.7986231
+anchor_top = 0.32673308
+anchor_right = 1.2392427
+anchor_bottom = 1.0000006
+size_flags_horizontal = 0
+size_flags_vertical = 8
+text = "Continue"
+metadata/_edit_use_anchors_ = true
+
+[node name="GoalControl" type="Control" parent="."]
 anchors_preset = 0
 anchor_left = 0.027777778
 anchor_top = 0.6419753
@@ -228,7 +228,7 @@ offset_top = 3.0517578e-05
 offset_bottom = 3.0517578e-05
 metadata/_edit_use_anchors_ = true
 
-[node name="GoalLabel" type="RichTextLabel" parent="Control"]
+[node name="GoalLabel" type="RichTextLabel" parent="GoalControl"]
 layout_mode = 0
 anchor_top = 0.125
 anchor_right = 0.33333334
@@ -237,7 +237,7 @@ theme_override_font_sizes/normal_font_size = 32
 text = "Goal:"
 metadata/_edit_use_anchors_ = true
 
-[node name="GoalValue" type="RichTextLabel" parent="Control"]
+[node name="GoalValue" type="RichTextLabel" parent="GoalControl"]
 layout_mode = 0
 anchor_left = 0.33333334
 anchor_top = 0.125

@@ -16,7 +16,7 @@ var gameOver := false
 func _ready():
 	diceGrid.populate_grid()
 	$DiceGrid/DiceTabs.visible = false
-	$Control/GoalValue.text = str(goalValue)
+	$GoalControl/GoalValue.text = str(goalValue)
 
 func update_text():
 	if diceGrid.visible:
@@ -26,6 +26,8 @@ func update_text():
 			dieUI.grab_focus()
 
 func _on_sum_info_area_mouse_entered():
+	if $ScoreRollUI/InfoPanel/Instructions.visible:
+		$ScoreRollUI/InfoPanel/Instructions.visible = false
 	if !sumInfo.visible:
 		sumInfo.visible = true
 	if !$ScoreRollUI/InfoPanel/SumInfo.visible:
@@ -38,6 +40,8 @@ func _on_sum_info_area_mouse_exited():
 		$ScoreRollUI/InfoPanel/SumInfo.visible = false
 
 func _on_mult_info_area_mouse_entered():
+	if $ScoreRollUI/InfoPanel/Instructions.visible:
+		$ScoreRollUI/InfoPanel/Instructions.visible = false
 	if !multInfo.visible:
 		multInfo.visible = true
 	if !$ScoreRollUI/InfoPanel/MultInfo.visible:
@@ -56,12 +60,12 @@ func _on_roll_button_pressed():
 	if !$ScoreRollUI/InfoPanel.visible:
 		$ScoreRollUI/InfoPanel.visible = true
 	var totalSum : int
-	var preMultSum := 1
+	var preMultSum := 0
 	var totalMult := 1
 	var index := 0
 	#var sumFaces : Array[DieFace] = []
 	#var multFaces : Array[DieFace] = []
-	sumInfo.text = "1"
+	sumInfo.text = ""
 	multInfo.text = "1"
 	for die in PlayerDice.ScoreDice:
 		var rolledIndex = die.roll()

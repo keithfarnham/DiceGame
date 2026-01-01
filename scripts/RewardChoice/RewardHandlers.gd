@@ -32,6 +32,9 @@ func _face_selected(faceIndex : int):
 			#else:
 			$addRemoveFace/AddFace.disabled = false
 			$addRemoveFace/RemoveFace.disabled = false
+		RewardType.plusMinusFace:
+			$plusMinusFaceValue/PlusFace.disabled = false
+			$plusMinusFaceValue/MinusFace.disabled = false
 
 func _die_selected(dieIndex : int):
 	print("[RewardHandler] - die selected with index " + str(dieIndex))
@@ -39,6 +42,11 @@ func _die_selected(dieIndex : int):
 		RewardType.addRemoveFace:
 			$addRemoveFace/AddFace.disabled = true
 			$addRemoveFace/RemoveFace.disabled = true
+		RewardType.plusMinusFace:
+			$plusMinusFaceValue/PlusFace.disabled = true
+			$plusMinusFaceValue/MinusFace.disabled = true
+		RewardType.duplicateDie:
+			$duplicateDie/DuplicateDie.disabled = false
 
 func _on_add_face_pressed():
 	eventText.text = "Face added to die"

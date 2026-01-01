@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 PlayerDice="*res://scripts/GlobalData/PlayerDice.gd"
 DiceData="*res://scripts/GlobalData/DiceData.gd"
+BoardData="*res://scripts/GlobalData/BoardData.gd"
 DieFaceData="res://scripts/GlobalData/DieFaceData.gd"
 
 [global_group]

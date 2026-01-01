@@ -8,36 +8,33 @@ extends Control
 static var boardSpace = preload("res://scenes/BoardSpace.tscn")
 static var itemSpace = preload("res://scenes/ItemSpace.tscn")
 
-var gridSize := 8
-var movesLeft := 6
-var lastMoveIndex := Vector2i(-1, -1)
-var pendingPath : Array[Vector2i] = []
-var itemSpaces := {}
-var landedItems : Array[ItemSpace] = []
-var landedGridNodeCopies = []
-var numItems := 6
-
 func _ready():
 	#DEBUG ONLY TODO REMOVE EVENTUALLY
 	if PlayerDice.ScoreDice.is_empty():
 		DiceData.generate_starting_dice()
 	
-	$Board/MoveCount/MovesLeftValue.text = str(movesLeft)
-	moveGrid.columns = gridSize
-	itemSpaces = setup_items(numItems)
-	for column in gridSize:
+	board_setup()
+
+func board_setup():
+	$Board/Area/AreaValue.text = str(BoardData.areaNumber)
+	$Board/MoveCount/MovesLeftValue.text = str(BoardData.movesLeft)
+	moveGrid.columns = BoardData.gridSize
+	BoardData.itemSpaces = setup_items(BoardData.numItems)
+	for column in BoardData.gridSize:
 		var row : Array[BoardSpace] = []
-		for space in gridSize:
+		for space in BoardData.gridSize:
 			var index = Vector2i(space, column)
 			var spaceInstance
 			var k = _key_of(index)
-			if itemSpaces.has(k):
-				var item = itemSpaces.get(k) as ItemSpace
+			if BoardData.itemSpaces.has(k):
+				var item = BoardData.itemSpaces.get(k) as ItemSpace
 				var itemType = item.type
 				spaceInstance = itemSpace.instantiate() as ItemSpace
 				spaceInstance.set_type(itemType)
 			else:
 				spaceInstance = boardSpace.instantiate() as BoardSpace
+			if BoardData.landedSpaces.has(k):
+				spaceInstance.set_state(BoardSpace.State.landed)
 			spaceInstance.index = index
 			spaceInstance.spaceSelected.connect(space_pressed)
 			spaceInstance.spaceHovered.connect(space_hovered)
@@ -47,7 +44,7 @@ func _ready():
 func setup_items(numItems : int) -> Dictionary:
 	var items := {}
 	for i in numItems:
-		var index = Vector2i(randi() % gridSize, randi() % gridSize)
+		var index = Vector2i(randi() % BoardData.gridSize, randi() % BoardData.gridSize)
 		var type = randi() % ItemSpace.item_type.size() as ItemSpace.item_type
 		if items.is_empty():
 			var newItem = ItemSpace.new()
@@ -59,7 +56,7 @@ func setup_items(numItems : int) -> Dictionary:
 			valid = true
 			if items.has(_key_of(index)):
 				#if we already have the newly generate index in the list, regen and check again
-				index = Vector2i(randi() % gridSize, randi() % gridSize)
+				index = Vector2i(randi() % BoardData.gridSize, randi() % BoardData.gridSize)
 				valid = false
 				continue
 		var newItem = ItemSpace.new()
@@ -68,25 +65,25 @@ func setup_items(numItems : int) -> Dictionary:
 	return items
 
 func space_hovered(index : Vector2i):
-	print("hovering over space at index " + str(index))
-	if movesLeft == 0:
-		pendingPath = []
+	print("hovering over space at index " + str(index) + " in state " + str(BoardSpace.State.keys()[_space_at(index).currentState]) + " is goal? " + str(_is_space_goal(index)))
+	if BoardData.movesLeft == 0:
+		BoardData.pendingPath = []
 		return
 		
-	if !pendingPath.is_empty():
-		for pos in pendingPath:
+	if !BoardData.pendingPath.is_empty():
+		for pos in BoardData.pendingPath:
 			var space = _space_at(pos)
 			var state = BoardSpace.State.empty
-			if itemSpaces.has(_key_of(pos)):
+			if BoardData.itemSpaces.has(_key_of(pos)):
 				state = BoardSpace.State.item
 				space.set_item_name_visible(true)
 			space.set_state(state)
-		pendingPath = []
+		BoardData.pendingPath = []
 	
 	#start is either lastMoveIndex or bottom of the column
-	var start = lastMoveIndex
+	var start = BoardData.lastMoveIndex
 	if start == Vector2i(-1, -1):
-		start = Vector2i(index.x, gridSize)
+		start = Vector2i(index.x, BoardData.gridSize)
 
 	if start == index:
 		return
@@ -114,7 +111,7 @@ func space_hovered(index : Vector2i):
 		#neighbors: right, left, down, up
 		var neighbors = [Vector2i(current.x + 1, current.y), Vector2i(current.x - 1, current.y), Vector2i(current.x, current.y + 1), Vector2i(current.x, current.y - 1)]
 		for n in neighbors:
-			if n.x < 0 or n.x >= gridSize or n.y < 0 or n.y >= gridSize:
+			if n.x < 0 or n.x >= BoardData.gridSize or n.y < 0 or n.y >= BoardData.gridSize:
 				continue
 			var k = _key_of(n)
 			if came_from.has(k):
@@ -140,10 +137,10 @@ func space_hovered(index : Vector2i):
 		cur = came_from[_key_of(cur)]
 
 	var steps_needed = path.size()
-	if movesLeft > 0:
+	if BoardData.movesLeft > 0:
 		$Board/MoveCount/MovesMinus.visible = true
 		$Board/MoveCount/MovesMinus/StepsNeeded.text = str(steps_needed)
-		if movesLeft < steps_needed:
+		if BoardData.movesLeft < steps_needed:
 			$Board/MoveCount/MovesMinus/Minus.add_theme_color_override("default_color", Color(1.0, 0.0, 0.0))
 			$Board/MoveCount/MovesMinus/StepsNeeded.add_theme_color_override("default_color", Color(1.0, 0.0, 0.0))
 			return
@@ -154,37 +151,42 @@ func space_hovered(index : Vector2i):
 	for pos in path:
 		var node = _space_at(pos)
 		node.set_state(BoardSpace.State.pending)
-	pendingPath = path
+	BoardData.pendingPath = path
 
 func space_pressed(index : Vector2i):
-	if movesLeft == 0 or pendingPath.is_empty():
+	if BoardData.movesLeft == 0 or BoardData.pendingPath.is_empty():
 		return
 	#Apply movement: set each space along the path to landed and decrement movesLeft
-	for pos in pendingPath:
+	for pos in BoardData.pendingPath:
 		var node = _space_at(pos)
 		var posKey = _key_of(pos)
-		if itemSpaces.has(posKey):
-			landedItems.push_back(itemSpaces.get(posKey))
-			var spaceCopy = _space_at(pos).duplicate()
-			landedGridNodeCopies.append(spaceCopy)
-			$LandedItems.add_child(spaceCopy)
+		if BoardData.itemSpaces.has(posKey):
+			BoardData.landedItems.push_back(BoardData.itemSpaces.get(posKey))
+			var itemSpaceCopy = _space_at(pos).duplicate()
+			BoardData.landedItemGridNodeCopies.append(itemSpaceCopy)
+			$LandedItems.add_child(itemSpaceCopy)
 		node.set_state(BoardSpace.State.landed)
-		movesLeft -= 1
-	$Board/MoveCount/MovesLeftValue.text = str(movesLeft)
-	lastMoveIndex = index
-	if movesLeft == 0:
-		$Board/MoveCount/MovesMinus.visible = false
-		#after all moves are used handle the items that were landed on
-		if !landedItems.is_empty():
-			$Board.visible = false
-			item_queue()
-	if _is_space_goal(lastMoveIndex) and landedItems.is_empty():
+		BoardData.landedSpaces[_key_of(pos)] = pos #don't need to cache off the node necessarily, just need to know the position of the landed spaces so the key is enough really
+		BoardData.movesLeft -= 1
+	$Board/MoveCount/MovesLeftValue.text = str(BoardData.movesLeft)
+	BoardData.lastMoveIndex = index
+	if _is_space_goal(BoardData.lastMoveIndex) and BoardData.landedItems.is_empty():
 		$NextArea.visible = true
 	else:
 		$NextArea.visible = false
+	if BoardData.movesLeft == 0:
+		$Board/MoveCount/MovesMinus.visible = false
+		#after all moves are used handle the items that were landed on
+		if !BoardData.landedItems.is_empty():
+			$Board.visible = false
+			$ItemsCollectedLabel.set_position(Vector2(64.0, 448.0))
+			$LandedItems.set_position(Vector2(64.0, 472.0))
+			item_queue()
+		elif !_is_space_goal(BoardData.lastMoveIndex):
+			$Continue.visible = true
 
 func item_queue():
-	item_handler(landedItems.pop_front())
+	item_handler(BoardData.landedItems.pop_front())
 
 func item_handler(item : ItemSpace):
 	rewardHandlerUI.diceGrid.clear_grids()
@@ -202,20 +204,18 @@ func item_handler(item : ItemSpace):
 			$EventText.visible = true
 			$Continue.visible = true
 		ItemSpace.item_type.addRemoveFace:
-			#TODO hitting two of these in a row breaks the dicegrid
 			$Continue.visible = false
 			eventText.text = "You found a tool allowing you to duplicate or remove a die face."
 			rewardHandlerUI.visible = true
 			$RewardHandlerUI/addRemoveFace.visible = true
 			diceGrid.visible = true
 			diceGrid.set_type(DiceGrid.GridType.allDiceFaceChoice)
-			
 
 func _key_of(v : Vector2i) -> String:
 	return str(v.x) + ":" + str(v.y)
 
 func _space_at(pos : Vector2i) -> BoardSpace:
-	var child_idx = pos.y * gridSize + pos.x
+	var child_idx = pos.y * BoardData.gridSize + pos.x
 	if child_idx < 0 or child_idx >= moveGrid.get_child_count():
 		return null
 	return moveGrid.get_child(child_idx)
@@ -226,22 +226,27 @@ func _is_space_goal(pos : Vector2i) -> bool:
 	return false
 
 func _on_item_event_continue_pressed():
-	$LandedItems.remove_child(landedGridNodeCopies.pop_front())
 	rewardHandlerUI.visible = false
-	if !landedItems.is_empty():
+	if !BoardData.landedItems.is_empty():
+		var itemNode = BoardData.landedItemGridNodeCopies.pop_front()
+		assert(itemNode != null, "ERROR - [MoveBoard] Popped item node copy is null")
+		$LandedItems.remove_child(itemNode)
 		diceGrid.selectedDie = -1
 		diceGrid.mouse_behavior_recursive = Control.MOUSE_BEHAVIOR_ENABLED
 		diceGrid.mouse_filter = Control.MOUSE_FILTER_STOP
 		item_queue()
-	elif movesLeft == 0 and _is_space_goal(lastMoveIndex):
+	elif BoardData.movesLeft == 0 and _is_space_goal(BoardData.lastMoveIndex):
 		$Board.visible = false
 		$NextArea.visible = true
 		$Continue.visible = false
 		$ItemsCollectedLabel.visible = false
-	elif movesLeft == 0:
+	elif BoardData.movesLeft == 0:
 		#once items are handled and player has no more moves go to roll scene
+		BoardData.reset_mid_round_data()
 		get_tree().change_scene_to_file("res://scenes/RollReward.tscn")
 
 func _on_next_area_pressed():
 	#TODO this will prob go to a sort of map area selection - for now it's just going to reset the MoveBoard
+	BoardData.reset_board_data()
+	BoardData.areaNumber += 1
 	get_tree().change_scene_to_file("res://scenes/MoveBoard.tscn")

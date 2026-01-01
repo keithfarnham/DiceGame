@@ -29,6 +29,7 @@ func _on_roll_pressed():
 	$Roll.visible = false
 	$Continue.visible = true
 	$ResultStakesText.visible = true
+	$ResultGridScroll.visible = true
 	diceGrid.visible = false
 	$DiceGridLabel.visible = false
 

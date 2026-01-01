@@ -33,22 +33,23 @@ gridType = 2
 visible = false
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.333333
-anchor_top = 0.654321
-anchor_right = 0.666667
-anchor_bottom = 0.691358
+anchor_left = 0.16666667
+anchor_top = 0.16049388
+anchor_right = 0.50000066
+anchor_bottom = 0.1975308
 offset_top = -3.05176e-05
 text = "Rewards you will be playing for this round:"
 metadata/_edit_use_anchors_ = true
 
 [node name="ResultGridScroll" type="ScrollContainer" parent="."]
+visible = false
 clip_contents = false
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.263889
-anchor_top = 0.691358
-anchor_right = 0.916667
-anchor_bottom = 0.938272
+anchor_left = 0.16666667
+anchor_top = 0.19753087
+anchor_right = 0.8333333
+anchor_bottom = 0.49382716
 vertical_scroll_mode = 0
 metadata/_edit_use_anchors_ = true
 
@@ -60,10 +61,10 @@ columns = 4
 
 [node name="Roll" type="Button" parent="."]
 layout_mode = 0
-anchor_left = 0.0277778
-anchor_top = 0.740741
-anchor_right = 0.25
-anchor_bottom = 0.938272
+anchor_left = 0.6666667
+anchor_top = 0.7407407
+anchor_right = 0.8888889
+anchor_bottom = 0.9382716
 size_flags_horizontal = 0
 size_flags_vertical = 8
 text = "Roll Reward Dice"
@@ -73,10 +74,10 @@ metadata/_edit_use_anchors_ = true
 visible = false
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.0277778
-anchor_top = 0.740741
-anchor_right = 0.25
-anchor_bottom = 0.938272
+anchor_left = 0.6666667
+anchor_top = 0.7407407
+anchor_right = 0.8888889
+anchor_bottom = 0.9382716
 text = "Continue"
 metadata/_edit_use_anchors_ = true
 

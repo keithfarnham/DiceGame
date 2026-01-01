@@ -12,6 +12,7 @@ var index : Vector2i
 var isGoalSpace := false
 
 func set_state(newState : State):
+	currentState = newState
 	match newState:
 		State.empty:
 			var style = load("res://styleboxes/boardspaces/emptyboard_style.tres") as StyleBoxFlat
