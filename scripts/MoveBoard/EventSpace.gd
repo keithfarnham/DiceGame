@@ -1,15 +1,15 @@
 extends BoardSpace
 
-class_name ItemSpace
+class_name EventSpace
 
-enum item_type
+enum event_type
 {
 	money,
 	addDie,
 	addRemoveFace
 }
 
-var type : item_type
+var type : event_type
 
 #because GDScript doesn't support overloading parent functions, if I need to add an initialize function to parent BoardSpace I will need to
 #either have their args match or have different signatures i.e. different function name
@@ -17,17 +17,17 @@ func initialize(newIndex, newType):
 	index = newIndex
 	type = newType
 
-func set_item_name_visible(visible : bool):
-	$ItemName.visible = visible
+func set_event_name_visible(visible : bool):
+	$EventName.visible = visible
 
-func set_type(newType : item_type):
+func set_type(newType : event_type):
 	type = newType
-	var itemName : String
+	var eventName : String
 	match type:
-		item_type.money:
-			itemName = "MONEY"
-		item_type.addDie:
-			itemName = "ADD DIE"
-		item_type.addRemoveFace:
-			itemName = "ADD/REMOVE FACE"
-	$ItemName.text = itemName
+		event_type.money:
+			eventName = "MONEY"
+		event_type.addDie:
+			eventName = "ADD DIE"
+		event_type.addRemoveFace:
+			eventName = "ADD/REMOVE FACE"
+	$ItemName.text = eventName

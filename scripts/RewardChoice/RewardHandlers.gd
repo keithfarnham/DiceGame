@@ -6,8 +6,8 @@ extends Control
 
 var type : RewardType
 
-#setting up another enum here in case I want the DieFace rewards and MoveBoard items to have different effects
-#though in the end it probably end up being cleaner to have one unifying enum, I'm still not 100% on board items/die rewards having overlap
+#setting up another enum here in case I want the DieFace rewards and MoveBoard events to have different effects
+#though in the end it probably end up being cleaner to have one unifying enum, I'm still not 100% on board events/die rewards having overlap
 #TODO re-evaluate
 enum RewardType {
 	addRemoveFace,

@@ -135,7 +135,7 @@ anchor_bottom = 1.0
 text = "1"
 metadata/_edit_use_anchors_ = true
 
-[node name="ItemsCollectedLabel" type="RichTextLabel" parent="."]
+[node name="EventsCollectedLabel" type="RichTextLabel" parent="."]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5555556
@@ -146,7 +146,7 @@ offset_top = -3.0517578e-05
 text = "Items Collected:"
 metadata/_edit_use_anchors_ = true
 
-[node name="LandedItems" type="GridContainer" parent="."]
+[node name="LandedEvents" type="GridContainer" parent="."]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5555556

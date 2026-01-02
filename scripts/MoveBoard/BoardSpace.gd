@@ -2,7 +2,7 @@ extends Button
 
 class_name BoardSpace
 
-enum State {empty, pending, landed, item, death} #TODO find out why adding the death state to the middle of this enum is causing problems with MoveBoard script thinking item spaces are in landed state immediately
+enum State {empty, pending, landed, event, death} #TODO find out why adding the death state to the middle of this enum is causing problems with MoveBoard script thinking event spaces are in landed state immediately
 signal spaceSelected(index)
 signal spaceHovered(index)
 
@@ -26,8 +26,8 @@ func set_state(newState : State):
 			var style = load("res://styleboxes/boardspaces/landedboard_style.tres") as StyleBoxFlat
 			add_theme_stylebox_override("disabled", style)
 			disabled = true
-		State.item:
-			var style = load("res://styleboxes/boardspaces/itemboard_style.tres") as StyleBoxFlat
+		State.event:
+			var style = load("res://styleboxes/boardspaces/eventboard_style.tres") as StyleBoxFlat
 			add_theme_stylebox_override("normal", style)
 
 func _on_pressed():

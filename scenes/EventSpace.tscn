@@ -1,9 +1,9 @@
 [gd_scene load_steps=3 format=3 uid="uid://c24wuslo6627y"]
 
-[ext_resource type="StyleBox" uid="uid://c2nv53n205yxd" path="res://styleboxes/boardspaces/itemboard_style.tres" id="1_feapb"]
-[ext_resource type="Script" uid="uid://brt6yx61ma2kb" path="res://scripts/MoveBoard/ItemSpace.gd" id="2_feapb"]
+[ext_resource type="StyleBox" uid="uid://c2nv53n205yxd" path="res://styleboxes/boardspaces/eventboard_style.tres" id="1_jx5al"]
+[ext_resource type="Script" uid="uid://brt6yx61ma2kb" path="res://scripts/MoveBoard/EventSpace.gd" id="2_0hnnk"]
 
-[node name="ItemSpace" type="Button"]
+[node name="EventSpace" type="Button"]
 anchors_preset = -1
 anchor_right = 0.11111111
 anchor_bottom = 0.19753087
@@ -11,12 +11,12 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_styles/normal = ExtResource("1_feapb")
-script = ExtResource("2_feapb")
+theme_override_styles/normal = ExtResource("1_jx5al")
+script = ExtResource("2_0hnnk")
 currentState = 3
 metadata/_edit_use_anchors_ = true
 
-[node name="ItemName" type="RichTextLabel" parent="."]
+[node name="EventName" type="RichTextLabel" parent="."]
 layout_mode = 0
 anchor_left = 0.0625
 anchor_top = 0.0625
