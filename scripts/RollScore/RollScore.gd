@@ -115,6 +115,8 @@ func _on_roll_button_pressed():
 func _on_continue_pressed():
 	if gameOver:
 		get_tree().change_scene_to_file("res://scenes/FrontEnd.tscn")
-	else:
+	elif BoardData.bossRound:
 		PlayerDice.Round += 1
 		get_tree().change_scene_to_file("res://scenes/RewardChoice.tscn")
+	else:
+		get_tree().change_scene_to_file("res://scenes/MoveBoard.tscn")

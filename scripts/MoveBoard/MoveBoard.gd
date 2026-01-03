@@ -19,7 +19,8 @@ func board_setup():
 	$Board/Area/AreaValue.text = str(BoardData.areaNumber)
 	$Board/MoveCount/MovesLeftValue.text = str(BoardData.movesLeft)
 	moveGrid.columns = BoardData.gridSize
-	BoardData.eventSpaces = setup_events(BoardData.numEvents)
+	if !BoardData.savedState:
+		BoardData.eventSpaces = setup_events(BoardData.numEvents)
 	for column in BoardData.gridSize:
 		var row : Array[BoardSpace] = []
 		for space in BoardData.gridSize:
@@ -43,14 +44,16 @@ func board_setup():
 
 func setup_events(numEvents : int) -> Dictionary:
 	var events := {}
+	
+	#first add the 1 guaranteed shop event space
+	var shopIndex = Vector2i(randi() % BoardData.gridSize, randi() % BoardData.gridSize)
+	var shopEvent = EventSpace.new()
+	shopEvent.initialize(shopIndex, EventSpace.event_type.shop)
+	events[_key_of(shopIndex)] = shopEvent
+	
 	for i in numEvents:
 		var index = Vector2i(randi() % BoardData.gridSize, randi() % BoardData.gridSize)
-		var type = randi() % EventSpace.event_type.size() as EventSpace.event_type
-		if events.is_empty():
-			var newEvent = EventSpace.new()
-			newEvent.initialize(index, type)
-			events[_key_of(index)] = newEvent
-			continue
+		var type = randi_range(1, EventSpace.event_type.size() - 1) as EventSpace.event_type
 		var valid = false
 		while !valid:
 			valid = true
@@ -170,10 +173,7 @@ func space_pressed(index : Vector2i):
 		BoardData.movesLeft -= 1
 	$Board/MoveCount/MovesLeftValue.text = str(BoardData.movesLeft)
 	BoardData.lastMoveIndex = index
-	if _is_space_goal(BoardData.lastMoveIndex) and BoardData.landedEvents.is_empty():
-		$NextArea.visible = true
-	else:
-		$NextArea.visible = false
+	
 	if BoardData.movesLeft == 0:
 		$Board/MoveCount/MovesMinus.visible = false
 		#after all moves are used handle the events that were landed on
@@ -184,6 +184,11 @@ func space_pressed(index : Vector2i):
 			event_queue()
 		elif !_is_space_goal(BoardData.lastMoveIndex):
 			$Continue.visible = true
+	
+	elif _is_space_goal(BoardData.lastMoveIndex):
+		$ToBoss.visible = true
+	else:
+		$ToBoss.visible = false
 
 func event_queue():
 	event_handler(BoardData.landedEvents.pop_front())
@@ -225,7 +230,7 @@ func _is_space_goal(pos : Vector2i) -> bool:
 		return true
 	return false
 
-func _on_event_event_continue_pressed():
+func _on_event_continue_pressed():
 	rewardHandlerUI.visible = false
 	if !BoardData.landedEvents.is_empty():
 		var eventNode = BoardData.landedEventGridNodeCopies.pop_front()
@@ -235,18 +240,26 @@ func _on_event_event_continue_pressed():
 		diceGrid.mouse_behavior_recursive = Control.MOUSE_BEHAVIOR_ENABLED
 		diceGrid.mouse_filter = Control.MOUSE_FILTER_STOP
 		event_queue()
-	elif BoardData.movesLeft == 0 and _is_space_goal(BoardData.lastMoveIndex):
+	elif _is_space_goal(BoardData.lastMoveIndex):
 		$Board.visible = false
-		$NextArea.visible = true
+		$ToBoss.visible = true
 		$Continue.visible = false
 		$EventsCollectedLabel.visible = false
 	elif BoardData.movesLeft == 0:
 		#once events are handled and player has no more moves go to roll scene
 		BoardData.reset_mid_round_data()
-		get_tree().change_scene_to_file("res://scenes/RollReward.tscn")
+		BoardData.savedState = true
+		get_tree().change_scene_to_file("res://scenes/RollScore.tscn")
 
-func _on_next_area_pressed():
-	#TODO this will prob go to a sort of map area selection - for now it's just going to reset the MoveBoard
+func _on_to_boss_pressed():
+	if !BoardData.landedEvents.is_empty():
+		$ToBoss.visible = false
+		$Board.visible = false
+		$EventsCollectedLabel.set_position(Vector2(64.0, 448.0))
+		$LandedEvents.set_position(Vector2(64.0, 472.0))
+		event_queue()
+		return
 	BoardData.reset_board_data()
 	BoardData.areaNumber += 1
-	get_tree().change_scene_to_file("res://scenes/MoveBoard.tscn")
+	BoardData.bossRound = true
+	get_tree().change_scene_to_file("res://scenes/RollScore.tscn")

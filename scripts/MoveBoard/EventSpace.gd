@@ -4,6 +4,7 @@ class_name EventSpace
 
 enum event_type
 {
+	shop,
 	money,
 	addDie,
 	addRemoveFace
@@ -24,10 +25,12 @@ func set_type(newType : event_type):
 	type = newType
 	var eventName : String
 	match type:
+		event_type.shop:
+			eventName = "SHOP"
 		event_type.money:
 			eventName = "MONEY"
 		event_type.addDie:
 			eventName = "ADD DIE"
 		event_type.addRemoveFace:
 			eventName = "ADD/REMOVE FACE"
-	$ItemName.text = eventName
+	$EventName.text = eventName

@@ -5,7 +5,7 @@ extends Node
 var areaNumber := 1
 
 var gridSize := 8
-var movesLeft := 6
+var movesLeft := 4
 var lastMoveIndex := Vector2i(-1, -1)
 var pendingPath : Array[Vector2i] = []
 var eventSpaces := {}
@@ -14,6 +14,7 @@ var landedEvents : Array[EventSpace] = []
 var landedEventGridNodeCopies = []
 var numEvents := 6
 var savedState := false
+var bossRound := false
 
 func reset_moves_left():
 	movesLeft = 6
@@ -38,3 +39,4 @@ func reset_board_data():
 	landedEventGridNodeCopies = []
 	numEvents = 6
 	savedState = false
+	bossRound = false

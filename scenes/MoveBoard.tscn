@@ -180,7 +180,7 @@ anchor_bottom = 0.9506173
 text = "Continue"
 metadata/_edit_use_anchors_ = true
 
-[node name="NextArea" type="Button" parent="."]
+[node name="ToBoss" type="Button" parent="."]
 visible = false
 layout_mode = 1
 anchors_preset = -1
@@ -188,8 +188,8 @@ anchor_left = 0.6666667
 anchor_top = 0.7407407
 anchor_right = 0.8888889
 anchor_bottom = 0.9506173
-text = "Next Area"
+text = "BOSS FIGHT"
 metadata/_edit_use_anchors_ = true
 
-[connection signal="pressed" from="Continue" to="." method="_on_item_event_continue_pressed"]
-[connection signal="pressed" from="NextArea" to="." method="_on_next_area_pressed"]
+[connection signal="pressed" from="Continue" to="." method="_on_event_continue_pressed"]
+[connection signal="pressed" from="ToBoss" to="." method="_on_to_boss_pressed"]
