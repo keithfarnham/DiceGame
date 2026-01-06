@@ -12,24 +12,33 @@ grow_vertical = 2
 script = ExtResource("1_nccj7")
 
 [node name="Standard" type="Button" parent="."]
-layout_mode = 0
-anchor_left = 0.10850695
-anchor_top = 0.11728395
-anchor_right = 0.27430555
-anchor_bottom = 0.35030866
-offset_bottom = -1.5258789e-05
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.048611112
+anchor_top = 0.19753087
+anchor_right = 0.21440972
+anchor_bottom = 0.43055555
 text = "Standard Dice Class"
 metadata/_edit_use_anchors_ = true
 
 [node name="Dungeon Master" type="Button" parent="."]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.3003472
-anchor_top = 0.11728395
-anchor_right = 0.46614584
-anchor_bottom = 0.35030866
-offset_bottom = -1.5258789e-05
+anchor_left = 0.22309028
+anchor_top = 0.19753087
+anchor_right = 0.3888889
+anchor_bottom = 0.43055555
 text = "Dungeon Master"
+metadata/_edit_use_anchors_ = true
+
+[node name="DiceLover" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.048611112
+anchor_top = 0.44598764
+anchor_right = 0.21440972
+anchor_bottom = 0.67901236
+text = "Dice Lover (Random)"
 metadata/_edit_use_anchors_ = true
 
 [node name="Continue" type="Button" parent="."]
@@ -69,6 +78,17 @@ anchor_right = 0.73522973
 anchor_bottom = 0.65989846
 metadata/_edit_use_anchors_ = true
 
+[node name="ChooseAClass" type="RichTextLabel" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.049479168
+anchor_top = 0.14351852
+anchor_right = 0.2170139
+anchor_bottom = 0.18518518
+text = "Choose a starting class:"
+metadata/_edit_use_anchors_ = true
+
 [connection signal="pressed" from="Standard" to="." method="_on_standard_pressed"]
 [connection signal="pressed" from="Dungeon Master" to="." method="_on_dungeon_master_pressed"]
+[connection signal="pressed" from="DiceLover" to="." method="_on_dice_lover_pressed"]
 [connection signal="pressed" from="Continue" to="." method="_on_continue_pressed"]

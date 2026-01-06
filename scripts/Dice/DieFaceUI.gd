@@ -18,7 +18,7 @@ func face_selected(faceIndex : int):
 	faceSelected.emit(faceIndex)
 
 func _pressed():
-	print("[DieFaceUI] Face " + faceIndexUI.text + " pressed. Should match faceIndex " + str(faceIndex))
+	Log.print("[DieFaceUI] Face " + faceIndexUI.text + " pressed. Should match faceIndex " + str(faceIndex))
 	face_selected(faceIndex)
 
 func _ready():

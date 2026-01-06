@@ -2,7 +2,7 @@ extends Button
 
 class_name BoardSpace
 
-enum State {empty, pending, landed, event, death} #TODO find out why adding the death state to the middle of this enum is causing problems with MoveBoard script thinking event spaces are in landed state immediately
+enum State {empty, pending, landed, event, death}
 signal spaceSelected(index)
 signal spaceHovered(index)
 

@@ -20,7 +20,7 @@ func add_dice(newDice : Array[Die]):
 		add_die(newDie)
 	
 func add_die(newDie : Die):
-	print("[PlayerDice] Adding a new " + str(DiceData.DiceType.keys()[newDie.type]) + "die")
+	Log.print("[PlayerDice] Adding a new " + str(DiceData.DiceType.keys()[newDie.type]) + "die")
 	match newDie.type:
 		DiceData.DiceType.score:
 			ScoreDice.append(newDie)

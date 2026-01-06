@@ -10,9 +10,8 @@ func roll():
 	return randi_range(0, faces.size() - 1)
 
 func set_face(faceIndex: int, faceValue: int, faceType:= DieFaceData.FaceType.score):
-	if faceIndex >= faces.size():
-		print_rich("[color=red][set_face] something bad happen - faceIndex: " + str(faceIndex) + " faceValue: " + str(faceValue) + " faceType = " + str(faceType) + "[/color=red]")
-	print("[set_face] updating faceIndex: " + str(faceIndex) + " faceValue: " + str(faceValue) + " faceType = " + str(faceType))
+	assert(faceIndex < faces.size(), "[set_face] something bad happened - faceIndex: " + str(faceIndex) + " faceValue: " + str(faceValue) + " faceType = " + str(faceType))
+	Log.print("[set_face] updating faceIndex: " + str(faceIndex) + " faceValue: " + str(faceValue) + " faceType = " + str(faceType))
 	faces[faceIndex] = DieFace.new(faceValue, faceType)
 
 func num_faces() -> int:
@@ -31,7 +30,7 @@ func clear_faces():
 	faces.clear()
 	
 func print():
-	print("Die of type: " + str(DiceData.DiceType.keys()[type]) + " has " + str(num_faces()) + " faces")
+	Log.print("Die of type: " + str(DiceData.DiceType.keys()[type]) + " has " + str(num_faces()) + " faces")
 
 func _init(faceData : Array[DieFace], dieType : DiceData.DiceType):
 	faces = faceData

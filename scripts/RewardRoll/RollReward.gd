@@ -13,7 +13,7 @@ func _ready():
 	diceGrid.populate_grid()
 
 func _on_roll_pressed():
-	print("[RollReward] Rolling reward dice")
+	Log.print("[RollReward] Rolling reward dice")
 	PlayerDice.RewardStakes = []
 	for die in PlayerDice.RewardDice:
 		var rolledIndex = die.roll()

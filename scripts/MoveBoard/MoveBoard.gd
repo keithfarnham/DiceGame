@@ -13,14 +13,24 @@ func _ready():
 	if PlayerDice.ScoreDice.is_empty():
 		DiceData.generate_starting_dice()
 	
+	$Shop.shop_closed.connect(_shop_closed)
 	board_setup()
 
+func _shop_closed():
+	$Shop.visible = false
+	$LandedEvents.visible = true
+	$EventsCollectedLabel.visible = true
+	$EventText.visible = true
+
 func board_setup():
-	$Board/Area/AreaValue.text = str(BoardData.areaNumber)
-	$Board/MoveCount/MovesLeftValue.text = str(BoardData.movesLeft)
 	moveGrid.columns = BoardData.gridSize
 	if !BoardData.savedState:
+		BoardData.reset_moves_left()
 		BoardData.eventSpaces = setup_events(BoardData.numEvents)
+	
+	$Board/Area/AreaValue.text = str(BoardData.areaNumber)
+	$Board/MoveCount/MovesLeftValue.text = str(BoardData.movesLeft)
+	
 	for column in BoardData.gridSize:
 		var row : Array[BoardSpace] = []
 		for space in BoardData.gridSize:
@@ -32,6 +42,7 @@ func board_setup():
 				var eventType = event.type
 				spaceInstance = eventSpace.instantiate() as EventSpace
 				spaceInstance.set_type(eventType)
+				spaceInstance.set_state(BoardSpace.State.event)
 			else:
 				spaceInstance = boardSpace.instantiate() as BoardSpace
 			if BoardData.landedSpaces.has(k):
@@ -68,7 +79,7 @@ func setup_events(numEvents : int) -> Dictionary:
 	return events
 
 func space_hovered(index : Vector2i):
-	print("hovering over space at index " + str(index) + " in state " + str(BoardSpace.State.keys()[_space_at(index).currentState]) + " is goal? " + str(_is_space_goal(index)))
+	Log.print("hovering over space at index " + str(index) + " in state " + str(BoardSpace.State.keys()[_space_at(index).currentState]) + " is goal? " + str(_is_space_goal(index)))
 	if BoardData.movesLeft == 0:
 		BoardData.pendingPath = []
 		return
@@ -96,7 +107,7 @@ func space_hovered(index : Vector2i):
 		push_error("[MoveBoard] target node is null")
 		return
 	if target_node.currentState == BoardSpace.State.landed:
-		print("[MoveBoard] target is already landed; no movement")
+		Log.print("[MoveBoard] target is already landed; no movement")
 		return
 
 	#BFS to find shortest path avoiding landed spaces
@@ -129,7 +140,7 @@ func space_hovered(index : Vector2i):
 			frontier.append(n)
 
 	if not found:
-		print("[MoveBoard] no path to target")
+		Log.print("[MoveBoard] no path to target")
 		return
 
 	#Reconstruct path (excluding start, including target)
@@ -196,12 +207,18 @@ func event_queue():
 func event_handler(event : EventSpace):
 	rewardHandlerUI.diceGrid.clear_grids()
 	match event.type:
-		EventSpace.event_type.money:
-			var amount = randi() % 20 + 1
-			eventText.text = "Someone dropped $" + str(amount) + " that you grab off the ground."
-			PlayerDice.Money += amount
-			$EventText.visible = true
-			$Continue.visible = true
+		EventSpace.event_type.shop:
+			$Shop.visible = true
+			$LandedEvents.visible = false
+			$EventsCollectedLabel.visible = false
+			$EventText.visible = false
+		#TODO re-enable money once shop is setup
+		#EventSpace.event_type.money:
+			#var amount = randi() % 20 + 1
+			#eventText.text = "Someone dropped $" + str(amount) + " that you grab off the ground."
+			#PlayerDice.Money += amount
+			#$EventText.visible = true
+			#$Continue.visible = true
 		EventSpace.event_type.addDie:
 			var newDie = DiceData.make_a_die(6)
 			PlayerDice.add_die(newDie)

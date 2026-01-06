@@ -1,11 +1,10 @@
 extends Node
 
-#TODO set this up with all the data related to the MoveBoard to save and re-setup the board state
-
 var areaNumber := 1
+var maxMoves := 4
 
 var gridSize := 8
-var movesLeft := 4
+var movesLeft : int
 var lastMoveIndex := Vector2i(-1, -1)
 var pendingPath : Array[Vector2i] = []
 var eventSpaces := {}
@@ -17,7 +16,7 @@ var savedState := false
 var bossRound := false
 
 func reset_moves_left():
-	movesLeft = 6
+	movesLeft = maxMoves
 	
 func reset_landed_events():
 	landedEvents = []
@@ -30,12 +29,12 @@ func reset_mid_round_data():
 
 func reset_board_data():
 	gridSize = 8
-	movesLeft = 6
+	reset_moves_left()
 	lastMoveIndex = Vector2i(-1, -1)
 	pendingPath = []
 	eventSpaces = {}
 	landedSpaces = {}
-	landedEvents = []
+	reset_landed_events()
 	landedEventGridNodeCopies = []
 	numEvents = 6
 	savedState = false

@@ -81,12 +81,13 @@ func populate_grid():
 
 func set_type(newType : GridType):
 	gridType = newType
-	print("[DiceGrid] Grid type set to " + str(GridType.keys()[newType]))
+	Log.print("[DiceGrid] Grid type set to " + str(GridType.keys()[newType]))
+	clear_grids()
 	populate_grid()
 
 func set_tab(newTab : GridTabs):
 	currentTab = newTab
-	print("[DiceGrid] set_tab to " + str(GridTabs.keys()[newTab]))
+	Log.print("[DiceGrid] set_tab to " + str(GridTabs.keys()[newTab]))
 	clear_face_grid()
 	selectedDie = -1
 	selectedFace = -1
@@ -104,7 +105,7 @@ func set_tab(newTab : GridTabs):
 
 func add_die(die : Die, dieIndex : int):
 	var diceGrid
-	print("[DiceGrid] die type is " + str(DiceData.DiceType.keys()[die.type]))
+	Log.print("[DiceGrid] die type is " + str(DiceData.DiceType.keys()[die.type]))
 	match die.type:
 		DiceData.DiceType.reward:
 			diceGrid = rewardDiceGrid
@@ -120,12 +121,12 @@ func add_die(die : Die, dieIndex : int):
 
 func add_dice(dice : Array[Die]):
 	for dieIndex in dice.size():
-		print("[DiceGrid] adding dice at index " + str(dieIndex) + " of type " + str(DiceData.DiceType.keys()[dice[dieIndex].type]))
+		Log.print("[DiceGrid] adding dice at index " + str(dieIndex) + " of type " + str(DiceData.DiceType.keys()[dice[dieIndex].type]))
 		add_die(dice[dieIndex], dieIndex)
 
 func die_selected(dieIndex : int):
 	dieSelected.emit(dieIndex)
-	print("[DiceGrid] die_selected prev selected " + str(selectedDie) + " with die index " + str(dieIndex))
+	Log.print("[DiceGrid] die_selected prev selected " + str(selectedDie) + " with die index " + str(dieIndex))
 	var draftNode
 	if gridType == GridType.draft:
 		draftNode = get_tree().get_first_node_in_group("DiceDraft")
@@ -179,19 +180,17 @@ func die_selected(dieIndex : int):
 		faceGrid.add_child(newFaceUIInstance)
 
 func face_selected(faceIndex : int):
-	print("[DiceGrid] face_selected prev selected " + str(selectedFace) + " with face index " + str(faceIndex))
-	#TODO if DiceGrid's type is a face selection we enable/disable the buttons to actually select once a face is chosen or unchosen
-	#if gridType == GridType.faceChoice or gridType == GridType.allDiceFaceChoice:
+	Log.print("[DiceGrid] face_selected prev selected " + str(selectedFace) + " with face index " + str(faceIndex))
 	faceSelected.emit(faceIndex)
 	selectedFace = faceIndex
 
 func refresh_grids():
 	clear_face_grid()
-	remove_die(currentTab)
+	hide_die(currentTab)
 	#wait to clear the selectedDie value until after refresh so we have index of die to remove
 	selectedDie = -1
 
-func remove_die(tab : GridTabs):
+func hide_die(tab : GridTabs):
 	#this doesn't actually remove the die from the grid but instead makes it invisible so I don't have to recalculate the zindexes
 	match tab:
 		GridTabs.score:
@@ -208,6 +207,8 @@ func clear_dice_grid():
 		child.queue_free()
 
 func clear_grids():
+	selectedDie = -1
+	selectedFace = -1
 	clear_face_grid()
 	clear_dice_grid()
 

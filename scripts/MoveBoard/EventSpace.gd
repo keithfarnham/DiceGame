@@ -5,7 +5,7 @@ class_name EventSpace
 enum event_type
 {
 	shop,
-	money,
+	#money,TODO re-enable money once shop is setup
 	addDie,
 	addRemoveFace
 }
@@ -27,8 +27,8 @@ func set_type(newType : event_type):
 	match type:
 		event_type.shop:
 			eventName = "SHOP"
-		event_type.money:
-			eventName = "MONEY"
+		#event_type.money: TODO re-enable money once shop is setup
+			#eventName = "MONEY"
 		event_type.addDie:
 			eventName = "ADD DIE"
 		event_type.addRemoveFace:

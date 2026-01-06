@@ -14,6 +14,50 @@ mouse_filter = 2
 script = ExtResource("1_oiyel")
 metadata/_edit_use_anchors_ = true
 
+[node name="addFace" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchor_left = 0.6666667
+anchor_top = 0.79012346
+anchor_right = 0.9444444
+anchor_bottom = 0.8888889
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="AddFace" type="Button" parent="addFace"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.3
+anchor_right = 0.7
+anchor_bottom = 1.000001
+disabled = true
+text = "Duplicate Face"
+metadata/_edit_use_anchors_ = true
+
+[node name="removeFace" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchor_left = 0.6666667
+anchor_top = 0.79012346
+anchor_right = 0.9444444
+anchor_bottom = 0.8888889
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="RemoveFace" type="Button" parent="removeFace"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.3
+anchor_right = 0.7
+anchor_bottom = 1.000001
+disabled = true
+text = "Remove Face"
+metadata/_edit_use_anchors_ = true
+
 [node name="addRemoveFace" type="Control" parent="."]
 visible = false
 layout_mode = 1
@@ -103,6 +147,8 @@ visible = false
 layout_mode = 1
 gridType = 2
 
+[connection signal="pressed" from="addFace/AddFace" to="." method="_on_duplicate_die_pressed"]
+[connection signal="pressed" from="removeFace/RemoveFace" to="." method="_on_duplicate_die_pressed"]
 [connection signal="pressed" from="addRemoveFace/AddFace" to="." method="_on_add_face_pressed"]
 [connection signal="pressed" from="addRemoveFace/RemoveFace" to="." method="_on_remove_face_pressed"]
 [connection signal="pressed" from="plusMinusFaceValue/PlusFace" to="." method="_on_plus_face_pressed"]

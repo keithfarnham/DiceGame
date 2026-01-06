@@ -63,7 +63,7 @@ enum MakeADieType
 }
 
 func make_a_die(numFaces : int, type := MakeADieType.score) -> Die:
-	print("MakeADie with " + str(numFaces) + " faces of type " + MakeADieType.keys()[type])
+	Log.print("MakeADie with " + str(numFaces) + " faces of type " + MakeADieType.keys()[type])
 	var faces : Array[DieFace]
 	
 	for i in numFaces:
@@ -130,7 +130,7 @@ func random_num_faces_from_rarity(rarity : DieRarity):
 		var weights = DieFaceCountWeight.get(numFaces)
 		var facesWeight = weights.get(rarity)
 		if r < facesWeight:
-			print("[DiceData][num_faces] - random num chosen " + str(r) + " for faces from rarity " + str(DieRarity.keys()[rarity]) + " returning numFaces " + str(numFaces))
+			Log.print("[DiceData][num_faces] - random num chosen " + str(r) + " for faces from rarity " + str(DieRarity.keys()[rarity]) + " returning numFaces " + str(numFaces))
 			return numFaces
 		r -= facesWeight
 	push_error("ERROR random_num_faces_from_rarity hit something we shouldn't")
@@ -158,25 +158,23 @@ func random_score_face_value_from_rarity(numFaces, rarity : DieRarity) -> int:
 	for i in range(weights.size()):
 		if r < weights[i]:
 			var chosen = i + 1
-			print("[DiceData][score_face_value] - random float " + str(r) + " total " + str(total) + " rarity " + str(DieRarity.keys()[rarity]) + " returning " + str(chosen))
+			Log.print("[DiceData][score_face_value] - random float " + str(r) + " total " + str(total) + " rarity " + str(DieRarity.keys()[rarity]) + " returning " + str(chosen))
 			return chosen
 		r -= weights[i]
 		
 	return int(numFaces)
 	
 func random_reward_face_value_from_rarity(rarity : DieRarity):
-	#TODO re-enable
-	return DieFaceData.RewardType.money
-	#var r = randi_range(0, sum_reward_face_weights_for_rarity(rarity))
-	#for rewardType in DieFaceData.RewardTypeWeights.keys():
-		#print("TESTOUTPUT reward type is " + str(rewardType))
-		#var weights = DieFaceData.RewardTypeWeights.get(rewardType as DieFaceData.RewardType)
-		#var weightForRarity = weights.get(rarity as DieRarity)
-		#if r < weightForRarity:
-			#print("[DiceData][reward_face_value] - random num chosen " + str(r) + " from rarity " + str(DieRarity.keys()[rarity]) + " returning " + str(rewardType))
-			#return rewardType
-		#r -= weightForRarity
-	#print("ERROR random_reward_face_value_from_rarity hit something we shouldn't")
+	var sum = sum_reward_face_weights_for_rarity(rarity)
+	var r = randi_range(0, sum - 1)
+	for rewardType in DieFaceData.RewardTypeWeights.keys():
+		var weights = DieFaceData.RewardTypeWeights.get(rewardType as DieFaceData.RewardType)
+		var weightForRarity = weights.get(rarity as DieRarity)
+		if r < weightForRarity:
+			Log.print("[DiceData][reward_face_value] - random num chosen " + str(r) + " from rarity " + str(DieRarity.keys()[rarity]) + " returning " + str(DieFaceData.RewardType.keys()[rewardType]))
+			return rewardType
+		r -= weightForRarity
+	push_error("ERROR random_reward_face_value_from_rarity hit something we shouldn't")
 
 func random_face_type_from_rarity(rarity : DieRarity):
 	#TODO re-enable
@@ -188,14 +186,13 @@ func random_face_type_from_rarity(rarity : DieRarity):
 		#var weights = DieFaceTypeWeight.get(type)
 		#var typeWeight = weights.get(rarity)
 		#if r < typeWeight:
-			#print("[DiceData][face_type] - random num chosen " + str(r) + "face type for rarity " + str(DieRarity.keys()[rarity]) + " returning " + str(DieFaceData.FaceType.keys()[type]))
+			#Log.print("[DiceData][face_type] - random num chosen " + str(r) + "face type for rarity " + str(DieRarity.keys()[rarity]) + " returning " + str(DieFaceData.FaceType.keys()[type]))
 			#return type as DieFaceData.FaceType
 		#r -= typeWeight
-	#print("ERROR random_face_type_from_rarity hit something we shouldn't")
+	#Log.print("ERROR random_face_type_from_rarity hit something we shouldn't")
 
-func random_score_die(rarity : DieRarity):
-	#TODO re-enable
-	var numFaces = random_num_faces_from_rarity(rarity)
+func random_score_die(rarity : DieRarity, forceNumFaces = -1):
+	var numFaces = random_num_faces_from_rarity(rarity) if forceNumFaces == -1 else forceNumFaces
 	var faces : Array[DieFace] = []
 	for i in numFaces:
 		var value = random_score_face_value_from_rarity(numFaces, rarity)
@@ -204,8 +201,8 @@ func random_score_die(rarity : DieRarity):
 	var newDie = Die.new(faces, DiceData.DiceType.score)
 	return newDie
 	
-func random_reward_die(rarity : DieRarity):
-	var numFaces = random_num_faces_from_rarity(rarity)
+func random_reward_die(rarity : DieRarity, forceNumFaces = -1):
+	var numFaces = random_num_faces_from_rarity(rarity) if forceNumFaces == -1 else forceNumFaces
 	var faces : Array[DieFace] = []
 	for i in numFaces:
 		var value = random_reward_face_value_from_rarity(rarity)
@@ -214,25 +211,28 @@ func random_reward_die(rarity : DieRarity):
 	var newDie = Die.new(faces, DiceData.DiceType.reward)
 	return newDie
 
-func generate_draft_score_dice(numOfDice : int) -> Array[Die]:
+func generate_random_draft_score_dice(numOfDice : int) -> Array[Die]:
 	var dice : Array[Die] = []
 	for i in numOfDice:
 		dice.append(random_score_die(DieRarity.common))
 	return dice
 
-func generate_draft_reward_dice(numOfDice : int) -> Array[Die]:
-	print("Generating Reward Dice")
+func generate_random_draft_reward_dice(numOfDice : int) -> Array[Die]:
+	Log.print("Generating Reward Dice")
 	var dice : Array[Die] = []
 	dice.append(simple_reward_D6())
 	dice.append(random_reward_die(DieRarity.common))
-	#dice.append(random_reward_die(DieRarity.common))
 	return dice
 
 func generate_starting_dice():
-	#simple starting dice func
-	#this will be expanded to allow different starting dice to be chosen
-	PlayerDice.ScoreDice.append(D6())
-	PlayerDice.RewardDice.append(simple_reward_D6())
+	match PlayerDice.ChosenClass:
+		PlayerClass.ClassChoice.StandardGambler:
+			PlayerDice.ScoreDice.append(make_a_die(6))
+		PlayerClass.ClassChoice.DungeonMaster:
+			PlayerDice.ScoreDice.append(make_a_die(20))
+		_:
+			PlayerDice.ScoreDice.append(D6())
+			PlayerDice.RewardDice.append(simple_reward_D6())
 
 func D6(type := DiceType.score) -> Die:
 	#TODO modify to support creation of reward D6 as well
@@ -246,5 +246,5 @@ func D6(type := DiceType.score) -> Die:
 			faceType = DieFaceData.FaceType.reward
 	for i in DieFaceCount.D6:
 		faces.append(DieFace.new(i + 1, faceType))
-	print("making D6 with type " + str(DiceType.keys()[type]))
+	Log.print("making D6 with type " + str(DiceType.keys()[type]))
 	return Die.new(faces, type)

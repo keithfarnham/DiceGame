@@ -31,14 +31,16 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 1
 script = ExtResource("1_efbfp")
+gridType = null
 metadata/_edit_use_anchors_ = true
 
 [node name="DiceTabs" type="Control" parent="."]
 anchors_preset = 0
-offset_left = 880.0
-offset_top = 384.0
-offset_right = 1096.0
-offset_bottom = 416.0
+anchor_left = 0.8088237
+anchor_top = 1.0000007
+anchor_right = 1.0073532
+anchor_bottom = 1.0833341
+metadata/_edit_use_anchors_ = true
 
 [node name="Score Dice" type="Button" parent="DiceTabs"]
 layout_mode = 1

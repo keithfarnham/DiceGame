@@ -17,6 +17,7 @@ config/icon="res://icon.svg"
 
 [autoload]
 
+Log="*res://scripts/Debug/Log.gd"
 PlayerDice="*res://scripts/GlobalData/PlayerDice.gd"
 DiceData="*res://scripts/GlobalData/DiceData.gd"
 BoardData="*res://scripts/GlobalData/BoardData.gd"

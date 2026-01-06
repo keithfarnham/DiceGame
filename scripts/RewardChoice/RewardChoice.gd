@@ -24,12 +24,13 @@ func handle_rewards(chosenReward : DieFaceData.RewardType):
 	var eventText = $EventText as RichTextLabel
 	eventText.visible = true
 	match chosenReward:
-		DieFaceData.RewardType.money:
-			#TODO make this variable based on value rolled or level
-			var amountToAdd = 10
-			PlayerDice.Money += amountToAdd
-			eventText.text = "+" + str(amountToAdd) + " Money Added"
-			continueButton.visible = true
+		#TODO re-enable money once shop is setup
+		#DieFaceData.RewardType.money:
+			##TODO make this variable based on value rolled or level
+			#var amountToAdd = 10
+			#PlayerDice.Money += amountToAdd
+			#eventText.text = "+" + str(amountToAdd) + " Money Added"
+			#continueButton.visible = true
 		DieFaceData.RewardType.addDie:
 			var newDie = DiceData.make_a_die(6)
 			PlayerDice.add_die(newDie)
@@ -67,7 +68,7 @@ func handle_rewards(chosenReward : DieFaceData.RewardType):
 			diceGrid.set_type(DiceGrid.GridType.dieChoice)
 
 func _on_pressed(rewardIndex : int):
-	print("[RewardChoice] face pressed index " + str(rewardIndex) + " selected reward type " + str(DieFaceData.RewardType.keys()[PlayerDice.RewardStakes[rewardIndex].value]))
+	Log.print("[RewardChoice] face pressed index " + str(rewardIndex) + " selected reward type " + str(DieFaceData.RewardType.keys()[PlayerDice.RewardStakes[rewardIndex].value]))
 	if chooseRewardButton.visible == false:
 		chooseRewardButton.visible = true
 	ChosenReward = PlayerDice.RewardStakes[rewardIndex].value as DieFaceData.RewardType
@@ -77,7 +78,7 @@ func _on_choose_die_button_pressed():
 	chooseRewardConfirm.visible = true
 
 func _on_choose_die_confirm_confirmed():
-	print("[RewardChoice] chosen reward is " + str(DieFaceData.RewardType.keys()[ChosenReward]))
+	Log.print("[RewardChoice] chosen reward is " + str(DieFaceData.RewardType.keys()[ChosenReward]))
 	rewardGrid.visible = false
 	handle_rewards(ChosenReward)
 

@@ -54,7 +54,7 @@ func _on_mult_info_area_mouse_exited():
 		$ScoreRollUI/InfoPanel/MultInfo.visible = false
 
 func _on_roll_button_pressed():
-	print("Rolling Score dice")
+	Log.print("Rolling Score dice")
 	if !rollResultGrid.visible:
 		rollResultGrid.visible = true
 	if !$ScoreRollUI/InfoPanel.visible:
@@ -69,10 +69,10 @@ func _on_roll_button_pressed():
 	multInfo.text = "1"
 	for die in PlayerDice.ScoreDice:
 		var rolledIndex = die.roll()
-		print("rolled index " + str(rolledIndex))
+		Log.print("rolled index " + str(rolledIndex))
 		match die.get_type_for_face(rolledIndex):
 			DieFaceData.FaceType.score:
-				print("rolling score " + str(die.get_value_for_face(rolledIndex)))
+				Log.print("rolling score " + str(die.get_value_for_face(rolledIndex)))
 				preMultSum += die.get_value_for_face(rolledIndex)
 				if sumInfo.text != "" :
 					sumInfo.text += " + "
@@ -82,7 +82,7 @@ func _on_roll_button_pressed():
 				faceInstance.initialize(dieFace, index, false)
 				$ScoreRollUI/InfoPanel/SumInfo.add_child(faceInstance)
 			DieFaceData.FaceType.multiplier:
-				print("rolling mult " + str(die.get_value_for_face(rolledIndex)))
+				Log.print("rolling mult " + str(die.get_value_for_face(rolledIndex)))
 				totalMult += die.get_value_for_face(rolledIndex)
 				if multInfo.text != "":
 					multInfo.text += " + "
@@ -92,7 +92,7 @@ func _on_roll_button_pressed():
 				faceInstance.initialize(dieFace, index, false)
 				$ScoreRollUI/InfoPanel/MultInfo.add_child(faceInstance)
 			DieFaceData.FaceType.special:
-				print("special")
+				Log.print("special")
 		index += 1
 	sumInfo.text += " = " + str(preMultSum)
 	multInfo.text += " = " + str(totalMult)
@@ -103,7 +103,7 @@ func _on_roll_button_pressed():
 	multText.text = str(totalMult)
 	var totalText := rollResultGrid.get_node("RollResult") as RichTextLabel
 	totalText.text = str(totalSum)
-	print("rolled value: " + str(preMultSum) + " * " + str(totalMult) + " = " + str(totalSum))
+	Log.print("rolled value: " + str(preMultSum) + " * " + str(totalMult) + " = " + str(totalSum))
 	rollButton.visible = false
 	continueButton.visible = true
 	if totalSum < goalValue:

@@ -33,7 +33,7 @@ func _process(delta):
 		visible = !visible
 
 func _on_add_die_pressed():
-	print("trying to add die with " + str(numFacesSlider.value) + " faces")
+	Log.print("trying to add die with " + str(numFacesSlider.value) + " faces")
 	#PlayerDice.Dice.append(DebugDie)
 	#var diceArrayIndex = PlayerDice.Dice.size() - 1
 	#diceGrid.add_die(DebugDie, diceArrayIndex)
@@ -47,29 +47,29 @@ func _on_add_die_pressed():
 	DebugDie = Die.new(faces, DiceData.DiceType.score)
 
 func _on_clear_all_dice_pressed():
-	print(get_tree_string())
+	Log.print(get_tree_string())
 	#PlayerDice.remove_die()
 	#TODO remove call to diceBag, either replace with contents of remove_all_dice() or make that func accessible from a more global place
 	#PlayerDice.remove_all_dice()
 
 func _on_delete_selected_die_pressed():
 	#TODO set this up
-	print(get_tree_string())
+	Log.print(get_tree_string())
 	#diceBag.remove_selected_die()
 
 func _on_print_dice_array_pressed():
-	print("PlayerDice:")
+	Log.print("PlayerDice:")
 	PlayerDice.debug_print_dice_array()
 	debug_print_grid.emit()
-	#print("DiceGrid:")
+	#Log.print("DiceGrid:")
 	#var diceGrid = get_tree().get_first_node_in_group("SceneRoot").get_node("DiceUI").get_node("DiceGridScroll").get_node("DiceGrid") as DiceGrid
 
 func _on_run_dice_choice_pressed():
-	print("Changing Scene to ChooseDice")
+	Log.print("Changing Scene to ChooseDice")
 	get_tree().change_scene_to_file("res://scenes/ChooseDice.tscn")
 
 func _on_num_faces_value_changed(value):
-	print("updating face slider value to " + str(value))
+	Log.print("updating face slider value to " + str(value))
 	facesNumText.text = str(value)
 	
 	if dieToModify.selected == 0:
@@ -85,7 +85,7 @@ func _on_num_faces_value_changed(value):
 			DebugDie.faces.append(oldFaces[i])
 
 func _on_die_to_modify_item_selected(index):
-	print("DieToModify selected " + str(dieToModify.selected))
+	Log.print("DieToModify selected " + str(dieToModify.selected))
 	if dieToModify.selected == 0:
 		DebugDie = Die.new([], DiceData.DiceType.score)
 	
@@ -108,17 +108,17 @@ func _on_face_to_modify_item_selected(index):
 	if dieToModify.selected == 0:
 		faceValueSlider.value = DebugDie.faces[faceToModify.selected].value
 		faceValueNumText = DebugDie.faces[faceToModify.selected].value
-		print("Modifying debug die w/ type " + str(DieFaceData.FaceType.keys()[DebugDie.faces[faceToModify.selected].type]) + " index " + str(faceToModify.selected))
+		Log.print("Modifying debug die w/ type " + str(DieFaceData.FaceType.keys()[DebugDie.faces[faceToModify.selected].type]) + " index " + str(faceToModify.selected))
 		faceType.select(DebugDie.faces[faceToModify.selected].type)
 	else:
 		var dieIndex = dieToModify.selected - 1
 		faceValueSlider.value = PlayerDice.Dice[dieIndex].faces[faceToModify.selected].value
 		faceValueNumText = PlayerDice.Dice[dieIndex].faces[faceToModify.selected].value
-		print("Modifying die " + str(dieIndex) + " with type" + str(DieFaceData.FaceType.keys()[PlayerDice.Dice[dieIndex].faces[faceToModify.selected].type]) + " index " + str(faceToModify.selected))
+		Log.print("Modifying die " + str(dieIndex) + " with type" + str(DieFaceData.FaceType.keys()[PlayerDice.Dice[dieIndex].faces[faceToModify.selected].type]) + " index " + str(faceToModify.selected))
 		faceType.select(PlayerDice.Dice[dieIndex].faces[faceToModify.selected].type)
 
 func _on_face_type_item_selected(index):
-	print("selecting face type " + str(DieFaceData.FaceType.keys()[faceType.selected]) + " selected is " + str(faceType.selected as DieFaceData.FaceType))
+	Log.print("selecting face type " + str(DieFaceData.FaceType.keys()[faceType.selected]) + " selected is " + str(faceType.selected as DieFaceData.FaceType))
 	DebugDie.faces[faceToModify.selected].type = faceType.selected as DieFaceData.FaceType
 
 func _on_hide_debug_ui_pressed():

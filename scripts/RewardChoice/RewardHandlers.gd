@@ -23,7 +23,7 @@ func _ready():
 	diceGrid.dieSelected.connect(_die_selected)
 
 func _face_selected(faceIndex : int):
-	print("[RewardHandler] - face selected with index " + str(faceIndex))
+	Log.print("[RewardHandler] - face selected with index " + str(faceIndex))
 	match type:
 		RewardType.addRemoveFace:
 			#if diceGrid.selectedFace == faceIndex:
@@ -37,7 +37,7 @@ func _face_selected(faceIndex : int):
 			$plusMinusFaceValue/MinusFace.disabled = false
 
 func _die_selected(dieIndex : int):
-	print("[RewardHandler] - die selected with index " + str(dieIndex))
+	Log.print("[RewardHandler] - die selected with index " + str(dieIndex))
 	match type:
 		RewardType.addRemoveFace:
 			$addRemoveFace/AddFace.disabled = true

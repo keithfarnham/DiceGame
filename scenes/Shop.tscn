@@ -1,0 +1,100 @@
+[gd_scene load_steps=4 format=3 uid="uid://d35prtpwf22cg"]
+
+[ext_resource type="Script" uid="uid://b4t3p3hmw5rdn" path="res://scripts/Shop/Shop.gd" id="1_rgcs7"]
+[ext_resource type="PackedScene" uid="uid://in4koio3fo5k" path="res://scenes/ShopButton.tscn" id="2_ec5oe"]
+[ext_resource type="PackedScene" uid="uid://by0hqbc5elxlt" path="res://scenes/RewardHandler.tscn" id="3_t4md6"]
+
+[node name="Shop" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_rgcs7")
+
+[node name="ShopControl" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ShopOptions" type="GridContainer" parent="ShopControl"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.020833334
+anchor_top = 0.67901236
+anchor_right = 0.5
+anchor_bottom = 0.8888889
+columns = 4
+metadata/_edit_use_anchors_ = true
+
+[node name="AddFace" parent="ShopControl/ShopOptions" instance=ExtResource("2_ec5oe")]
+layout_mode = 2
+text = "Add a Face to Die
+
+$10"
+cost = 10
+
+[node name="RemoveFace" parent="ShopControl/ShopOptions" instance=ExtResource("2_ec5oe")]
+layout_mode = 2
+text = "Remove a Face from Die
+
+$20"
+cost = 20
+
+[node name="PlusMaxMoves" parent="ShopControl/ShopOptions" instance=ExtResource("2_ec5oe")]
+layout_mode = 2
+text = "+1 Max Board Moves
+
+$40"
+maxTimesBought = 1
+cost = 40
+
+[node name="Leave Shop" type="Button" parent="ShopControl"]
+layout_mode = 0
+anchor_left = 0.6666667
+anchor_top = 0.7407407
+anchor_right = 0.8888889
+anchor_bottom = 0.9382716
+text = "Leave Shop"
+metadata/_edit_use_anchors_ = true
+
+[node name="CurrentMoney" type="RichTextLabel" parent="ShopControl"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.7222222
+anchor_right = 0.8888889
+anchor_bottom = 0.09876543
+metadata/_edit_use_anchors_ = true
+
+[node name="RewardHandlerUI" parent="." instance=ExtResource("3_t4md6")]
+layout_mode = 1
+
+[node name="EventText" type="RichTextLabel" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5138889
+anchor_top = 0.49382716
+anchor_right = 0.9861111
+anchor_bottom = 0.5925926
+mouse_filter = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="Continue" type="Button" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.6666667
+anchor_top = 0.7407407
+anchor_right = 0.8888889
+anchor_bottom = 0.9382716
+text = "Continue"
+metadata/_edit_use_anchors_ = true
+
+[connection signal="pressed" from="ShopControl/ShopOptions/AddFace" to="." method="_on_add_face_pressed"]
+[connection signal="pressed" from="ShopControl/ShopOptions/RemoveFace" to="." method="_on_remove_face_pressed"]
+[connection signal="pressed" from="ShopControl/ShopOptions/PlusMaxMoves" to="." method="_on_plus_max_moves_pressed"]
+[connection signal="pressed" from="ShopControl/Leave Shop" to="." method="_on_leave_shop_pressed"]
