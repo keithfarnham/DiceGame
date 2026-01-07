@@ -24,13 +24,12 @@ func handle_rewards(chosenReward : DieFaceData.RewardType):
 	var eventText = $EventText as RichTextLabel
 	eventText.visible = true
 	match chosenReward:
-		#TODO re-enable money once shop is setup
-		#DieFaceData.RewardType.money:
-			##TODO make this variable based on value rolled or level
-			#var amountToAdd = 10
-			#PlayerDice.Money += amountToAdd
-			#eventText.text = "+" + str(amountToAdd) + " Money Added"
-			#continueButton.visible = true
+		DieFaceData.RewardType.money:
+			#TODO make this variable based on value rolled or level
+			var amountToAdd = 10
+			PlayerDice.Money += amountToAdd
+			eventText.text = "+" + str(amountToAdd) + " Money Added"
+			continueButton.visible = true
 		DieFaceData.RewardType.addDie:
 			var newDie = DiceData.make_a_die(6)
 			PlayerDice.add_die(newDie)

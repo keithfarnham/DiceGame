@@ -10,7 +10,6 @@ var pendingPath : Array[Vector2i] = []
 var eventSpaces := {}
 var landedSpaces := {} #might want to keep track of every gridSpace in a dictionary rather than just the ones landed on
 var landedEvents : Array[EventSpace] = []
-var landedEventGridNodeCopies = []
 var numEvents := 6
 var savedState := false
 var bossRound := false
@@ -35,7 +34,6 @@ func reset_board_data():
 	eventSpaces = {}
 	landedSpaces = {}
 	reset_landed_events()
-	landedEventGridNodeCopies = []
 	numEvents = 6
 	savedState = false
 	bossRound = false

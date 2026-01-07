@@ -8,6 +8,8 @@ extends Control
 static var boardSpace = preload("res://scenes/BoardSpace.tscn")
 static var eventSpace = preload("res://scenes/EventSpace.tscn")
 
+var landedEventGridNodeCopies = []
+
 func _ready():
 	#DEBUG ONLY TODO REMOVE EVENTUALLY
 	if PlayerDice.ScoreDice.is_empty():
@@ -21,6 +23,7 @@ func _shop_closed():
 	$LandedEvents.visible = true
 	$EventsCollectedLabel.visible = true
 	$EventText.visible = true
+	$Continue.visible = true
 
 func board_setup():
 	moveGrid.columns = BoardData.gridSize
@@ -176,8 +179,8 @@ func space_pressed(index : Vector2i):
 		var posKey = _key_of(pos)
 		if BoardData.eventSpaces.has(posKey):
 			BoardData.landedEvents.push_back(BoardData.eventSpaces.get(posKey))
-			var eventSpaceCopy = _space_at(pos).duplicate()
-			BoardData.landedEventGridNodeCopies.append(eventSpaceCopy)
+			var eventSpaceCopy = node.duplicate(DUPLICATE_USE_INSTANTIATION) #have to do DUPLICATE_USE_INSTANTIATION to prevent problems when popping from the landedEventGridNodeCopies array
+			landedEventGridNodeCopies.append(eventSpaceCopy)
 			$LandedEvents.add_child(eventSpaceCopy)
 		node.set_state(BoardSpace.State.landed)
 		BoardData.landedSpaces[_key_of(pos)] = pos #don't need to cache off the node necessarily, just need to know the position of the landed spaces so the key is enough really
@@ -192,6 +195,7 @@ func space_pressed(index : Vector2i):
 			$Board.visible = false
 			$EventsCollectedLabel.set_position(Vector2(64.0, 448.0))
 			$LandedEvents.set_position(Vector2(64.0, 472.0))
+			$ToBoss.visible = false
 			event_queue()
 		elif !_is_space_goal(BoardData.lastMoveIndex):
 			$Continue.visible = true
@@ -202,6 +206,9 @@ func space_pressed(index : Vector2i):
 		$ToBoss.visible = false
 
 func event_queue():
+	Log.print("[MoveBoard] event_queue handling the following events: ")
+	for event in BoardData.landedEvents:
+		Log.print("[MoveBoard] event_queue " + str(EventSpace.event_type.keys()[event.type]))
 	event_handler(BoardData.landedEvents.pop_front())
 
 func event_handler(event : EventSpace):
@@ -212,13 +219,12 @@ func event_handler(event : EventSpace):
 			$LandedEvents.visible = false
 			$EventsCollectedLabel.visible = false
 			$EventText.visible = false
-		#TODO re-enable money once shop is setup
-		#EventSpace.event_type.money:
-			#var amount = randi() % 20 + 1
-			#eventText.text = "Someone dropped $" + str(amount) + " that you grab off the ground."
-			#PlayerDice.Money += amount
-			#$EventText.visible = true
-			#$Continue.visible = true
+		EventSpace.event_type.money:
+			var amount = randi() % 20 + 1
+			eventText.text = "Someone dropped $" + str(amount) + " that you grab off the ground."
+			PlayerDice.Money += amount
+			$EventText.visible = true
+			$Continue.visible = true
 		EventSpace.event_type.addDie:
 			var newDie = DiceData.make_a_die(6)
 			PlayerDice.add_die(newDie)
@@ -250,8 +256,8 @@ func _is_space_goal(pos : Vector2i) -> bool:
 func _on_event_continue_pressed():
 	rewardHandlerUI.visible = false
 	if !BoardData.landedEvents.is_empty():
-		var eventNode = BoardData.landedEventGridNodeCopies.pop_front()
-		assert(eventNode != null, "ERROR - [MoveBoard] Popped event node copy is null")
+		var eventNode = landedEventGridNodeCopies.pop_front()
+		assert(eventNode != null, "ERROR - [MoveBoard] Popped event node copy is null but there are landedEvents")
 		$LandedEvents.remove_child(eventNode)
 		diceGrid.selectedDie = -1
 		diceGrid.mouse_behavior_recursive = Control.MOUSE_BEHAVIOR_ENABLED

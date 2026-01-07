@@ -28,7 +28,7 @@ enum EffectType #These faces have effects in addition to whatever scoring/multip
 
 enum RewardType
 {
-#	money, TODO re-enable money once shop is setup
+	money,
 	addDie,
 	scoreReroll,
 	rewardReroll,
@@ -41,7 +41,7 @@ enum RewardType
 
 #TODO give proper weight values
 static var RewardTypeWeights = {
-#TODO re-enable money once shop is setup	RewardType.money: 				{DiceData.DieRarity.common:1, DiceData.DieRarity.uncommon:2, DiceData.DieRarity.rare:3, DiceData.DieRarity.legendary:4},
+	RewardType.money: 				{DiceData.DieRarity.common:1, DiceData.DieRarity.uncommon:2, DiceData.DieRarity.rare:3, DiceData.DieRarity.legendary:4},
 	RewardType.addDie:				{DiceData.DieRarity.common:1, DiceData.DieRarity.uncommon:2, DiceData.DieRarity.rare:3, DiceData.DieRarity.legendary:4},
 	RewardType.scoreReroll:			{DiceData.DieRarity.common:1, DiceData.DieRarity.uncommon:2, DiceData.DieRarity.rare:3, DiceData.DieRarity.legendary:4},
 	RewardType.rewardReroll:		{DiceData.DieRarity.common:1, DiceData.DieRarity.uncommon:2, DiceData.DieRarity.rare:3, DiceData.DieRarity.legendary:4},
