@@ -219,6 +219,8 @@ func event_handler(event : EventSpace):
 			$LandedEvents.visible = false
 			$EventsCollectedLabel.visible = false
 			$EventText.visible = false
+			$Continue.visible = false
+			$Shop/RewardHandlerUI/DiceGrid.refresh_grids()
 		EventSpace.event_type.money:
 			var amount = randi() % 20 + 1
 			eventText.text = "Someone dropped $" + str(amount) + " that you grab off the ground."

@@ -136,9 +136,9 @@ func random_num_faces_from_rarity(rarity : DieRarity):
 	push_error("ERROR random_num_faces_from_rarity hit something we shouldn't")
 
 
-func random_score_face_value_from_rarity(numFaces, rarity : DieRarity) -> int:
+func random_score_face_value_from_rarity(maxValue, rarity : DieRarity) -> int:
 	#weight of v^p where p depends on rarity, p==0 => uniform distribution
-	#might want to change this to make lower rarity have less of a chance to give higher values rather than uniform dist
+	#TODO change this to make lower rarity have less of a chance to give higher values rather than uniform dist
 	var power_map = {
 		DieRarity.common: 0.0,
 		DieRarity.uncommon: 0.3,
@@ -149,7 +149,7 @@ func random_score_face_value_from_rarity(numFaces, rarity : DieRarity) -> int:
 
 	var weights = []
 	var total = 0.0
-	for v in range(1, int(numFaces) + 1):
+	for v in range(1, int(maxValue) + 1):
 		var w = pow(float(v), p)
 		weights.append(w)
 		total += w
@@ -162,8 +162,8 @@ func random_score_face_value_from_rarity(numFaces, rarity : DieRarity) -> int:
 			return chosen
 		r -= weights[i]
 		
-	return int(numFaces)
-	
+	return int(maxValue) #TODO might want a better backup case here
+
 func random_reward_face_value_from_rarity(rarity : DieRarity):
 	var sum = sum_reward_face_weights_for_rarity(rarity)
 	var r = randi_range(0, sum - 1)

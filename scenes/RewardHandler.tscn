@@ -33,7 +33,7 @@ anchor_left = 0.3
 anchor_right = 0.7
 anchor_bottom = 1.000001
 disabled = true
-text = "Duplicate Face"
+text = "Add Random Face"
 metadata/_edit_use_anchors_ = true
 
 [node name="removeFace" type="Control" parent="."]
@@ -70,7 +70,7 @@ grow_vertical = 2
 mouse_filter = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="AddFace" type="Button" parent="addRemoveFace"]
+[node name="DuplicateFace" type="Button" parent="addRemoveFace"]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 0.39999992
@@ -147,10 +147,10 @@ visible = false
 layout_mode = 1
 gridType = 2
 
-[connection signal="pressed" from="addFace/AddFace" to="." method="_on_duplicate_die_pressed"]
-[connection signal="pressed" from="removeFace/RemoveFace" to="." method="_on_duplicate_die_pressed"]
-[connection signal="pressed" from="addRemoveFace/AddFace" to="." method="_on_add_face_pressed"]
-[connection signal="pressed" from="addRemoveFace/RemoveFace" to="." method="_on_remove_face_pressed"]
+[connection signal="pressed" from="addFace/AddFace" to="." method="_on_add_face_pressed"]
+[connection signal="pressed" from="removeFace/RemoveFace" to="." method="_on_remove_face_pressed" flags=18]
+[connection signal="pressed" from="addRemoveFace/DuplicateFace" to="." method="_on_duplicate_face_pressed"]
+[connection signal="pressed" from="addRemoveFace/RemoveFace" to="." method="_on_remove_face_pressed" flags=18]
 [connection signal="pressed" from="plusMinusFaceValue/PlusFace" to="." method="_on_plus_face_pressed"]
 [connection signal="pressed" from="plusMinusFaceValue/MinusFace" to="." method="_on_minus_face_pressed"]
 [connection signal="pressed" from="duplicateDie/DuplicateDie" to="." method="_on_duplicate_die_pressed"]

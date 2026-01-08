@@ -20,6 +20,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 1
 
 [node name="ShopOptions" type="GridContainer" parent="ShopControl"]
 layout_mode = 1
@@ -76,10 +77,10 @@ layout_mode = 1
 [node name="EventText" type="RichTextLabel" parent="."]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.5138889
-anchor_top = 0.49382716
-anchor_right = 0.9861111
-anchor_bottom = 0.5925926
+anchor_left = 0.5
+anchor_top = 0.654321
+anchor_right = 0.9722222
+anchor_bottom = 0.7283951
 mouse_filter = 2
 metadata/_edit_use_anchors_ = true
 
@@ -98,3 +99,4 @@ metadata/_edit_use_anchors_ = true
 [connection signal="pressed" from="ShopControl/ShopOptions/RemoveFace" to="." method="_on_remove_face_pressed"]
 [connection signal="pressed" from="ShopControl/ShopOptions/PlusMaxMoves" to="." method="_on_plus_max_moves_pressed"]
 [connection signal="pressed" from="ShopControl/Leave Shop" to="." method="_on_leave_shop_pressed"]
+[connection signal="pressed" from="Continue" to="." method="_on_continue_pressed"]

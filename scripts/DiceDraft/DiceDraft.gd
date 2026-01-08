@@ -46,6 +46,7 @@ func setup_draft_reward():
 		_:
 			diceToAdd = DiceData.generate_random_draft_reward_dice(2)
 	PlayerDice.DraftRewardDice = diceToAdd
+
 func _on_choose_die_pressed():
 	var dieToAdd : Die
 	match diceGrid.currentTab:
@@ -61,7 +62,7 @@ func _on_choose_die_pressed():
 			$TextControl/RewardDiceChoiceValue.text = str(rewardDraftCount)
 	
 	PlayerDice.add_die(dieToAdd)
-	diceGrid.refresh_grids()
+	diceGrid.refresh_face_grid_and_hide_die()
 	$ChooseDie.text = "Select a Die"
 	$ChooseDie.disabled = true
 	

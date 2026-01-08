@@ -184,7 +184,7 @@ func face_selected(faceIndex : int):
 	faceSelected.emit(faceIndex)
 	selectedFace = faceIndex
 
-func refresh_grids():
+func refresh_face_grid_and_hide_die():
 	clear_face_grid()
 	hide_die(currentTab)
 	#wait to clear the selectedDie value until after refresh so we have index of die to remove
@@ -199,6 +199,10 @@ func hide_die(tab : GridTabs):
 		GridTabs.reward:
 			var child = rewardDiceGrid.get_child(selectedDie)
 			child.visible = false
+
+func refresh_grids():
+	clear_grids()
+	populate_grid()
 
 func clear_dice_grid():
 	for child in scoreDiceGrid.get_children():

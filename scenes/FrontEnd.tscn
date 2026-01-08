@@ -18,6 +18,28 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-text = "NEW GAME"
+text = "
+
+
+
+
+NEW GAME"
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.0017361111
+anchor_top = 0.06790123
+anchor_right = 0.9982639
+anchor_bottom = 0.44135803
+mouse_filter = 2
+theme_override_colors/font_shadow_color = Color(0.11764706, 0, 0, 0.6901961)
+theme_override_constants/shadow_outline_size = 166
+theme_override_constants/outline_size = 95
+theme_override_font_sizes/normal_font_size = 100
+text = "A GAME ABOUT DICE"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
 
 [connection signal="pressed" from="Start" to="." method="_on_start_pressed"]
