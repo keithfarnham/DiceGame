@@ -4,11 +4,13 @@ extends Control
 @onready var eventText = $EventText as RichTextLabel
 @onready var rewardHandlerUI = $RewardHandlerUI
 @onready var diceGrid = $RewardHandlerUI/DiceGrid as DiceGrid
+@onready var shop = $Shop as Shop
 
 static var boardSpace = preload("res://scenes/BoardSpace.tscn")
 static var eventSpace = preload("res://scenes/EventSpace.tscn")
 
 var landedEventGridNodeCopies = []
+var gameOver := false
 
 func _ready():
 	#DEBUG ONLY TODO REMOVE EVENTUALLY
@@ -30,7 +32,7 @@ func board_setup():
 	if !BoardData.savedState:
 		BoardData.reset_moves_left()
 		BoardData.eventSpaces = setup_events(BoardData.numEvents)
-	
+		BoardData.rounds = 1
 	$Board/Area/AreaValue.text = str(BoardData.areaNumber)
 	$Board/MoveCount/MovesLeftValue.text = str(BoardData.movesLeft)
 	
@@ -187,6 +189,7 @@ func space_pressed(index : Vector2i):
 		BoardData.movesLeft -= 1
 	$Board/MoveCount/MovesLeftValue.text = str(BoardData.movesLeft)
 	BoardData.lastMoveIndex = index
+	BoardData.pendingPath = [] #clear pending path once the spaces are set to landed
 	
 	if BoardData.movesLeft == 0:
 		$Board/MoveCount/MovesMinus.visible = false
@@ -202,8 +205,50 @@ func space_pressed(index : Vector2i):
 	
 	elif _is_space_goal(BoardData.lastMoveIndex):
 		$ToBoss.visible = true
+		return
 	else:
 		$ToBoss.visible = false
+
+	#BFS to check for valid path to goal
+	var found_path := false
+	var frontier := []
+	var came_from := {}
+	frontier.append(index)
+	came_from[_key_of(index)] = null
+
+	while frontier.size() > 0:
+		var current : Vector2i = frontier.pop_front()
+		var current_node = _space_at(current)
+		if current_node == null:
+			continue
+		# If this is a goal space and it's not landed, we have a valid path
+		if _is_space_goal(current) and current_node.currentState != BoardSpace.State.landed:
+			#Log.print("[MoveBoard][BFS DEBUG] path found")
+			#for space in came_from.keys():
+				#Log.print("[MoveBoard][BFS DEBUG] came from " + str(space))
+			found_path = true
+			break
+
+		var neighbors = [Vector2i(current.x + 1, current.y), Vector2i(current.x - 1, current.y), Vector2i(current.x, current.y + 1), Vector2i(current.x, current.y - 1)]
+		for n in neighbors:
+			if n.x < 0 or n.x >= BoardData.gridSize or n.y < 0 or n.y >= BoardData.gridSize:
+				continue
+			var k = _key_of(n)
+			if came_from.has(k):
+				#Log.print("[MoveBoard][BFS DEBUG] skipping neighbor in came_from " + str(n))
+				continue
+			var node = _space_at(n)
+			if node == null:
+				continue
+			# Avoid landed spaces
+			if node.currentState == BoardSpace.State.landed:
+				#Log.print("[MoveBoard][BFS DEBUG] skipping landed neighbor " + str(n))
+				continue
+			came_from[k] = true
+			frontier.append(n)
+
+	if !found_path:
+		_game_over_stuck()
 
 func event_queue():
 	Log.print("[MoveBoard] event_queue handling the following events: ")
@@ -215,6 +260,7 @@ func event_handler(event : EventSpace):
 	rewardHandlerUI.diceGrid.clear_grids()
 	match event.type:
 		EventSpace.event_type.shop:
+			$Shop.update_shop()
 			$Shop.visible = true
 			$LandedEvents.visible = false
 			$EventsCollectedLabel.visible = false
@@ -257,7 +303,9 @@ func _is_space_goal(pos : Vector2i) -> bool:
 
 func _on_event_continue_pressed():
 	rewardHandlerUI.visible = false
-	if !BoardData.landedEvents.is_empty():
+	if gameOver:
+		get_tree().change_scene_to_file("res://scenes/FrontEnd.tscn")
+	elif !BoardData.landedEvents.is_empty():
 		var eventNode = landedEventGridNodeCopies.pop_front()
 		assert(eventNode != null, "ERROR - [MoveBoard] Popped event node copy is null but there are landedEvents")
 		$LandedEvents.remove_child(eventNode)
@@ -274,6 +322,7 @@ func _on_event_continue_pressed():
 		#once events are handled and player has no more moves go to roll scene
 		BoardData.reset_mid_round_data()
 		BoardData.savedState = true
+		BoardData.rounds += 1
 		get_tree().change_scene_to_file("res://scenes/RollScore.tscn")
 
 func _on_to_boss_pressed():
@@ -286,5 +335,12 @@ func _on_to_boss_pressed():
 		return
 	BoardData.reset_board_data()
 	BoardData.areaNumber += 1
+	BoardData.rounds += 1
 	BoardData.bossRound = true
 	get_tree().change_scene_to_file("res://scenes/RollScore.tscn")
+
+func _game_over_stuck():
+	gameOver = true
+	$GameOver.visible = true
+	$Continue.text = "Back To Start"
+	moveGrid.mouse_behavior_recursive = Control.MOUSE_BEHAVIOR_DISABLED

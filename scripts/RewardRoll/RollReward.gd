@@ -32,6 +32,7 @@ func _on_roll_pressed():
 	$ResultGridScroll.visible = true
 	diceGrid.visible = false
 	$DiceGridLabel.visible = false
+	$RollRewardInfo.visible = false
 
 func _on_continue_pressed():
 	get_tree().change_scene_to_file("res://scenes/MoveBoard.tscn")

@@ -1,5 +1,7 @@
 extends Node
 
+class_name Shop
+
 @onready var diceGrid = $RewardHandlerUI/DiceGrid as DiceGrid
 @onready var rewardHandlerUI = $RewardHandlerUI as RewardHandler
 
@@ -13,9 +15,9 @@ func _ready():
 	
 	diceGrid.visible = true
 	diceGrid.set_type(DiceGrid.GridType.allDiceChoice)
-	_update_shop()
+	update_shop()
 
-func _update_shop():
+func update_shop():
 	_update_current_money_text()
 	#enable/disable buttons based on current money
 	for button in $ShopControl/ShopOptions.get_children():
@@ -51,7 +53,7 @@ func _handle_shop_option_selected(buttonNode):
 	if buttonNode.timesBought >= buttonNode.maxTimesBought:
 		buttonNode.disabled = true
 	PlayerDice.Money -= buttonNode.cost
-	_update_shop()
+	update_shop()
 
 func _on_leave_shop_pressed():
 	shop_closed.emit()

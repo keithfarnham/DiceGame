@@ -13,6 +13,7 @@ var landedEvents : Array[EventSpace] = []
 var numEvents := 6
 var savedState := false
 var bossRound := false
+var rounds := 1
 
 func reset_moves_left():
 	movesLeft = maxMoves

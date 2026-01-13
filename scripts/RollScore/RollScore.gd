@@ -10,12 +10,13 @@ var DieFaceUIScene = preload("res://scenes/DiceFaceUIScene.tscn")
 @onready var rollButton = $ScoreRollUI/RollButton as Button
 @onready var continueButton  = $ScoreRollUI/Continue as Button
 
-var goalValue = PlayerDice.Round * PlayerDice.Round
+var goalValue
 var gameOver := false
 
 func _ready():
 	diceGrid.populate_grid()
 	$DiceGrid/DiceTabs.visible = false
+	goalValue = BoardData.areaNumber * BoardData.areaNumber * PlayerDice.TotalRounds + BoardData.rounds * PlayerDice.TotalRounds #TODO evaluate difficulty curve
 	$GoalControl/GoalValue.text = str(goalValue)
 
 func update_text():
@@ -106,6 +107,7 @@ func _on_roll_button_pressed():
 	Log.print("rolled value: " + str(preMultSum) + " * " + str(totalMult) + " = " + str(totalSum))
 	rollButton.visible = false
 	continueButton.visible = true
+	$RollScoreInfo.visible = false
 	if totalSum < goalValue:
 		$GameOver.visible = true
 		gameOver = true

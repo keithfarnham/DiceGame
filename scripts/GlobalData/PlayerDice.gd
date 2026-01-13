@@ -11,7 +11,7 @@ var Money : int
 var ChosenClass : PlayerClass.ClassChoice
 
 #TODO might want to move these elsewhere
-var Round := 1
+var TotalRounds := 1
 var BossRound := false
 
 func add_dice(newDice : Array[Die]):
