@@ -7,6 +7,13 @@ class_name Shop
 
 signal shop_closed
 
+enum ShopOptions {
+	PLUS_MAX_MOVES,
+	ADD_FACE,
+	REMOVE_FACE,
+	
+}
+
 func _ready():
 	#TODO DEBUG ONLY remove after shop is setup fully
 	if PlayerDice.ScoreDice.is_empty():
@@ -33,14 +40,14 @@ func _on_add_face_pressed():
 	_handle_shop_option_selected($ShopControl/ShopOptions/AddFace)
 	$ShopControl.visible = false
 	$RewardHandlerUI/addFace.visible = true #TODO might want to do the button visible stuff in the reward handler set_reward_type() call
-	rewardHandlerUI.set_reward_type(rewardHandlerUI.RewardType.addFace)
+	rewardHandlerUI.set_reward_type(RewardHandler.RewardHandlerType.SHOP, ShopOptions.ADD_FACE)
 	diceGrid.set_type(DiceGrid.GridType.allDiceChoice)
 
 func _on_remove_face_pressed():
 	_handle_shop_option_selected($ShopControl/ShopOptions/RemoveFace)
 	$ShopControl.visible = false
 	$RewardHandlerUI/removeFace.visible = true
-	rewardHandlerUI.set_reward_type(rewardHandlerUI.RewardType.removeFace)
+	rewardHandlerUI.set_reward_type(RewardHandler.RewardHandlerType.SHOP, ShopOptions.REMOVE_FACE)
 	diceGrid.set_type(DiceGrid.GridType.allDiceFaceChoice)
 
 func _on_plus_max_moves_pressed():

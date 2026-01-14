@@ -24,46 +24,46 @@ func handle_rewards(chosenReward : DieFaceData.RewardType):
 	var eventText = $EventText as RichTextLabel
 	eventText.visible = true
 	match chosenReward:
-		DieFaceData.RewardType.money:
+		DieFaceData.RewardType.MONEY:
 			#TODO make this variable based on value rolled or level
 			var amountToAdd = 10
 			PlayerDice.Money += amountToAdd
 			eventText.text = "+" + str(amountToAdd) + " Money Added"
 			continueButton.visible = true
-		DieFaceData.RewardType.addDie:
+		DieFaceData.RewardType.ADD_DIE:
 			var newDie = DiceData.make_a_die(6)
 			PlayerDice.add_die(newDie)
 			eventText.text = "Added a fresh D6!"
 			continueButton.visible = true
-		DieFaceData.RewardType.scoreReroll:
-			PlayerDice.RerollScore += 1
-			continueButton.visible = true
-			eventText.text = "Got a free Score Reroll Token!"
-		DieFaceData.RewardType.rewardReroll:
-			PlayerDice.RerollReward += 1
-			continueButton.visible = true
-			eventText.text = "Got a free Reward Reroll Token!"
+		#DieFaceData.RewardType.scoreReroll:
+			#PlayerDice.RerollScore += 1
+			#continueButton.visible = true
+			#eventText.text = "Got a free Score Reroll Token!"
+		#DieFaceData.RewardType.rewardReroll:
+			#PlayerDice.RerollReward += 1
+			#continueButton.visible = true
+			#eventText.text = "Got a free Reward Reroll Token!"
 		#DieFaceData.RewardType.upgradeDieValue:
-		DieFaceData.RewardType.addRemoveFace:
+		DieFaceData.RewardType.ADD_REMOVE_FACE:
 			eventText.text = "Choose a Die to add or remove a face"
 			rewardHandlerUI.visible = true
-			rewardHandlerUI.set_reward_type(rewardHandlerUI.RewardType.addRemoveFace)
+			rewardHandlerUI.set_reward_type(RewardHandler.RewardHandlerType.REWARD_DIE, DieFaceData.RewardType.ADD_REMOVE_FACE)
 			$RewardHandlerUI/addRemoveFace.visible = true
 			diceGrid.visible = true
 			diceGrid.set_type(DiceGrid.GridType.allDiceFaceChoice)
-		DieFaceData.RewardType.plusMinusFaceValue:
+		DieFaceData.RewardType.PLUS_MINUS_FACE:
 			eventText.text = "Choose a Die Face to +1 or -1 value"
 			rewardHandlerUI.visible = true
-			rewardHandlerUI.set_reward_type(rewardHandlerUI.RewardType.plusMinusFace)
+			rewardHandlerUI.set_reward_type(RewardHandler.RewardHandlerType.REWARD_DIE, DieFaceData.RewardType.PLUS_MINUS_FACE)
 			$RewardHandlerUI/plusMinusFaceValue.visible = true
 			diceGrid.visible = true
 			diceGrid.set_type(DiceGrid.GridType.faceChoice)
-		DieFaceData.RewardType.duplicateScoreDie:
+		DieFaceData.RewardType.DUPE_SCORE_DIE:
 			eventText.text = "Choose a score die to duplicate"
 			rewardHandlerUI.visible = true
 			$RewardHandlerUI/duplicateDie.visible = true
 			diceGrid.visible = true
-			diceGrid.currentTab = DiceGrid.GridTabs.score
+			diceGrid.currentTab = DiceGrid.GridTabs.SCORE
 			diceGrid.set_type(DiceGrid.GridType.dieChoice)
 
 func _on_pressed(rewardIndex : int):

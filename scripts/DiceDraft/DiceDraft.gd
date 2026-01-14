@@ -19,13 +19,13 @@ func setup_draft_score():
 	var diceToAdd : Array[Die] = []
 	match PlayerDice.ChosenClass:
 		PlayerClass.ClassChoice.StandardGambler:
-			diceToAdd.append(DiceData.random_score_die(DiceData.DieRarity.common, 6))
-			diceToAdd.append(DiceData.random_score_die(DiceData.DieRarity.common, 6))
-			diceToAdd.append(DiceData.random_score_die(DiceData.DieRarity.common, 6))
+			diceToAdd.append(DiceData.random_score_die(DiceData.DieRarity.COMMON, 6))
+			diceToAdd.append(DiceData.random_score_die(DiceData.DieRarity.COMMON, 6))
+			diceToAdd.append(DiceData.random_score_die(DiceData.DieRarity.COMMON, 6))
 		PlayerClass.ClassChoice.DungeonMaster:
-			diceToAdd.append(DiceData.random_score_die(DiceData.DieRarity.common, 20))
-			diceToAdd.append(DiceData.random_score_die(DiceData.DieRarity.common, 20))
-			diceToAdd.append(DiceData.random_score_die(DiceData.DieRarity.common, 20))
+			diceToAdd.append(DiceData.random_score_die(DiceData.DieRarity.COMMON, 20))
+			diceToAdd.append(DiceData.random_score_die(DiceData.DieRarity.COMMON, 20))
+			diceToAdd.append(DiceData.random_score_die(DiceData.DieRarity.COMMON, 20))
 		PlayerClass.ClassChoice.DiceLover:
 			diceToAdd = DiceData.generate_random_draft_score_dice(3)
 		_:
@@ -36,11 +36,11 @@ func setup_draft_reward():
 	var diceToAdd : Array[Die] = []
 	match PlayerDice.ChosenClass:
 		PlayerClass.ClassChoice.StandardGambler:
-			diceToAdd.append(DiceData.random_reward_die(DiceData.DieRarity.common, 6))
-			diceToAdd.append(DiceData.random_reward_die(DiceData.DieRarity.common, 6))
+			diceToAdd.append(DiceData.random_reward_die(DiceData.DieRarity.COMMON, 6))
+			diceToAdd.append(DiceData.random_reward_die(DiceData.DieRarity.COMMON, 6))
 		PlayerClass.ClassChoice.DungeonMaster:
-			diceToAdd.append(DiceData.random_reward_die(DiceData.DieRarity.common, 20))
-			diceToAdd.append(DiceData.random_reward_die(DiceData.DieRarity.common, 20))
+			diceToAdd.append(DiceData.random_reward_die(DiceData.DieRarity.COMMON, 20))
+			diceToAdd.append(DiceData.random_reward_die(DiceData.DieRarity.COMMON, 20))
 		PlayerClass.ClassChoice.DiceLover:
 			diceToAdd = DiceData.generate_random_draft_reward_dice(2)
 		_:
@@ -50,12 +50,12 @@ func setup_draft_reward():
 func _on_choose_die_pressed():
 	var dieToAdd : Die
 	match diceGrid.currentTab:
-		DiceGrid.GridTabs.score:
+		DiceGrid.GridTabs.SCORE:
 			dieToAdd = PlayerDice.DraftScoreDice[diceGrid.selectedDie]
 			#DraftScoreDice.remove_at(selectedDie)
 			scoreDraftCount -= 1
 			$TextControl/ScoreDiceChoiceValue.text = str(scoreDraftCount)
-		DiceGrid.GridTabs.reward:
+		DiceGrid.GridTabs.REWARD:
 			dieToAdd = PlayerDice.DraftRewardDice[diceGrid.selectedDie]
 			#DraftRewardDice.remove_at(selectedDie)
 			rewardDraftCount -= 1
@@ -74,10 +74,10 @@ func _on_choose_die_pressed():
 		$"DiceGrid/DiceTabs/Reward Dice".visible = false
 	elif scoreDraftCount == 0 and rewardDraftCount > 0:
 		$"DiceGrid/DiceTabs/Score Dice".visible = false
-		diceGrid.set_tab(DiceGrid.GridTabs.reward)
+		diceGrid.set_tab(DiceGrid.GridTabs.REWARD)
 	elif rewardDraftCount == 0 and scoreDraftCount > 0:
 		$"DiceGrid/DiceTabs/Reward Dice".visible = false
-		diceGrid.set_tab(DiceGrid.GridTabs.score)
+		diceGrid.set_tab(DiceGrid.GridTabs.SCORE)
 
 func _on_continue_pressed():
 	get_tree().change_scene_to_file("res://scenes/RollReward.tscn")

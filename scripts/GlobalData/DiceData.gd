@@ -20,35 +20,35 @@ enum DieFaceCount
 
 enum DieRarity
 {
-	common,
-	uncommon,
-	rare,
-	legendary
+	COMMON,
+	UNCOMMON,
+	RARE,
+	LEGENDARY
 }
 
 static var DieFaceCountWeight = {
-	DieFaceCount.Coin: 	{DieRarity.common:1, DieRarity.uncommon:2, DieRarity.rare:3, DieRarity.legendary:4},
-	DieFaceCount.D3: 	{DieRarity.common:2, DieRarity.uncommon:2, DieRarity.rare:3, DieRarity.legendary:4},
-	DieFaceCount.D4:	{DieRarity.common:3, DieRarity.uncommon:2, DieRarity.rare:3, DieRarity.legendary:4},
-	DieFaceCount.D5: 	{DieRarity.common:5, DieRarity.uncommon:2, DieRarity.rare:3, DieRarity.legendary:4},
-	DieFaceCount.D6: 	{DieRarity.common:7, DieRarity.uncommon:2, DieRarity.rare:3, DieRarity.legendary:4},
-	DieFaceCount.D8: 	{DieRarity.common:5, DieRarity.uncommon:2, DieRarity.rare:3, DieRarity.legendary:4},
-	DieFaceCount.D10: 	{DieRarity.common:4, DieRarity.uncommon:2, DieRarity.rare:3, DieRarity.legendary:4},
-	DieFaceCount.D12: 	{DieRarity.common:3, DieRarity.uncommon:2, DieRarity.rare:3, DieRarity.legendary:4},
-	DieFaceCount.D16: 	{DieRarity.common:2, DieRarity.uncommon:2, DieRarity.rare:3, DieRarity.legendary:4},
-	DieFaceCount.D20: 	{DieRarity.common:1, DieRarity.uncommon:2, DieRarity.rare:3, DieRarity.legendary:4}
+	DieFaceCount.D3: 	{DieRarity.COMMON:2, DieRarity.UNCOMMON:2, DieRarity.RARE:3, DieRarity.LEGENDARY:4},
+	DieFaceCount.D4:	{DieRarity.COMMON:3, DieRarity.UNCOMMON:2, DieRarity.RARE:3, DieRarity.LEGENDARY:4},
+	DieFaceCount.D5: 	{DieRarity.COMMON:5, DieRarity.UNCOMMON:2, DieRarity.RARE:3, DieRarity.LEGENDARY:4},
+	DieFaceCount.Coin: 	{DieRarity.COMMON:1, DieRarity.UNCOMMON:2, DieRarity.RARE:3, DieRarity.LEGENDARY:4},
+	DieFaceCount.D6: 	{DieRarity.COMMON:7, DieRarity.UNCOMMON:2, DieRarity.RARE:3, DieRarity.LEGENDARY:4},
+	DieFaceCount.D8: 	{DieRarity.COMMON:5, DieRarity.UNCOMMON:2, DieRarity.RARE:3, DieRarity.LEGENDARY:4},
+	DieFaceCount.D10: 	{DieRarity.COMMON:4, DieRarity.UNCOMMON:2, DieRarity.RARE:3, DieRarity.LEGENDARY:4},
+	DieFaceCount.D12: 	{DieRarity.COMMON:3, DieRarity.UNCOMMON:2, DieRarity.RARE:3, DieRarity.LEGENDARY:4},
+	DieFaceCount.D16: 	{DieRarity.COMMON:2, DieRarity.UNCOMMON:2, DieRarity.RARE:3, DieRarity.LEGENDARY:4},
+	DieFaceCount.D20: 	{DieRarity.COMMON:1, DieRarity.UNCOMMON:2, DieRarity.RARE:3, DieRarity.LEGENDARY:4}
 }
 
 static var DieFaceTypeWeight = {
-	DieFaceData.FaceType.score: 		{DieRarity.common:8, DieRarity.uncommon:6, DieRarity.rare:5, DieRarity.legendary:3},
-	DieFaceData.FaceType.multiplier: 	{DieRarity.common:2, DieRarity.uncommon:4, DieRarity.rare:5, DieRarity.legendary:7}
+	DieFaceData.FaceType.SCORE: 		{DieRarity.COMMON:8, DieRarity.UNCOMMON:6, DieRarity.RARE:5, DieRarity.LEGENDARY:3},
+	DieFaceData.FaceType.MULTIPLIER: 	{DieRarity.COMMON:2, DieRarity.UNCOMMON:4, DieRarity.RARE:5, DieRarity.LEGENDARY:7}
 }
 
 enum DiceType
 {
-	score,
-	reward,
-	special
+	SCORE,
+	REWARD,
+	SPECIAL
 }
 
 #this are separate types to make generating dice easier
@@ -70,34 +70,40 @@ func make_a_die(numFaces : int, type := MakeADieType.score) -> Die:
 		var faceType
 		match type:
 			MakeADieType.score:
-				faceType = DieFaceData.FaceType.score
+				faceType = DieFaceData.FaceType.SCORE
 			MakeADieType.multiplier:
-				faceType = DieFaceData.FaceType.multiplier
+				faceType = DieFaceData.FaceType.MULTIPLIER
 			MakeADieType.reward:
-				faceType = DieFaceData.FaceType.reward
+				faceType = DieFaceData.FaceType.REWARD
 		#modulo to prevent overrunning past the set reward values in DieFaceData.RewardType
 		faces.append(DieFace.new(i % DieFaceData.RewardType.size() if type == MakeADieType.reward else i + 1, faceType))
-	var dieType
+	var newDie
 	match type:
 		MakeADieType.score, \
 		MakeADieType.multiplier:
-			dieType = DiceType.score
+			newDie = ScoreDie.new(faces)
 		MakeADieType.reward:
-			dieType = DiceType.reward
+			newDie = RewardDie.new(faces)
 	
-	return Die.new(faces, dieType)
+	return newDie
 
 func DebugMakeACoin(type : DiceType, dieFace_1 : DieFace, dieFace_2 : DieFace):
 	var faces : Array[DieFace] = []
+	var newCoin
 	faces.append(dieFace_1)
 	faces.append(dieFace_2)
-	return Die.new(faces, type)
+	match type:
+		DiceType.SCORE:
+			newCoin = ScoreDie.new(faces)
+		DiceType.REWARD:
+			newCoin = RewardDie.new(faces)
+	return newCoin
 
 func simple_reward_D6():
 	var faces : Array[DieFace]
 	for i in DieFaceCount.D6:
-		faces.append(DieFace.new(i + 1, DieFaceData.FaceType.reward))
-	return Die.new(faces, DiceType.reward)
+		faces.append(DieFace.new(i + 1, DieFaceData.FaceType.REWARD))
+	return RewardDie.new(faces)
 
 func sum_face_count_weights_for_rarity(rarity : DieRarity):
 	var sum = 0
@@ -140,10 +146,10 @@ func random_score_face_value_from_rarity(maxValue, rarity : DieRarity) -> int:
 	#weight of v^p where p depends on rarity, p==0 => uniform distribution
 	#TODO change this to make lower rarity have less of a chance to give higher values rather than uniform dist
 	var power_map = {
-		DieRarity.common: 0.0,
-		DieRarity.uncommon: 0.3,
-		DieRarity.rare: 0.6,
-		DieRarity.legendary: 1.0
+		DieRarity.COMMON: 0.0,
+		DieRarity.UNCOMMON: 0.3,
+		DieRarity.RARE: 0.6,
+		DieRarity.LEGENDARY: 1.0
 	}
 	var p = power_map.get(rarity)
 
@@ -178,7 +184,7 @@ func random_reward_face_value_from_rarity(rarity : DieRarity):
 
 func random_face_type_from_rarity(rarity : DieRarity):
 	#TODO re-enable
-	return randi_range(DieFaceData.FaceType.score, DieFaceData.FaceType.multiplier)
+	return randi_range(DieFaceData.FaceType.SCORE, DieFaceData.FaceType.MULTIPLIER)
 	#var types = [DieFaceData.FaceType.score, DieFaceData.FaceType.multiplier]
 	#var sum = sum_face_type_weights_for_rarity(rarity)
 	#var r = randi_range(0, sum)
@@ -198,30 +204,28 @@ func random_score_die(rarity : DieRarity, forceNumFaces = -1):
 		var value = random_score_face_value_from_rarity(numFaces, rarity)
 		var type = random_face_type_from_rarity(rarity)
 		faces.append(DieFace.new(value, type))
-	var newDie = Die.new(faces, DiceData.DiceType.score)
-	return newDie
+	return ScoreDie.new(faces)
 	
 func random_reward_die(rarity : DieRarity, forceNumFaces = -1):
 	var numFaces = random_num_faces_from_rarity(rarity) if forceNumFaces == -1 else forceNumFaces
 	var faces : Array[DieFace] = []
 	for i in numFaces:
 		var value = random_reward_face_value_from_rarity(rarity)
-		var type = DieFaceData.FaceType.reward
+		var type = DieFaceData.FaceType.REWARD
 		faces.append(DieFace.new(value, type))
-	var newDie = Die.new(faces, DiceData.DiceType.reward)
-	return newDie
+	return RewardDie.new(faces)
 
 func generate_random_draft_score_dice(numOfDice : int) -> Array[Die]:
 	var dice : Array[Die] = []
 	for i in numOfDice:
-		dice.append(random_score_die(DieRarity.common))
+		dice.append(random_score_die(DieRarity.COMMON))
 	return dice
 
 func generate_random_draft_reward_dice(numOfDice : int) -> Array[Die]:
 	Log.print("Generating Reward Dice")
 	var dice : Array[Die] = []
 	dice.append(simple_reward_D6())
-	dice.append(random_reward_die(DieRarity.common))
+	dice.append(random_reward_die(DieRarity.COMMON))
 	return dice
 
 func generate_starting_dice():
@@ -234,17 +238,17 @@ func generate_starting_dice():
 			PlayerDice.ScoreDice.append(D6())
 			PlayerDice.RewardDice.append(simple_reward_D6())
 
-func D6(type := DiceType.score) -> Die:
+func D6(type := DiceType.SCORE) -> Die:
 	#TODO modify to support creation of reward D6 as well
 	#maybe add a few default dice types to create, like all a D6 with all money reward faces from $1-6
 	var faces : Array[DieFace]
-	var faceType := DieFaceData.FaceType.score
+	var faceType := DieFaceData.FaceType.SCORE
 	match type:
-		DiceType.score:
-			faceType = DieFaceData.FaceType.score
-		DiceType.reward:
-			faceType = DieFaceData.FaceType.reward
+		DiceType.SCORE:
+			faceType = DieFaceData.FaceType.SCORE
+		DiceType.REWARD:
+			faceType = DieFaceData.FaceType.REWARD
 	for i in DieFaceCount.D6:
 		faces.append(DieFace.new(i + 1, faceType))
 	Log.print("making D6 with type " + str(DiceType.keys()[type]))
-	return Die.new(faces, type)
+	return ScoreDie.new(faces)

@@ -22,30 +22,30 @@ func add_dice(newDice : Array[Die]):
 func add_die(newDie : Die):
 	Log.print("[PlayerDice] Adding a new " + str(DiceData.DiceType.keys()[newDie.type]) + "die")
 	match newDie.type:
-		DiceData.DiceType.score:
+		DiceData.DiceType.SCORE:
 			ScoreDice.append(newDie)
-		DiceData.DiceType.reward:
+		DiceData.DiceType.REWARD:
 			RewardDice.append(newDie)
 
 func remove_die(dieIndexToRemove : int):
 	ScoreDice.remove_at(dieIndexToRemove)
 
-func debug_print_dice_array(type = DiceData.DiceType.score):
+func debug_print_dice_array(type = DiceData.DiceType.SCORE):
 	var string = ""
-	var Dice = RewardDice if type == DiceData.DiceType.reward else ScoreDice
+	var Dice = RewardDice if type == DiceData.DiceType.REWARD else ScoreDice
 	for dieIndex in Dice.size():
 		var numFaces = Dice[dieIndex].faces.size()
 		string += "\n[u]Die " + str(dieIndex) + " w/ " + str(numFaces) + " faces: [/u]"
 		for faceIndex in Dice[dieIndex].faces.size():
 			match Dice[dieIndex].faces[faceIndex].type:
-				DieFaceData.FaceType.multiplier:
+				DieFaceData.FaceType.MULTIPLIER:
 					string += "[b]"
-				DieFaceData.FaceType.special:
+				DieFaceData.FaceType.SPECIAL:
 					string += "[u]"
 			string += "[" + str(Dice[dieIndex].faces[faceIndex].value) + "]"
 			match Dice[dieIndex].faces[faceIndex].type:
-				DieFaceData.FaceType.multiplier:
+				DieFaceData.FaceType.MULTIPLIER:
 					string += "[/b]"
-				DieFaceData.FaceType.special:
+				DieFaceData.FaceType.SPECIAL:
 					string += "[/u]"
 	print_rich(string)

@@ -31,14 +31,14 @@ func initialize(newDieData : Die, newIndex : int):
 	numFaces = newDieData.num_faces()
 	dieIndex = newIndex
 	match newDieData.type:
-		DiceData.DiceType.reward:
+		DiceData.DiceType.REWARD:
 			icon.gradient = GradientReward
-		DiceData.DiceType.score:
+		DiceData.DiceType.SCORE:
 			#TODO would be cool if the gradient was dependent on how many score/mult faces the die had
 			icon.gradient = GradientDefault
 			var multCount = 0
 			for face in dieData.faces:
-				if face.type == DieFaceData.FaceType.multiplier:
+				if face.type == DieFaceData.FaceType.MULTIPLIER:
 					multCount += 1
 			if multCount == numFaces:
 				icon.gradient = GradientMult

@@ -18,7 +18,7 @@ var DebugDie : Die
 
 func _ready():
 	debugUI.visible = false
-	DebugDie = Die.new([], DiceData.DiceType.score)
+	DebugDie = ScoreDie.new([])
 	numFacesSlider.value = 6
 	facesNumText.text = str(numFacesSlider.value)
 	for i in numFacesSlider.value:
@@ -44,7 +44,7 @@ func _on_add_die_pressed():
 	for i in numFacesSlider.value:
 		faces.append(DieFace.new(i + 1))
 	#TODO if i want to debug add reward dice, I'll need to expand this
-	DebugDie = Die.new(faces, DiceData.DiceType.score)
+	DebugDie = ScoreDie.new(faces)
 
 func _on_clear_all_dice_pressed():
 	Log.print(get_tree_string())
@@ -87,7 +87,7 @@ func _on_num_faces_value_changed(value):
 func _on_die_to_modify_item_selected(index):
 	Log.print("DieToModify selected " + str(dieToModify.selected))
 	if dieToModify.selected == 0:
-		DebugDie = Die.new([], DiceData.DiceType.score)
+		DebugDie = ScoreDie.new([])
 	
 	faceToModify.clear()
 	for i in numFacesSlider.value:

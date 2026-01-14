@@ -25,6 +25,7 @@ func _shop_closed():
 	$LandedEvents.visible = true
 	$EventsCollectedLabel.visible = true
 	$EventText.visible = true
+	$EventText.text = ""
 	$Continue.visible = true
 
 func board_setup():
@@ -64,12 +65,12 @@ func setup_events(numEvents : int) -> Dictionary:
 	#first add the 1 guaranteed shop event space
 	var shopIndex = Vector2i(randi() % BoardData.gridSize, randi() % BoardData.gridSize)
 	var shopEvent = EventSpace.new()
-	shopEvent.initialize(shopIndex, EventSpace.event_type.shop)
+	shopEvent.initialize(shopIndex, EventSpace.EventType.SHOP)
 	events[_key_of(shopIndex)] = shopEvent
 	
 	for i in numEvents:
 		var index = Vector2i(randi() % BoardData.gridSize, randi() % BoardData.gridSize)
-		var type = randi_range(1, EventSpace.event_type.size() - 1) as EventSpace.event_type
+		var type = randi_range(1, EventSpace.EventType.size() - 1) as EventSpace.EventType
 		var valid = false
 		while !valid:
 			valid = true
@@ -253,13 +254,13 @@ func space_pressed(index : Vector2i):
 func event_queue():
 	Log.print("[MoveBoard] event_queue handling the following events: ")
 	for event in BoardData.landedEvents:
-		Log.print("[MoveBoard] event_queue " + str(EventSpace.event_type.keys()[event.type]))
+		Log.print("[MoveBoard] event_queue " + str(EventSpace.EventType.keys()[event.type]))
 	event_handler(BoardData.landedEvents.pop_front())
 
 func event_handler(event : EventSpace):
 	rewardHandlerUI.diceGrid.clear_grids()
 	match event.type:
-		EventSpace.event_type.shop:
+		EventSpace.EventType.SHOP:
 			$Shop.update_shop()
 			$Shop.visible = true
 			$LandedEvents.visible = false
@@ -267,23 +268,24 @@ func event_handler(event : EventSpace):
 			$EventText.visible = false
 			$Continue.visible = false
 			$Shop/RewardHandlerUI/DiceGrid.refresh_grids()
-		EventSpace.event_type.money:
+		EventSpace.EventType.MONEY:
 			var amount = randi() % 20 + 1
 			eventText.text = "Someone dropped $" + str(amount) + " that you grab off the ground."
 			PlayerDice.Money += amount
 			$EventText.visible = true
 			$Continue.visible = true
-		EventSpace.event_type.addDie:
+		EventSpace.EventType.ADD_DIE:
 			var newDie = DiceData.make_a_die(6)
 			PlayerDice.add_die(newDie)
 			eventText.text = "You found a D6 on the floor and added it to your dice bag."
 			$EventText.visible = true
 			$Continue.visible = true
-		EventSpace.event_type.addRemoveFace:
+		EventSpace.EventType.ADD_REMOVE_FACE:
 			$Continue.visible = false
 			eventText.text = "You found a tool allowing you to duplicate or remove a die face."
 			rewardHandlerUI.visible = true
 			$RewardHandlerUI/addRemoveFace.visible = true
+			rewardHandlerUI.set_reward_type(RewardHandler.RewardHandlerType.BOARD_EVENT, EventSpace.EventType.ADD_REMOVE_FACE)
 			diceGrid.visible = true
 			diceGrid.set_type(DiceGrid.GridType.allDiceFaceChoice)
 
@@ -335,7 +337,6 @@ func _on_to_boss_pressed():
 		return
 	BoardData.reset_board_data()
 	BoardData.areaNumber += 1
-	BoardData.rounds += 1
 	BoardData.bossRound = true
 	get_tree().change_scene_to_file("res://scenes/RollScore.tscn")
 

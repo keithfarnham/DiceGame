@@ -24,20 +24,20 @@ func _pressed():
 func _ready():
 	faceIndexUI.text = str(faceIndex)
 	faceTypeUI.text = str(DieFaceData.FaceType.keys()[dieFaceData.type])
-	faceValueUI.text = str(DieFaceData.RewardType.keys()[dieFaceData.value] \
-		if dieFaceData.type == DieFaceData.FaceType.reward else dieFaceData.value)
+	faceValueUI.text = DieFaceData.get_reward_name(dieFaceData.value) \
+		if dieFaceData.type == DieFaceData.FaceType.REWARD else str(dieFaceData.value)
 	focus_mode = Control.FOCUS_CLICK if enableFocus else Control.FOCUS_NONE
 	disabled = disableButton
 	
 	var style
 	match dieFaceData.type:
-		DieFaceData.FaceType.score:
+		DieFaceData.FaceType.SCORE:
 			style = load("res://styleboxes/diefaces/scoreface_stylebox.tres") as StyleBoxFlat
 			panel.add_theme_stylebox_override("panel", style)
-		DieFaceData.FaceType.multiplier:
+		DieFaceData.FaceType.MULTIPLIER:
 			style = load("res://styleboxes/diefaces/multface_stylebox.tres") as StyleBoxFlat
 			panel.add_theme_stylebox_override("panel", style)
-		DieFaceData.FaceType.reward:
+		DieFaceData.FaceType.REWARD:
 			style = load("res://styleboxes/diefaces/rewardface_stylebox.tres") as StyleBoxFlat
 			panel.add_theme_stylebox_override("panel", style)
 	

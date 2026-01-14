@@ -26,13 +26,14 @@ enum GridType {
 }
 
 enum GridTabs {
-	score,
-	reward
+	SCORE,
+	REWARD
 }
 
+#TODO setup die sorting
 enum SortType {
-	type,
-	numFaces
+	TYPE,
+	NUM_FACES
 }
 
 var selectedDie := -1 #index of selected die in current grid tab
@@ -47,16 +48,16 @@ func _ready():
 func populate_grid():
 	match gridType:
 		GridType.draft:
-			set_tab(GridTabs.score)
+			set_tab(GridTabs.SCORE)
 			$DiceTabs.visible = true
 			add_dice(PlayerDice.DraftScoreDice)
 			add_dice(PlayerDice.DraftRewardDice)
 			faceGrid.focus_mode = Control.FOCUS_NONE
 		GridType.scoreRoll:
-			set_tab(GridTabs.score)
+			set_tab(GridTabs.SCORE)
 			add_dice(PlayerDice.ScoreDice)
 		GridType.rewardRoll:
-			set_tab(GridTabs.reward)
+			set_tab(GridTabs.REWARD)
 			add_dice(PlayerDice.RewardDice)
 		GridType.allDiceChoice:
 			$DiceTabs.visible = true
@@ -68,15 +69,15 @@ func populate_grid():
 			add_dice(PlayerDice.ScoreDice)
 			add_dice(PlayerDice.RewardDice)
 		GridType.faceChoice:
-			set_tab(GridTabs.score)
+			set_tab(GridTabs.SCORE)
 			add_dice(PlayerDice.ScoreDice)
 			faceGrid.focus_mode = Control.FOCUS_CLICK
 		GridType.dieChoice:
 			faceGrid.focus_mode = Control.FOCUS_NONE
 			match currentTab:
-				DiceGrid.GridTabs.score:
+				DiceGrid.GridTabs.SCORE:
 					add_dice(PlayerDice.ScoreDice)
-				DiceGrid.GridTabs.reward:
+				DiceGrid.GridTabs.REWARD:
 					add_dice(PlayerDice.RewardDice)
 
 func set_type(newType : GridType):
@@ -92,12 +93,12 @@ func set_tab(newTab : GridTabs):
 	selectedDie = -1
 	selectedFace = -1
 	match newTab:
-		GridTabs.score:
+		GridTabs.SCORE:
 			$"DiceTabs/Score Dice".set_pressed_no_signal(true)
 			$"DiceTabs/Reward Dice".set_pressed_no_signal(false)
 			$DiceGridContainer/Panel/AspectRatioContainer/HBoxContainer/RewardDiceScrollContainer.visible = false
 			$DiceGridContainer/Panel/AspectRatioContainer/HBoxContainer/ScoreDiceScrollContainer.visible = true
-		GridTabs.reward:
+		GridTabs.REWARD:
 			$"DiceTabs/Reward Dice".set_pressed_no_signal(true)
 			$"DiceTabs/Score Dice".set_pressed_no_signal(false)
 			$DiceGridContainer/Panel/AspectRatioContainer/HBoxContainer/ScoreDiceScrollContainer.visible = false
@@ -107,9 +108,9 @@ func add_die(die : Die, dieIndex : int):
 	var diceGrid
 	Log.print("[DiceGrid] die type is " + str(DiceData.DiceType.keys()[die.type]))
 	match die.type:
-		DiceData.DiceType.reward:
+		DiceData.DiceType.REWARD:
 			diceGrid = rewardDiceGrid
-		DiceData.DiceType.score:
+		DiceData.DiceType.SCORE:
 			diceGrid = scoreDiceGrid
 	#the newDieUIInstance needs to be added to the tree before I can assign child nodes their data
 	#so I do the initialize() to setup the data in the DieUI class, then when add_child() is called 
@@ -139,9 +140,9 @@ func die_selected(dieIndex : int):
 			draftNode.find_child("ChooseDie").disabled = true
 			draftNode.find_child("ChooseDie").focus_mode = Control.FOCUS_NONE
 		match currentTab:
-			GridTabs.score:
+			GridTabs.SCORE:
 				scoreDiceGrid.get_child(dieIndex).release_focus()
-			GridTabs.reward:
+			GridTabs.REWARD:
 				rewardDiceGrid.get_child(dieIndex).release_focus()
 		return
 	else:
@@ -155,7 +156,7 @@ func die_selected(dieIndex : int):
 	
 	selectedDie = dieIndex
 	clear_face_grid()
-	var rewardTab = currentTab == GridTabs.reward
+	var rewardTab = currentTab == GridTabs.REWARD
 	var scoreDice = PlayerDice.DraftScoreDice if gridType == GridType.draft else PlayerDice.ScoreDice
 	var rewardDice = PlayerDice.DraftRewardDice if gridType == GridType.draft else PlayerDice.RewardDice
 	
@@ -193,10 +194,10 @@ func refresh_face_grid_and_hide_die():
 func hide_die(tab : GridTabs):
 	#this doesn't actually remove the die from the grid but instead makes it invisible so I don't have to recalculate the zindexes
 	match tab:
-		GridTabs.score:
+		GridTabs.SCORE:
 			var child = scoreDiceGrid.get_child(selectedDie)
 			child.visible = false
-		GridTabs.reward:
+		GridTabs.REWARD:
 			var child = rewardDiceGrid.get_child(selectedDie)
 			child.visible = false
 
@@ -223,7 +224,7 @@ func clear_face_grid():
 
 func _on_score_dice_toggled(toggled_on):
 	if toggled_on:
-		set_tab(GridTabs.score)
+		set_tab(GridTabs.SCORE)
 		if gridType == GridType.draft:
 			var draftNode = get_tree().get_first_node_in_group("DiceDraft")
 			draftNode.find_child("ChooseDie").visible = true if draftNode.scoreDraftCount > 0 else false
@@ -232,7 +233,7 @@ func _on_score_dice_toggled(toggled_on):
 
 func _on_reward_dice_toggled(toggled_on):
 	if toggled_on:
-		set_tab(GridTabs.reward)
+		set_tab(GridTabs.REWARD)
 		if gridType == GridType.draft:
 			var draftNode = get_tree().get_first_node_in_group("DiceDraft")
 			draftNode.find_child("ChooseDie").visible = true if draftNode.rewardDraftCount > 0 else false

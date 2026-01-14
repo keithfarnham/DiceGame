@@ -17,6 +17,7 @@ func _ready():
 	diceGrid.populate_grid()
 	$DiceGrid/DiceTabs.visible = false
 	goalValue = BoardData.areaNumber * BoardData.areaNumber * PlayerDice.TotalRounds + BoardData.rounds * PlayerDice.TotalRounds #TODO evaluate difficulty curve
+	goalValue += BoardData.areaNumber * 10 if BoardData.bossRound else 0
 	$GoalControl/GoalValue.text = str(goalValue)
 
 func update_text():
@@ -72,7 +73,7 @@ func _on_roll_button_pressed():
 		var rolledIndex = die.roll()
 		Log.print("rolled index " + str(rolledIndex))
 		match die.get_type_for_face(rolledIndex):
-			DieFaceData.FaceType.score:
+			DieFaceData.FaceType.SCORE:
 				Log.print("rolling score " + str(die.get_value_for_face(rolledIndex)))
 				preMultSum += die.get_value_for_face(rolledIndex)
 				if sumInfo.text != "" :
@@ -82,7 +83,7 @@ func _on_roll_button_pressed():
 				var dieFace = die.get_face(rolledIndex)
 				faceInstance.initialize(dieFace, index, false)
 				$ScoreRollUI/InfoPanel/SumInfo.add_child(faceInstance)
-			DieFaceData.FaceType.multiplier:
+			DieFaceData.FaceType.MULTIPLIER:
 				Log.print("rolling mult " + str(die.get_value_for_face(rolledIndex)))
 				totalMult += die.get_value_for_face(rolledIndex)
 				if multInfo.text != "":
@@ -92,7 +93,7 @@ func _on_roll_button_pressed():
 				var dieFace = die.get_face(rolledIndex)
 				faceInstance.initialize(dieFace, index, false)
 				$ScoreRollUI/InfoPanel/MultInfo.add_child(faceInstance)
-			DieFaceData.FaceType.special:
+			DieFaceData.FaceType.SPECIAL:
 				Log.print("special")
 		index += 1
 	sumInfo.text += " = " + str(preMultSum)
@@ -118,7 +119,7 @@ func _on_continue_pressed():
 	if gameOver:
 		get_tree().change_scene_to_file("res://scenes/FrontEnd.tscn")
 	elif BoardData.bossRound:
-		PlayerDice.Round += 1
+		BoardData.areaNumber += 1
 		get_tree().change_scene_to_file("res://scenes/RewardChoice.tscn")
 	else:
 		get_tree().change_scene_to_file("res://scenes/MoveBoard.tscn")

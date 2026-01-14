@@ -6,57 +6,79 @@ class_name RewardHandler
 @onready var eventText = $"../EventText" as RichTextLabel
 @onready var diceGrid = $DiceGrid as DiceGrid
 
-var type : RewardType
+var handlerType : RewardHandlerType
+var rewardType
 
-#setting up another enum here in case I want the DieFace rewards and MoveBoard events to have different effects
-#though in the end it probably end up being cleaner to have one unifying enum, I'm still not 100% on board events/die rewards having overlap
-#TODO re-evaluate
-enum RewardType {
-	addRemoveFace,
-	plusMinusFace,
-	duplicateDie,
-	addFace,
-	removeFace
+enum RewardHandlerType {
+	REWARD_DIE,
+	BOARD_EVENT,
+	SHOP #might not need
 }
 
-func set_reward_type(newType : RewardType):
-	type = newType
+func set_reward_type(newType : RewardHandlerType, newReward):
+	handlerType = newType
+	match handlerType:
+		RewardHandlerType.REWARD_DIE:
+			rewardType = newReward as DieFaceData.RewardType
+		RewardHandlerType.BOARD_EVENT:
+			rewardType = newReward as EventSpace.EventType
+		RewardHandlerType.SHOP:
+			rewardType = newReward as Shop.ShopOptions
 
 func _ready():
 	diceGrid.faceSelected.connect(_face_selected)
 	diceGrid.dieSelected.connect(_die_selected)
 
 func _face_selected(faceIndex : int):
-	Log.print("[RewardHandler] - face selected with index " + str(faceIndex))
-	match type:
-		RewardType.addRemoveFace:
-			#if diceGrid.selectedFace == faceIndex:
-				#$addRemoveFace/AddFace.disabled = true
-				#$addRemoveFace/RemoveFace.disabled = true
-			#else:
-			$addRemoveFace/DuplicateFace.disabled = false
-			$addRemoveFace/RemoveFace.disabled = false
-		RewardType.plusMinusFace:
-			$plusMinusFaceValue/PlusFace.disabled = false
-			$plusMinusFaceValue/MinusFace.disabled = false
-		RewardType.removeFace:
-			$removeFace/RemoveFace.disabled = false
+	Log.print("[RewardHandler] - face selected at index " + str(faceIndex) + " with handlerType " + str(RewardHandlerType.keys()[handlerType]))
+	match handlerType:
+		RewardHandlerType.REWARD_DIE:
+			Log.print("[RewardHandler] - face selected rewardType " + str(DieFaceData.RewardType.keys()[rewardType]))
+			match rewardType:
+				DieFaceData.RewardType.ADD_REMOVE_FACE:
+					$addRemoveFace/DuplicateFace.disabled = false
+					$addRemoveFace/RemoveFace.disabled = false
+				DieFaceData.RewardType.PLUS_MINUS_FACE:
+					$plusMinusFaceValue/PlusFace.disabled = false
+					$plusMinusFaceValue/MinusFace.disabled = false
+		RewardHandlerType.BOARD_EVENT:
+			Log.print("[RewardHandler] - face selected rewardType " + str(EventSpace.EventType.keys()[rewardType]))
+			match rewardType:
+				EventSpace.EventType.ADD_REMOVE_FACE:
+					$addRemoveFace/DuplicateFace.disabled = false
+					$addRemoveFace/RemoveFace.disabled = false
+		RewardHandlerType.SHOP:
+			Log.print("[RewardHandler] - face selected rewardType " + str(Shop.ShopOptions.keys()[rewardType]))
+			match rewardType:
+				#Shop.ShopOption.ADD_FACE:
+				
+				Shop.ShopOptions.REMOVE_FACE:
+					$removeFace/RemoveFace.disabled = false
 
 func _die_selected(dieIndex : int):
 	Log.print("[RewardHandler] - die selected with index " + str(dieIndex))
-	match type:
-		RewardType.addRemoveFace:
-			$addRemoveFace/DuplicateFace.disabled = true
-			$addRemoveFace/RemoveFace.disabled = true
-		RewardType.plusMinusFace:
-			$plusMinusFaceValue/PlusFace.disabled = true
-			$plusMinusFaceValue/MinusFace.disabled = true
-		RewardType.duplicateDie:
-			$duplicateDie/DuplicateDie.disabled = false
-		RewardType.addFace:
-			$addFace/AddFace.disabled = false
-		RewardType.removeFace:
-			$removeFace/RemoveFace.disabled = true
+	match handlerType:
+		RewardHandlerType.REWARD_DIE:
+			match rewardType:
+				DieFaceData.RewardType.ADD_REMOVE_FACE:
+					$addRemoveFace/DuplicateFace.disabled = true
+					$addRemoveFace/RemoveFace.disabled = true
+				DieFaceData.RewardType.PLUS_MINUS_FACE:
+					$plusMinusFaceValue/PlusFace.disabled = true
+					$plusMinusFaceValue/MinusFace.disabled = true
+				DieFaceData.RewardType.DUPE_SCORE_DIE:
+					$duplicateDie/DuplicateDie.disabled = false
+		RewardHandlerType.BOARD_EVENT:
+			match rewardType:
+				EventSpace.EventType.ADD_REMOVE_FACE:
+					$addRemoveFace/DuplicateFace.disabled = true
+					$addRemoveFace/RemoveFace.disabled = true
+		RewardHandlerType.SHOP:
+			match rewardType:
+				Shop.ShopOptions.ADD_FACE:
+					$addFace/AddFace.disabled = false
+				Shop.ShopOptions.REMOVE_FACE:
+					$removeFace/RemoveFace.disabled = true
 
 func _handle_reward_chosen_common():
 	diceGrid.mouse_behavior_recursive = Control.MOUSE_BEHAVIOR_DISABLED
@@ -67,9 +89,9 @@ func _handle_reward_chosen_common():
 func _on_duplicate_face_pressed():
 	eventText.text = "Face duplicated"
 	match diceGrid.currentTab:
-		DiceGrid.GridTabs.score:
+		DiceGrid.GridTabs.SCORE:
 			PlayerDice.ScoreDice[diceGrid.selectedDie].faces.append(PlayerDice.ScoreDice[diceGrid.selectedDie].faces[diceGrid.selectedFace])
-		DiceGrid.GridTabs.reward:
+		DiceGrid.GridTabs.REWARD:
 			PlayerDice.RewardDice[diceGrid.selectedDie].faces.append(PlayerDice.RewardDice[diceGrid.selectedDie].faces[diceGrid.selectedFace])
 	$addRemoveFace.visible = false
 	$addRemoveFace/AddFace.disabled = true
@@ -79,13 +101,13 @@ func _on_duplicate_face_pressed():
 func _on_add_face_pressed():
 	eventText.text = "Random face added"
 	match diceGrid.currentTab:
-		DiceGrid.GridTabs.score:
-			var value = DiceData.random_score_face_value_from_rarity(20, DiceData.DieRarity.common)
-			var type = DiceData.random_face_type_from_rarity(DiceData.DieRarity.common)
+		DiceGrid.GridTabs.SCORE:
+			var value = DiceData.random_score_face_value_from_rarity(20, DiceData.DieRarity.COMMON)
+			var type = DiceData.random_face_type_from_rarity(DiceData.DieRarity.COMMON)
 			PlayerDice.ScoreDice[diceGrid.selectedDie].faces.append(DieFace.new(value, type))
-		DiceGrid.GridTabs.reward:
-			var value = DiceData.random_reward_face_value_from_rarity(DiceData.DieRarity.common)
-			var type = DieFaceData.FaceType.reward
+		DiceGrid.GridTabs.REWARD:
+			var value = DiceData.random_reward_face_value_from_rarity(DiceData.DieRarity.COMMON)
+			var type = DieFaceData.FaceType.REWARD
 			PlayerDice.RewardDice[diceGrid.selectedDie].faces.append(DieFace.new(value, type))
 	$addFace.visible = false
 	$addFace/AddFace.disabled = true
@@ -93,11 +115,12 @@ func _on_add_face_pressed():
 
 
 func _on_remove_face_pressed(buttonNode):
+	#signal connection must have Append Source in advanced settings enabled to pass the pressed button's node as param
 	eventText.text = "Face removed from die"
 	match diceGrid.currentTab:
-		DiceGrid.GridTabs.score:
+		DiceGrid.GridTabs.SCORE:
 			PlayerDice.ScoreDice[diceGrid.selectedDie].faces.remove_at(diceGrid.selectedFace)
-		DiceGrid.GridTabs.reward:
+		DiceGrid.GridTabs.REWARD:
 			PlayerDice.RewardDice[diceGrid.selectedDie].faces.remove_at(diceGrid.selectedFace)
 	match buttonNode.get_parent().name: #TODO evaluate if there is a cleaner way to doing this than checking parent name, but this works for now
 		"addRemoveFace":
