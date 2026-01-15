@@ -16,8 +16,8 @@ var gameOver := false
 func _ready():
 	diceGrid.populate_grid()
 	$DiceGrid/DiceTabs.visible = false
-	goalValue = BoardData.areaNumber * BoardData.areaNumber * PlayerDice.TotalRounds + BoardData.rounds * PlayerDice.TotalRounds #TODO evaluate difficulty curve
-	goalValue += BoardData.areaNumber * 10 if BoardData.bossRound else 0
+	goalValue = 1#BoardData.areaNumber * BoardData.areaNumber * PlayerDice.TotalRounds + BoardData.rounds * PlayerDice.TotalRounds #TODO evaluate difficulty curve
+	#goalValue += BoardData.areaNumber * 10 if BoardData.bossRound else 0
 	$GoalControl/GoalValue.text = str(goalValue)
 
 func update_text():

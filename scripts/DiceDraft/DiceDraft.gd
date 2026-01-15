@@ -6,9 +6,12 @@ var scoreDraftCount = 0
 var rewardDraftCount = 0
 
 func _ready():
+	if !OS.is_debug_build() or !PlayerDice.DEBUG_Enabled:
+		$"DEBUG AUTO DRAFT".queue_free()
+	
 	DiceData.generate_starting_dice()
 	scoreDraftCount = 2
-	rewardDraftCount = 2
+	rewardDraftCount = PlayerClass.get_class_num_reward_dice_draft(PlayerDice.ChosenClass)
 	setup_draft_score()
 	setup_draft_reward()
 	$TextControl/ScoreDiceChoiceValue.text = str(scoreDraftCount)
@@ -43,6 +46,8 @@ func setup_draft_reward():
 			diceToAdd.append(DiceData.random_reward_die(DiceData.DieRarity.COMMON, 20))
 		PlayerClass.ClassChoice.DiceLover:
 			diceToAdd = DiceData.generate_random_draft_reward_dice(2)
+		PlayerClass.ClassChoice.DEBUG_REWARD_CLASS:
+			diceToAdd = DiceData.DEBUG_ALL_REWARDS()
 		_:
 			diceToAdd = DiceData.generate_random_draft_reward_dice(2)
 	PlayerDice.DraftRewardDice = diceToAdd
@@ -62,7 +67,7 @@ func _on_choose_die_pressed():
 			$TextControl/RewardDiceChoiceValue.text = str(rewardDraftCount)
 	
 	PlayerDice.add_die(dieToAdd)
-	diceGrid.refresh_face_grid_and_hide_die()
+	diceGrid.draft_die_selected()
 	$ChooseDie.text = "Select a Die"
 	$ChooseDie.disabled = true
 	
@@ -81,3 +86,14 @@ func _on_choose_die_pressed():
 
 func _on_continue_pressed():
 	get_tree().change_scene_to_file("res://scenes/RollReward.tscn")
+
+
+#TODO REMOVE DEBUG ONLY
+func _on_debug_auto_draft_pressed():
+	for dieIndex in scoreDraftCount:
+		PlayerDice.add_die(PlayerDice.DraftScoreDice[dieIndex])
+	for dieIndex in rewardDraftCount:
+		PlayerDice.add_die(PlayerDice.DraftRewardDice[dieIndex])
+	$Continue.visible = true
+	$ChooseDie.visible = false
+	$"DEBUG AUTO DRAFT".disabled = true

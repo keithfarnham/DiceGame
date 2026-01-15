@@ -7,7 +7,8 @@ enum EventType
 	SHOP,
 	MONEY,
 	ADD_DIE,
-	ADD_REMOVE_FACE
+	ADD_REMOVE_FACE,
+	PLUS_TO_FACE
 }
 
 var type : EventType
@@ -33,4 +34,6 @@ func set_type(newType : EventType):
 			eventName = "ADD DIE"
 		EventType.ADD_REMOVE_FACE:
 			eventName = "ADD/REMOVE FACE"
+		EventType.PLUS_TO_FACE:
+			eventName = "+1 TO FACE"
 	$EventName.text = eventName

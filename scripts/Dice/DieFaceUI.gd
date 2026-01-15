@@ -12,6 +12,12 @@ var faceIndex : int
 var enableFocus : bool
 var disableButton : bool
 
+enum StyleBorderType
+{
+	SOURCE,
+	TARGET
+}
+
 signal faceSelected(faceIndex : int)
 
 func face_selected(faceIndex : int):
@@ -32,13 +38,13 @@ func _ready():
 	var style
 	match dieFaceData.type:
 		DieFaceData.FaceType.SCORE:
-			style = load("res://styleboxes/diefaces/scoreface_stylebox.tres") as StyleBoxFlat
+			style = load("res://styleboxes/diefaces/score/scoreface_stylebox.tres") as StyleBoxFlat
 			panel.add_theme_stylebox_override("panel", style)
 		DieFaceData.FaceType.MULTIPLIER:
-			style = load("res://styleboxes/diefaces/multface_stylebox.tres") as StyleBoxFlat
+			style = load("res://styleboxes/diefaces/multiplier/multface_stylebox.tres") as StyleBoxFlat
 			panel.add_theme_stylebox_override("panel", style)
 		DieFaceData.FaceType.REWARD:
-			style = load("res://styleboxes/diefaces/rewardface_stylebox.tres") as StyleBoxFlat
+			style = load("res://styleboxes/diefaces/reward/rewardface_stylebox.tres") as StyleBoxFlat
 			panel.add_theme_stylebox_override("panel", style)
 	
 func initialize(newFace : DieFace, newIndex : int, newEnableFocus := true):
@@ -47,3 +53,13 @@ func initialize(newFace : DieFace, newIndex : int, newEnableFocus := true):
 	#disabling focus and disabling the button are coupled - don't think I'd ever want the button unfocusable but enabled or vice versa
 	enableFocus = newEnableFocus
 	disableButton = !newEnableFocus
+	
+func set_border_type(type : StyleBorderType):
+	var style
+	match type:
+		StyleBorderType.SOURCE:
+			style = load("res://styleboxes/diefaces/score/scoreface_stylebox_border_source.tres") as StyleBoxFlat
+			panel.add_theme_stylebox_override("panel", style)
+		StyleBorderType.TARGET:
+			style = load("res://styleboxes/diefaces/score/scoreface_stylebox_border_target.tres") as StyleBoxFlat
+			panel.add_theme_stylebox_override("panel", style)

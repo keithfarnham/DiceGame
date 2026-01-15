@@ -3,7 +3,7 @@ extends Control
 @onready var rewardGrid = $RewardGrid as GridContainer
 @onready var chooseRewardButton = $ChooseReward/ChooseRewardButton as Button
 @onready var chooseRewardConfirm = $ChooseReward/ChooseRewardConfirm as ConfirmationDialog
-@onready var rewardHandlerUI = $RewardHandlerUI as Control
+@onready var rewardHandlerUI = $RewardHandlerUI as RewardHandler
 @onready var diceGrid = $RewardHandlerUI/DiceGrid as DiceGrid
 @onready var continueButton = $Continue as Button
 
@@ -46,25 +46,22 @@ func handle_rewards(chosenReward : DieFaceData.RewardType):
 		#DieFaceData.RewardType.upgradeDieValue:
 		DieFaceData.RewardType.ADD_REMOVE_FACE:
 			eventText.text = "Choose a Die to add or remove a face"
-			rewardHandlerUI.visible = true
 			rewardHandlerUI.set_reward_type(RewardHandler.RewardHandlerType.REWARD_DIE, DieFaceData.RewardType.ADD_REMOVE_FACE)
-			$RewardHandlerUI/addRemoveFace.visible = true
-			diceGrid.visible = true
-			diceGrid.set_type(DiceGrid.GridType.allDiceFaceChoice)
 		DieFaceData.RewardType.PLUS_MINUS_FACE:
 			eventText.text = "Choose a Die Face to +1 or -1 value"
-			rewardHandlerUI.visible = true
 			rewardHandlerUI.set_reward_type(RewardHandler.RewardHandlerType.REWARD_DIE, DieFaceData.RewardType.PLUS_MINUS_FACE)
-			$RewardHandlerUI/plusMinusFaceValue.visible = true
-			diceGrid.visible = true
-			diceGrid.set_type(DiceGrid.GridType.faceChoice)
 		DieFaceData.RewardType.DUPE_SCORE_DIE:
 			eventText.text = "Choose a score die to duplicate"
-			rewardHandlerUI.visible = true
-			$RewardHandlerUI/duplicateDie.visible = true
-			diceGrid.visible = true
-			diceGrid.currentTab = DiceGrid.GridTabs.SCORE
-			diceGrid.set_type(DiceGrid.GridType.dieChoice)
+			rewardHandlerUI.set_reward_type(RewardHandler.RewardHandlerType.REWARD_DIE, DieFaceData.RewardType.DUPE_SCORE_DIE)
+		DieFaceData.RewardType.LOWEST_PLUS_3:
+			eventText.text = "Choose a Die to give +3 to its [color=#beb500]lowest[/color] value face"
+			rewardHandlerUI.set_reward_type(RewardHandler.RewardHandlerType.REWARD_DIE, DieFaceData.RewardType.LOWEST_PLUS_3)
+		DieFaceData.RewardType.REPLACE_LOW_W_HIGH:
+			eventText.text = "Choose a Die to replace the [color=#beb500]lowest[/color] value with its [color=#00ffff]highest[/color] value face"
+			rewardHandlerUI.set_reward_type(RewardHandler.RewardHandlerType.REWARD_DIE, DieFaceData.RewardType.REPLACE_LOW_W_HIGH)
+		DieFaceData.RewardType.COPY_PASTE:
+			eventText.text = "Choose a die face to copy and another to paste over and replace"
+			rewardHandlerUI.set_reward_type(RewardHandler.RewardHandlerType.REWARD_DIE, DieFaceData.RewardType.COPY_PASTE)
 
 func _on_pressed(rewardIndex : int):
 	Log.print("[RewardChoice] face pressed index " + str(rewardIndex) + " selected reward type " + str(DieFaceData.RewardType.keys()[PlayerDice.RewardStakes[rewardIndex].value]))

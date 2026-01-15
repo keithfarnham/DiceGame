@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://cjuouisiu7p13"]
 
 [ext_resource type="Script" uid="uid://m77smrprloli" path="res://scripts/Dice/DieFaceUI.gd" id="1_t4ssj"]
-[ext_resource type="StyleBox" uid="uid://dsiawyu7j2ci6" path="res://styleboxes/diefaces/scoreface_stylebox.tres" id="2_1a0jl"]
+[ext_resource type="StyleBox" uid="uid://dsiawyu7j2ci6" path="res://styleboxes/diefaces/score/scoreface_stylebox.tres" id="2_1a0jl"]
 
 [node name="Button" type="Button"]
 anchors_preset = -1

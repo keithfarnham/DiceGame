@@ -38,3 +38,4 @@ func reset_board_data():
 	numEvents = 6
 	savedState = false
 	bossRound = false
+	areaNumber = 1

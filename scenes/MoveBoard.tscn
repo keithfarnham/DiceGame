@@ -168,6 +168,7 @@ anchor_top = 0.69135803
 anchor_right = 0.7777778
 anchor_bottom = 0.79012346
 mouse_filter = 2
+bbcode_enabled = true
 metadata/_edit_use_anchors_ = true
 
 [node name="RewardHandlerUI" parent="." instance=ExtResource("2_jx0mh")]

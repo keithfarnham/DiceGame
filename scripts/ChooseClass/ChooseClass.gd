@@ -2,6 +2,10 @@ extends Control
 
 var chosenClass : PlayerClass.ClassChoice
 
+func _ready():
+	if !OS.is_debug_build() or !PlayerDice.DEBUG_Enabled:
+		$ClassGrid/DEBUG_ALL_REWARDS.queue_free()
+
 func _class_pressed(classSelected : PlayerClass.ClassChoice):
 	$Continue.text = "Start with chosen class"
 	$Continue.disabled = false
@@ -21,3 +25,7 @@ func _on_dice_lover_pressed():
 func _on_continue_pressed():
 	PlayerDice.ChosenClass = chosenClass
 	get_tree().change_scene_to_file("res://scenes/DiceDraft.tscn")
+
+
+func _on_reward_debug_pressed():
+	_class_pressed(PlayerClass.ClassChoice.DEBUG_REWARD_CLASS)

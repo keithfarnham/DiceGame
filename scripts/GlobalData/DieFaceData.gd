@@ -38,7 +38,7 @@ enum RewardType
 	DUPE_SCORE_DIE,
 	LOWEST_PLUS_3,
 	REPLACE_LOW_W_HIGH,
-	COPY_PASTA
+	COPY_PASTE
 }
 
 #TODO give proper weight values
@@ -52,7 +52,7 @@ static var RewardTypeWeights = {
 	RewardType.DUPE_SCORE_DIE:		{DiceData.DieRarity.COMMON:1, DiceData.DieRarity.UNCOMMON:2, DiceData.DieRarity.RARE:3, DiceData.DieRarity.LEGENDARY:4},
 	RewardType.LOWEST_PLUS_3:		{DiceData.DieRarity.COMMON:1, DiceData.DieRarity.UNCOMMON:2, DiceData.DieRarity.RARE:3, DiceData.DieRarity.LEGENDARY:4},
 	RewardType.REPLACE_LOW_W_HIGH:	{DiceData.DieRarity.COMMON:1, DiceData.DieRarity.UNCOMMON:2, DiceData.DieRarity.RARE:3, DiceData.DieRarity.LEGENDARY:4},
-	RewardType.COPY_PASTA:			{DiceData.DieRarity.COMMON:1, DiceData.DieRarity.UNCOMMON:2, DiceData.DieRarity.RARE:3, DiceData.DieRarity.LEGENDARY:4}
+	RewardType.COPY_PASTE:			{DiceData.DieRarity.COMMON:1, DiceData.DieRarity.UNCOMMON:2, DiceData.DieRarity.RARE:3, DiceData.DieRarity.LEGENDARY:4}
 }
 
 static func get_reward_name(type : RewardType) -> String:
@@ -72,6 +72,6 @@ static func get_reward_name(type : RewardType) -> String:
 			name = "Lowest Value +3"
 		RewardType.REPLACE_LOW_W_HIGH:
 			name = "Replace Lowest With Highest"
-		RewardType.COPY_PASTA:
-			name = "Copy a Value To Another Face"
+		RewardType.COPY_PASTE:
+			name = "Copy/Paste Face"
 	return name

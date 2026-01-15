@@ -11,34 +11,41 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_nccj7")
 
-[node name="Standard" type="Button" parent="."]
+[node name="ClassGrid" type="GridContainer" parent="."]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.048611112
-anchor_top = 0.19753087
-anchor_right = 0.21440972
-anchor_bottom = 0.43055555
+anchor_top = 0.19444445
+anchor_right = 0.5694444
+anchor_bottom = 0.92901236
+theme_override_constants/h_separation = 12
+theme_override_constants/v_separation = 12
+columns = 3
+metadata/_edit_use_anchors_ = true
+
+[node name="Standard" type="Button" parent="ClassGrid"]
+custom_minimum_size = Vector2(192, 152)
+layout_mode = 2
 text = "Standard Dice Class"
 metadata/_edit_use_anchors_ = true
 
-[node name="Dungeon Master" type="Button" parent="."]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.22309028
-anchor_top = 0.19753087
-anchor_right = 0.3888889
-anchor_bottom = 0.43055555
+[node name="Dungeon Master" type="Button" parent="ClassGrid"]
+custom_minimum_size = Vector2(192, 152)
+layout_mode = 2
 text = "Dungeon Master"
 metadata/_edit_use_anchors_ = true
 
-[node name="DiceLover" type="Button" parent="."]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.048611112
-anchor_top = 0.44598764
-anchor_right = 0.21440972
-anchor_bottom = 0.67901236
+[node name="DiceLover" type="Button" parent="ClassGrid"]
+custom_minimum_size = Vector2(192, 152)
+layout_mode = 2
 text = "Dice Lover (Random)"
+metadata/_edit_use_anchors_ = true
+
+[node name="DEBUG_ALL_REWARDS" type="Button" parent="ClassGrid"]
+custom_minimum_size = Vector2(192, 152)
+layout_mode = 2
+text = "DEBUG
+ONE OF EACH REWARD"
 metadata/_edit_use_anchors_ = true
 
 [node name="Continue" type="Button" parent="."]
@@ -88,7 +95,8 @@ anchor_bottom = 0.18518518
 text = "Choose a starting class:"
 metadata/_edit_use_anchors_ = true
 
-[connection signal="pressed" from="Standard" to="." method="_on_standard_pressed"]
-[connection signal="pressed" from="Dungeon Master" to="." method="_on_dungeon_master_pressed"]
-[connection signal="pressed" from="DiceLover" to="." method="_on_dice_lover_pressed"]
+[connection signal="pressed" from="ClassGrid/Standard" to="." method="_on_standard_pressed"]
+[connection signal="pressed" from="ClassGrid/Dungeon Master" to="." method="_on_dungeon_master_pressed"]
+[connection signal="pressed" from="ClassGrid/DiceLover" to="." method="_on_dice_lover_pressed"]
+[connection signal="pressed" from="ClassGrid/DEBUG_ALL_REWARDS" to="." method="_on_reward_debug_pressed"]
 [connection signal="pressed" from="Continue" to="." method="_on_continue_pressed"]

@@ -9,6 +9,9 @@ class_name RewardHandler
 var handlerType : RewardHandlerType
 var rewardType
 
+#Vars for specific rewards
+var copyPasteFaceIndex
+
 enum RewardHandlerType {
 	REWARD_DIE,
 	BOARD_EVENT,
@@ -17,11 +20,38 @@ enum RewardHandlerType {
 
 func set_reward_type(newType : RewardHandlerType, newReward):
 	handlerType = newType
+	visible = true
 	match handlerType:
 		RewardHandlerType.REWARD_DIE:
 			rewardType = newReward as DieFaceData.RewardType
+			match rewardType:
+				DieFaceData.RewardType.ADD_REMOVE_FACE:
+					$addRemoveFace.visible = true
+					diceGrid.set_type(DiceGrid.GridType.ALL_DICE_FACE_CHOICE)
+				DieFaceData.RewardType.PLUS_MINUS_FACE:
+					$plusMinusFaceValue.visible = true
+					diceGrid.set_type(DiceGrid.GridType.SCORE_FACE_CHOICE)
+				DieFaceData.RewardType.DUPE_SCORE_DIE:
+					$duplicateDie.visible = true
+					diceGrid.set_type(DiceGrid.GridType.SCORE_DIE_CHOICE)
+				DieFaceData.RewardType.LOWEST_PLUS_3:
+					$lowestPlus.visible = true
+					diceGrid.set_type(DiceGrid.GridType.SCORE_DIE_CHOICE)
+				DieFaceData.RewardType.REPLACE_LOW_W_HIGH:
+					$replaceLowWithHigh.visible = true
+					diceGrid.set_type(DiceGrid.GridType.SCORE_DIE_CHOICE)
+				DieFaceData.RewardType.COPY_PASTE:
+					$copyPaste.visible = true
+					diceGrid.set_type(DiceGrid.GridType.ALL_DICE_FACE_CHOICE)
 		RewardHandlerType.BOARD_EVENT:
 			rewardType = newReward as EventSpace.EventType
+			match rewardType:
+				EventSpace.EventType.ADD_REMOVE_FACE:
+					$addRemoveFace.visible = true
+					diceGrid.set_type(DiceGrid.GridType.ALL_DICE_FACE_CHOICE)
+				EventSpace.EventType.PLUS_TO_FACE:
+					$plusToFace.visible = true
+					diceGrid.set_type(DiceGrid.GridType.SCORE_FACE_CHOICE)
 		RewardHandlerType.SHOP:
 			rewardType = newReward as Shop.ShopOptions
 
@@ -41,12 +71,16 @@ func _face_selected(faceIndex : int):
 				DieFaceData.RewardType.PLUS_MINUS_FACE:
 					$plusMinusFaceValue/PlusFace.disabled = false
 					$plusMinusFaceValue/MinusFace.disabled = false
+				DieFaceData.RewardType.COPY_PASTE:
+					$copyPaste/CopyPaste.disabled = false
 		RewardHandlerType.BOARD_EVENT:
 			Log.print("[RewardHandler] - face selected rewardType " + str(EventSpace.EventType.keys()[rewardType]))
 			match rewardType:
 				EventSpace.EventType.ADD_REMOVE_FACE:
 					$addRemoveFace/DuplicateFace.disabled = false
 					$addRemoveFace/RemoveFace.disabled = false
+				EventSpace.EventType.PLUS_TO_FACE:
+					$plusToFace/PlusToFace.disabled = false
 		RewardHandlerType.SHOP:
 			Log.print("[RewardHandler] - face selected rewardType " + str(Shop.ShopOptions.keys()[rewardType]))
 			match rewardType:
@@ -67,16 +101,22 @@ func _die_selected(dieIndex : int):
 					$plusMinusFaceValue/PlusFace.disabled = true
 					$plusMinusFaceValue/MinusFace.disabled = true
 				DieFaceData.RewardType.DUPE_SCORE_DIE:
-					$duplicateDie/DuplicateDie.disabled = false
+					$duplicateDie/DuplicateDie.disabled = false if dieIndex != diceGrid.selectedDie else true
+				DieFaceData.RewardType.REPLACE_LOW_W_HIGH:
+					$replaceLowWithHigh/ReplaceLowWithHigh.disabled = false
+					diceGrid.set_border_style_for_face(PlayerDice.get_score_die_max_face_index(diceGrid.selectedDie), DieFaceUI.StyleBorderType.SOURCE)
+					diceGrid.set_border_style_for_face(PlayerDice.get_score_die_min_face_index(diceGrid.selectedDie), DieFaceUI.StyleBorderType.TARGET)
 		RewardHandlerType.BOARD_EVENT:
 			match rewardType:
 				EventSpace.EventType.ADD_REMOVE_FACE:
 					$addRemoveFace/DuplicateFace.disabled = true
 					$addRemoveFace/RemoveFace.disabled = true
+				EventSpace.EventType.PLUS_TO_FACE:
+					$plusToFace/PlusToFace.disabled = true
 		RewardHandlerType.SHOP:
 			match rewardType:
 				Shop.ShopOptions.ADD_FACE:
-					$addFace/AddFace.disabled = false
+					$addFace/AddFace.disabled = false if dieIndex != diceGrid.selectedDie else true
 				Shop.ShopOptions.REMOVE_FACE:
 					$removeFace/RemoveFace.disabled = true
 
@@ -134,6 +174,7 @@ func _on_remove_face_pressed(buttonNode):
 
 
 func _on_plus_face_pressed():
+	#TODO set this up similar to remove_face_pressed with buttonNode param
 	eventText.text = "Die face increased by 1"
 	PlayerDice.ScoreDice[diceGrid.selectedDie].faces[diceGrid.selectedFace].value += 1
 	$plusMinusFaceValue.visible = false
@@ -154,3 +195,38 @@ func _on_duplicate_die_pressed():
 	PlayerDice.ScoreDice.append(PlayerDice.ScoreDice[diceGrid.selectedDie])
 	$duplicateDie.visible = false
 	_handle_reward_chosen_common()
+
+
+func _on_lowest_plus_pressed():
+	eventText.text = "+3 to lowest face on selected die"
+	PlayerDice.ScoreDice[diceGrid.selectedDie].faces[PlayerDice.get_score_die_min_face_index(diceGrid.selectedDie)].value += 3
+	$lowestPlus.visible = false
+	_handle_reward_chosen_common()
+
+func _on_replace_low_with_high_pressed():
+	eventText.text = "Replaced selected die's lowest face with highest face"
+	PlayerDice.ScoreDice[diceGrid.selectedDie].faces[PlayerDice.get_score_die_min_face_index(diceGrid.selectedDie)].value = \
+		PlayerDice.ScoreDice[diceGrid.selectedDie].faces[PlayerDice.get_score_die_max_face_index(diceGrid.selectedDie)].value
+	$replaceLowWithHigh.visible = false
+	_handle_reward_chosen_common()
+	diceGrid.refresh_face_grid()
+
+func _on_copy_paste_pressed():
+	if copyPasteFaceIndex == null:
+		eventText.text = "Select a face to replace"
+		$copyPaste/CopyPaste.text = "Paste to Face"
+		$copyPaste/CopyPaste.disabled = true
+		#copy the selected index and disable dice selection
+		copyPasteFaceIndex = diceGrid.selectedFace
+		diceGrid.toggle_die_grid_focus(false)
+		diceGrid.toggle_die_face_focus(copyPasteFaceIndex, false)
+	else:
+		eventText.text = "Copied face pasted to selected face"
+		$copyPaste/CopyPaste.visible = false
+		match diceGrid.currentTab:
+			DiceGrid.GridTabs.SCORE:
+				PlayerDice.ScoreDice[diceGrid.selectedDie].faces[diceGrid.selectedFace] = PlayerDice.ScoreDice[diceGrid.selectedDie].faces[copyPasteFaceIndex]
+			DiceGrid.GridTabs.REWARD:
+				PlayerDice.RewardDice[diceGrid.selectedFace] = PlayerDice.RewardDice[copyPasteFaceIndex]
+		_handle_reward_chosen_common()
+		diceGrid.refresh_face_grid()

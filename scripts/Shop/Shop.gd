@@ -21,7 +21,7 @@ func _ready():
 		PlayerDice.Money = 50
 	
 	diceGrid.visible = true
-	diceGrid.set_type(DiceGrid.GridType.allDiceChoice)
+	diceGrid.set_type(DiceGrid.GridType.ALL_DICE_CHOICE)
 	update_shop()
 
 func update_shop():
@@ -41,14 +41,14 @@ func _on_add_face_pressed():
 	$ShopControl.visible = false
 	$RewardHandlerUI/addFace.visible = true #TODO might want to do the button visible stuff in the reward handler set_reward_type() call
 	rewardHandlerUI.set_reward_type(RewardHandler.RewardHandlerType.SHOP, ShopOptions.ADD_FACE)
-	diceGrid.set_type(DiceGrid.GridType.allDiceChoice)
+	diceGrid.set_type(DiceGrid.GridType.ALL_DICE_CHOICE)
 
 func _on_remove_face_pressed():
 	_handle_shop_option_selected($ShopControl/ShopOptions/RemoveFace)
 	$ShopControl.visible = false
 	$RewardHandlerUI/removeFace.visible = true
 	rewardHandlerUI.set_reward_type(RewardHandler.RewardHandlerType.SHOP, ShopOptions.REMOVE_FACE)
-	diceGrid.set_type(DiceGrid.GridType.allDiceFaceChoice)
+	diceGrid.set_type(DiceGrid.GridType.ALL_DICE_FACE_CHOICE)
 
 func _on_plus_max_moves_pressed():
 	_handle_shop_option_selected($ShopControl/ShopOptions/PlusMaxMoves)
@@ -71,4 +71,4 @@ func _on_continue_pressed():
 	$Continue.visible = false
 	$ShopControl.visible = true
 	$EventText.text = ""
-	diceGrid.set_type(DiceGrid.GridType.allDiceChoice)
+	diceGrid.set_type(DiceGrid.GridType.ALL_DICE_CHOICE)

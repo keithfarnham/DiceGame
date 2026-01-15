@@ -6,8 +6,18 @@ enum ClassChoice
 {
 	StandardGambler,
 	DungeonMaster,
-	DiceLover
+	DiceLover,
+	DEBUG_REWARD_CLASS
 }
+
+static func get_class_num_reward_dice_draft(pickedClass : ClassChoice):
+	var numRewardDice
+	match pickedClass:
+		ClassChoice.DEBUG_REWARD_CLASS:
+			numRewardDice = DieFaceData.RewardType.size()
+		_: 
+			numRewardDice = 2
+	return numRewardDice
 
 static func get_class_name(pickedClass : ClassChoice):
 	var name := ""

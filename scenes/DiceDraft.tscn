@@ -94,5 +94,16 @@ anchor_bottom = 0.9382716
 text = "Select a Die"
 metadata/_edit_use_anchors_ = true
 
+[node name="DEBUG AUTO DRAFT" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.44444445
+anchor_top = 0.8888889
+anchor_right = 0.61101466
+anchor_bottom = 0.9506173
+text = "DEBUG AUTO DRAFT"
+metadata/_edit_use_anchors_ = true
+
 [connection signal="pressed" from="Continue" to="." method="_on_continue_pressed"]
 [connection signal="pressed" from="ChooseDie" to="." method="_on_choose_die_pressed"]
+[connection signal="pressed" from="DEBUG AUTO DRAFT" to="." method="_on_debug_auto_draft_pressed"]

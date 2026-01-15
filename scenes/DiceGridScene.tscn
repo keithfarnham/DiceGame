@@ -31,7 +31,6 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 1
 script = ExtResource("1_efbfp")
-gridType = null
 metadata/_edit_use_anchors_ = true
 
 [node name="DiceTabs" type="Control" parent="."]

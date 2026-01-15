@@ -14,6 +14,11 @@ mouse_filter = 2
 script = ExtResource("1_oiyel")
 metadata/_edit_use_anchors_ = true
 
+[node name="DiceGrid" parent="." instance=ExtResource("2_qkmf1")]
+visible = false
+layout_mode = 1
+gridType = 2
+
 [node name="addFace" type="Control" parent="."]
 visible = false
 layout_mode = 1
@@ -142,10 +147,73 @@ disabled = true
 text = "Duplicate Die"
 metadata/_edit_use_anchors_ = true
 
-[node name="DiceGrid" parent="." instance=ExtResource("2_qkmf1")]
+[node name="lowestPlus" type="Control" parent="."]
 visible = false
+anchors_preset = 0
+offset_right = 272.0
+offset_bottom = 120.0
+
+[node name="LowestPlus" type="Button" parent="lowestPlus"]
 layout_mode = 1
-gridType = 2
+anchors_preset = -1
+anchor_left = 3.1764705
+anchor_top = 4.266667
+anchor_right = 3.6470587
+anchor_bottom = 4.800001
+disabled = true
+text = "+3 to Lowest Value Face"
+autowrap_mode = 3
+metadata/_edit_use_anchors_ = true
+
+[node name="replaceLowWithHigh" type="Control" parent="."]
+visible = false
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ReplaceLowWithHigh" type="Button" parent="replaceLowWithHigh"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 21.2
+anchor_top = 12.8
+anchor_right = 25.2
+anchor_bottom = 14.4
+disabled = true
+text = "Replace Lowest With Highest Face"
+autowrap_mode = 3
+metadata/_edit_use_anchors_ = true
+
+[node name="plusToFace" type="Control" parent="."]
+visible = false
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="PlusToFace" type="Button" parent="plusToFace"]
+layout_mode = 0
+anchor_left = 21.6
+anchor_top = 12.8
+anchor_right = 24.8
+anchor_bottom = 14.4
+disabled = true
+text = "+1 To Face"
+metadata/_edit_use_anchors_ = true
+
+[node name="copyPaste" type="Control" parent="."]
+visible = false
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="CopyPaste" type="Button" parent="copyPaste"]
+layout_mode = 0
+anchor_left = 21.6
+anchor_top = 12.8
+anchor_right = 24.8
+anchor_bottom = 14.4
+disabled = true
+text = "Select Face To Copy"
+metadata/_edit_use_anchors_ = true
 
 [connection signal="pressed" from="addFace/AddFace" to="." method="_on_add_face_pressed"]
 [connection signal="pressed" from="removeFace/RemoveFace" to="." method="_on_remove_face_pressed" flags=18]
@@ -154,3 +222,7 @@ gridType = 2
 [connection signal="pressed" from="plusMinusFaceValue/PlusFace" to="." method="_on_plus_face_pressed"]
 [connection signal="pressed" from="plusMinusFaceValue/MinusFace" to="." method="_on_minus_face_pressed"]
 [connection signal="pressed" from="duplicateDie/DuplicateDie" to="." method="_on_duplicate_die_pressed"]
+[connection signal="pressed" from="lowestPlus/LowestPlus" to="." method="_on_lowest_plus_pressed"]
+[connection signal="pressed" from="replaceLowWithHigh/ReplaceLowWithHigh" to="." method="_on_replace_low_with_high_pressed"]
+[connection signal="pressed" from="plusToFace/PlusToFace" to="." method="_on_plus_face_pressed"]
+[connection signal="pressed" from="copyPaste/CopyPaste" to="." method="_on_copy_paste_pressed"]

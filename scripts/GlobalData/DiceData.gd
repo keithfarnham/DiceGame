@@ -252,3 +252,15 @@ func D6(type := DiceType.SCORE) -> Die:
 		faces.append(DieFace.new(i + 1, faceType))
 	Log.print("making D6 with type " + str(DiceType.keys()[type]))
 	return ScoreDie.new(faces)
+
+func DEBUG_REWARD_COIN(rewardType : DieFaceData.RewardType):
+	var faces : Array[DieFace]
+	faces.append(DieFace.new(rewardType, DieFaceData.FaceType.REWARD))
+	faces.append(DieFace.new(rewardType, DieFaceData.FaceType.REWARD))
+	return RewardDie.new(faces)
+	
+func DEBUG_ALL_REWARDS():
+	var dice : Array[Die]
+	for reward in DieFaceData.RewardType.values():
+		dice.append(DEBUG_REWARD_COIN(reward))
+	return dice

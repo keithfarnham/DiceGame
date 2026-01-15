@@ -71,6 +71,7 @@ offset_left = 1700.6602
 offset_top = 1330.3829
 offset_right = -1558.3689
 offset_bottom = 512.0
+bbcode_enabled = true
 text = "Select Your Reward"
 horizontal_alignment = 1
 vertical_alignment = 1

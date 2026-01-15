@@ -2,7 +2,7 @@ extends Control
 
 @onready var moveGrid = $Board/MoveGrid as GridContainer
 @onready var eventText = $EventText as RichTextLabel
-@onready var rewardHandlerUI = $RewardHandlerUI
+@onready var rewardHandlerUI = $RewardHandlerUI as RewardHandler
 @onready var diceGrid = $RewardHandlerUI/DiceGrid as DiceGrid
 @onready var shop = $Shop as Shop
 
@@ -192,6 +192,12 @@ func space_pressed(index : Vector2i):
 	BoardData.lastMoveIndex = index
 	BoardData.pendingPath = [] #clear pending path once the spaces are set to landed
 	
+	if _is_space_goal(BoardData.lastMoveIndex):
+		$ToBoss.visible = true
+		return
+	else:
+		$ToBoss.visible = false
+	
 	if BoardData.movesLeft == 0:
 		$Board/MoveCount/MovesMinus.visible = false
 		#after all moves are used handle the events that were landed on
@@ -203,12 +209,6 @@ func space_pressed(index : Vector2i):
 			event_queue()
 		elif !_is_space_goal(BoardData.lastMoveIndex):
 			$Continue.visible = true
-	
-	elif _is_space_goal(BoardData.lastMoveIndex):
-		$ToBoss.visible = true
-		return
-	else:
-		$ToBoss.visible = false
 
 	#BFS to check for valid path to goal
 	var found_path := false
@@ -283,11 +283,11 @@ func event_handler(event : EventSpace):
 		EventSpace.EventType.ADD_REMOVE_FACE:
 			$Continue.visible = false
 			eventText.text = "You found a tool allowing you to duplicate or remove a die face."
-			rewardHandlerUI.visible = true
-			$RewardHandlerUI/addRemoveFace.visible = true
 			rewardHandlerUI.set_reward_type(RewardHandler.RewardHandlerType.BOARD_EVENT, EventSpace.EventType.ADD_REMOVE_FACE)
-			diceGrid.visible = true
-			diceGrid.set_type(DiceGrid.GridType.allDiceFaceChoice)
+		EventSpace.EventType.PLUS_TO_FACE:
+			$Continue.visible = false
+			eventText.text = "You found a magic item that can give +1 to a selected face."
+			rewardHandlerUI.set_reward_type(RewardHandler.RewardHandlerType.BOARD_EVENT, EventSpace.EventType.PLUS_TO_FACE)
 
 func _key_of(v : Vector2i) -> String:
 	return str(v.x) + ":" + str(v.y)
