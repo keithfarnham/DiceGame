@@ -44,5 +44,4 @@ func initialize(newDieData : Die, newIndex : int):
 				icon.gradient = GradientMult
 
 func _pressed():
-	Log.print("[DieUI] Die " + dieIndexUI.text + " pressed. Should match dieIndex " + str(dieIndexUI.text.to_int()))
 	die_selected(dieIndexUI.text.to_int())

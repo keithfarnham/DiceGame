@@ -273,10 +273,52 @@ metadata/_edit_use_anchors_ = true
 [node name="RollScoreInfo" type="RichTextLabel" parent="."]
 layout_mode = 0
 offset_left = 64.0
-offset_top = 512.0
+offset_top = 576.0
 offset_right = 512.0
-offset_bottom = 576.0
+offset_bottom = 616.0
 text = "Roll your Score Dice and beat the Goal!"
+
+[node name="AreaRoundInfo" type="Control" parent="."]
+layout_mode = 1
+anchor_left = 0.034722224
+anchor_top = 0.7407407
+anchor_right = 0.22222222
+anchor_bottom = 0.8518519
+offset_top = 3.0517578e-05
+metadata/_edit_use_anchors_ = true
+
+[node name="AreaLabel" type="RichTextLabel" parent="AreaRoundInfo"]
+layout_mode = 0
+anchor_right = 0.22222222
+anchor_bottom = 0.44444445
+text = "Area:"
+metadata/_edit_use_anchors_ = true
+
+[node name="AreaValue" type="RichTextLabel" parent="AreaRoundInfo"]
+layout_mode = 0
+anchor_left = 0.22222222
+anchor_right = 0.4074074
+anchor_bottom = 0.44444445
+text = "1"
+metadata/_edit_use_anchors_ = true
+
+[node name="RoundLabel" type="RichTextLabel" parent="AreaRoundInfo"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.44444445
+anchor_right = 0.25925925
+anchor_bottom = 0.8888889
+text = "Round:"
+metadata/_edit_use_anchors_ = true
+
+[node name="RoundValue" type="RichTextLabel" parent="AreaRoundInfo"]
+layout_mode = 0
+anchor_left = 0.25925925
+anchor_top = 0.44444445
+anchor_right = 0.44444445
+anchor_bottom = 0.7777778
+text = "1"
+metadata/_edit_use_anchors_ = true
 
 [connection signal="mouse_entered" from="ScoreRollUI/RollResultGrid/RollSum/SumInfoArea" to="." method="_on_sum_info_area_mouse_entered"]
 [connection signal="mouse_exited" from="ScoreRollUI/RollResultGrid/RollSum/SumInfoArea" to="." method="_on_sum_info_area_mouse_exited"]

@@ -89,7 +89,7 @@ func _face_selected(faceIndex : int):
 				Shop.ShopOptions.REMOVE_FACE:
 					$removeFace/RemoveFace.disabled = false
 
-func _die_selected(dieIndex : int):
+func _die_selected(dieIndex : int, isUnselect : bool):
 	Log.print("[RewardHandler] - die selected with index " + str(dieIndex))
 	match handlerType:
 		RewardHandlerType.REWARD_DIE:
@@ -101,7 +101,11 @@ func _die_selected(dieIndex : int):
 					$plusMinusFaceValue/PlusFace.disabled = true
 					$plusMinusFaceValue/MinusFace.disabled = true
 				DieFaceData.RewardType.DUPE_SCORE_DIE:
-					$duplicateDie/DuplicateDie.disabled = false if dieIndex != diceGrid.selectedDie else true
+					Log.print("dieIndex is " + str(dieIndex) + " and selectedDie is " + str(diceGrid.selectedDie))
+					$duplicateDie/DuplicateDie.disabled = true if isUnselect else false
+				DieFaceData.RewardType.LOWEST_PLUS_3:
+					$lowestPlus/LowestPlus.disabled = true if isUnselect else false
+					diceGrid.set_border_style_for_face(PlayerDice.get_score_die_min_face_index(diceGrid.selectedDie), DieFaceUI.StyleBorderType.TARGET)
 				DieFaceData.RewardType.REPLACE_LOW_W_HIGH:
 					$replaceLowWithHigh/ReplaceLowWithHigh.disabled = false
 					diceGrid.set_border_style_for_face(PlayerDice.get_score_die_max_face_index(diceGrid.selectedDie), DieFaceUI.StyleBorderType.SOURCE)
@@ -171,14 +175,22 @@ func _on_remove_face_pressed(buttonNode):
 			$removeFace.visible = false
 			$removeFace/RemoveFace.disabled  = true
 	_handle_reward_chosen_common()
+	diceGrid.refresh_face_grid()
 
 
-func _on_plus_face_pressed():
-	#TODO set this up similar to remove_face_pressed with buttonNode param
+func _on_plus_face_pressed(buttonNode):
 	eventText.text = "Die face increased by 1"
 	PlayerDice.ScoreDice[diceGrid.selectedDie].faces[diceGrid.selectedFace].value += 1
-	$plusMinusFaceValue.visible = false
+	match buttonNode.get_parent().name: #TODO evaluate if there is a cleaner way to doing this than checking parent name, but this works for now
+		"plusMinusFaceValue":
+			$plusMinusFaceValue.visible = false
+			$plusMinusFaceValue/PlusFace.disabled = true
+			$plusMinusFaceValue/MinusFace.disabled = true
+		"plusToFace":
+			$plusToFace.visible = false
+			$plusToFace/PlusToFace.disabled  = true
 	_handle_reward_chosen_common()
+	diceGrid.refresh_face_grid()
 
 
 func _on_minus_face_pressed():
@@ -202,6 +214,7 @@ func _on_lowest_plus_pressed():
 	PlayerDice.ScoreDice[diceGrid.selectedDie].faces[PlayerDice.get_score_die_min_face_index(diceGrid.selectedDie)].value += 3
 	$lowestPlus.visible = false
 	_handle_reward_chosen_common()
+	diceGrid.refresh_face_grid()
 
 func _on_replace_low_with_high_pressed():
 	eventText.text = "Replaced selected die's lowest face with highest face"

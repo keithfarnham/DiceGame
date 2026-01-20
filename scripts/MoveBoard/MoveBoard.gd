@@ -33,7 +33,7 @@ func board_setup():
 	if !BoardData.savedState:
 		BoardData.reset_moves_left()
 		BoardData.eventSpaces = setup_events(BoardData.numEvents)
-		BoardData.rounds = 1
+		BoardData.rounds = 0
 	$Board/Area/AreaValue.text = str(BoardData.areaNumber)
 	$Board/MoveCount/MovesLeftValue.text = str(BoardData.movesLeft)
 	
@@ -325,6 +325,7 @@ func _on_event_continue_pressed():
 		BoardData.reset_mid_round_data()
 		BoardData.savedState = true
 		BoardData.rounds += 1
+		PlayerDice.TotalRounds += 1
 		get_tree().change_scene_to_file("res://scenes/RollScore.tscn")
 
 func _on_to_boss_pressed():
@@ -335,13 +336,14 @@ func _on_to_boss_pressed():
 		$LandedEvents.set_position(Vector2(64.0, 472.0))
 		event_queue()
 		return
-	BoardData.reset_board_data()
-	BoardData.areaNumber += 1
 	BoardData.bossRound = true
+	BoardData.rounds += 1
+	PlayerDice.TotalRounds += 1
 	get_tree().change_scene_to_file("res://scenes/RollScore.tscn")
 
 func _game_over_stuck():
 	gameOver = true
 	$GameOver.visible = true
 	$Continue.text = "Back To Start"
+	$Continue.visible = true
 	moveGrid.mouse_behavior_recursive = Control.MOUSE_BEHAVIOR_DISABLED

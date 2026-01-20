@@ -11,7 +11,7 @@ var Money : int
 var ChosenClass : PlayerClass.ClassChoice
 
 #TODO might want to move these elsewhere
-var TotalRounds := 1
+var TotalRounds := 0
 var BossRound := false
 var DEBUG_Enabled := false
 
@@ -23,7 +23,7 @@ func new_game():
 	RewardStakes = []
 	Money = 0
 	ChosenClass = -1
-	TotalRounds = 1
+	TotalRounds = 0
 	BossRound = false
 
 func add_dice(newDice : Array[Die]):

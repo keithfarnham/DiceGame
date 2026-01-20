@@ -11,7 +11,7 @@ var DieUIScene = preload("res://scenes/DieUIScene.tscn")
 var DieFaceUIScene = preload("res://scenes/DiceFaceUIScene.tscn")
 
 signal faceSelected(faceIndex : int)
-signal dieSelected(dieIndex : int)
+signal dieSelected(dieIndex : int, isUnselect : bool)
 
 @export var gridType : GridType
 
@@ -143,6 +143,8 @@ func die_selected(dieIndex : int):
 				scoreDiceGrid.get_child(dieIndex).release_focus()
 			GridTabs.REWARD:
 				rewardDiceGrid.get_child(dieIndex).release_focus()
+		#have to emit select before early out. Passing true for isUnselect 
+		dieSelected.emit(dieIndex, true)
 		return
 	else:
 		faceGrid.visible = true
@@ -179,7 +181,7 @@ func die_selected(dieIndex : int):
 				
 		faceGrid.add_child(newFaceUIInstance)
 	#filling out the facegrid before emitting to have the nodes setup for anything RewardHandler is doing to the grid UI
-	dieSelected.emit(dieIndex)
+	dieSelected.emit(dieIndex, false)
 
 func face_selected(faceIndex : int):
 	Log.print("[DiceGrid] face_selected prev selected " + str(selectedFace) + " with face index " + str(faceIndex))

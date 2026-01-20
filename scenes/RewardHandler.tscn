@@ -224,5 +224,5 @@ metadata/_edit_use_anchors_ = true
 [connection signal="pressed" from="duplicateDie/DuplicateDie" to="." method="_on_duplicate_die_pressed"]
 [connection signal="pressed" from="lowestPlus/LowestPlus" to="." method="_on_lowest_plus_pressed"]
 [connection signal="pressed" from="replaceLowWithHigh/ReplaceLowWithHigh" to="." method="_on_replace_low_with_high_pressed"]
-[connection signal="pressed" from="plusToFace/PlusToFace" to="." method="_on_plus_face_pressed"]
+[connection signal="pressed" from="plusToFace/PlusToFace" to="." method="_on_plus_face_pressed" flags=18]
 [connection signal="pressed" from="copyPaste/CopyPaste" to="." method="_on_copy_paste_pressed"]

@@ -16,9 +16,13 @@ var gameOver := false
 func _ready():
 	diceGrid.populate_grid()
 	$DiceGrid/DiceTabs.visible = false
-	goalValue = 1#BoardData.areaNumber * BoardData.areaNumber * PlayerDice.TotalRounds + BoardData.rounds * PlayerDice.TotalRounds #TODO evaluate difficulty curve
-	#goalValue += BoardData.areaNumber * 10 if BoardData.bossRound else 0
+	goalValue = BoardData.areaNumber * BoardData.areaNumber * PlayerDice.TotalRounds + BoardData.rounds * PlayerDice.TotalRounds #TODO evaluate difficulty curve
+	goalValue += BoardData.areaNumber * 10 if BoardData.bossRound else 0
+	if PlayerDice.DEBUG_Enabled:
+		goalValue = 1
 	$GoalControl/GoalValue.text = str(goalValue)
+	$AreaRoundInfo/AreaValue.text = str(BoardData.areaNumber)
+	$AreaRoundInfo/RoundValue.text = str(BoardData.rounds)
 
 func update_text():
 	if diceGrid.visible:
@@ -120,6 +124,7 @@ func _on_continue_pressed():
 		get_tree().change_scene_to_file("res://scenes/FrontEnd.tscn")
 	elif BoardData.bossRound:
 		BoardData.areaNumber += 1
+		BoardData.reset_board_data()
 		get_tree().change_scene_to_file("res://scenes/RewardChoice.tscn")
 	else:
 		get_tree().change_scene_to_file("res://scenes/MoveBoard.tscn")
