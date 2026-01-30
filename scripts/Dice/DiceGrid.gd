@@ -121,7 +121,7 @@ func add_die(die : Die, dieIndex : int):
 	diceGrid.add_child(newDieUIInstance)
 
 func add_dice(dice : Array[Die]):
-	for dieIndex in dice.size():
+	for dieIndex in range(dice.size()):
 		Log.print("[DiceGrid] adding dice at index " + str(dieIndex) + " of type " + str(DiceData.DiceType.keys()[dice[dieIndex].type]))
 		add_die(dice[dieIndex], dieIndex)
 

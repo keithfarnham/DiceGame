@@ -12,7 +12,7 @@ var ChosenReward : DieFaceData.RewardType
 
 func _ready():
 	#populate grid with PlayerDice.RewardStakes faces
-	for faceIndex in PlayerDice.RewardStakes.size():
+	for faceIndex in range(PlayerDice.RewardStakes.size()):
 		var newFaceUIInstance = DieFaceUIScene.instantiate() as DieFaceUI
 		var dieFace = DieFace.new(PlayerDice.RewardStakes[faceIndex].value, PlayerDice.RewardStakes[faceIndex].type)
 		var enableFocus = true

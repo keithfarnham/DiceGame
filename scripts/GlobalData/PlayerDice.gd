@@ -46,7 +46,7 @@ func get_score_die_min_face_index(dieIndex) -> int:
 	var minFaceIndex
 	var minFaceValue
 	var die = PlayerDice.ScoreDice[dieIndex]
-	for faceIndex in die.faces.size():
+	for faceIndex in range(die.faces.size()):
 		if minFaceValue == null or minFaceValue > die.faces[faceIndex].value:
 			minFaceValue = die.faces[faceIndex].value
 			minFaceIndex = faceIndex
@@ -56,7 +56,7 @@ func get_score_die_max_face_index(dieIndex) -> int:
 	var maxFaceIndex
 	var maxFaceValue
 	var die = PlayerDice.ScoreDice[dieIndex]
-	for faceIndex in die.faces.size():
+	for faceIndex in range(die.faces.size()):
 		if maxFaceValue == null or die.faces[faceIndex].value > maxFaceValue:
 			maxFaceValue = die.faces[faceIndex].value
 			maxFaceIndex = faceIndex
@@ -65,10 +65,10 @@ func get_score_die_max_face_index(dieIndex) -> int:
 func debug_print_dice_array(type = DiceData.DiceType.SCORE):
 	var string = ""
 	var Dice = RewardDice if type == DiceData.DiceType.REWARD else ScoreDice
-	for dieIndex in Dice.size():
+	for dieIndex in range(Dice.size()):
 		var numFaces = Dice[dieIndex].faces.size()
 		string += "\n[u]Die " + str(dieIndex) + " w/ " + str(numFaces) + " faces: [/u]"
-		for faceIndex in Dice[dieIndex].faces.size():
+		for faceIndex in range(Dice[dieIndex].faces.size()):
 			match Dice[dieIndex].faces[faceIndex].type:
 				DieFaceData.FaceType.MULTIPLIER:
 					string += "[b]"

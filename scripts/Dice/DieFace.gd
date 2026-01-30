@@ -4,7 +4,7 @@ class_name DieFace
 
 var type : DieFaceData.FaceType
 var value
-var chance
+var chance := 1.0
 
 func _init(faceValue : int, faceType := DieFaceData.FaceType.SCORE):
 	type = faceType

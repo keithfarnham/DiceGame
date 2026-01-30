@@ -24,7 +24,8 @@ enum EffectType #These faces have effects in addition to whatever scoring/multip
 	default = 0, #default type, no special
 	weighted = 1, #higher chance to land on this face
 	dungeonDiceMonster = 2, #die unfurls and //TBD sums value from all faces
-	glass = 3, #die destorys itself after scoring
+	glass = 3, #die destroys itself after scoring
+	absorb = 4 #absorbs rolled value from a random die, destroying that die but adding the rolled value to this face
 }
 
 enum RewardType

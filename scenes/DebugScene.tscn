@@ -1,6 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://dupfms6m2gsoy"]
-
-[ext_resource type="Script" uid="uid://o7qlpdpx0hvd" path="res://scripts/Debug/Debug.gd" id="1_6ijlv"]
+[gd_scene load_steps=2 format=3 uid="uid://dupfms6m2gsoy"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u6rbe"]
 bg_color = Color(0, 0.360784, 0.494118, 0.309804)
@@ -15,7 +13,6 @@ offset_bottom = -0.296005
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
-script = ExtResource("1_6ijlv")
 
 [node name="HideDebugUI" type="Button" parent="."]
 modulate = Color(1, 0.631817, 0.540099, 1)
