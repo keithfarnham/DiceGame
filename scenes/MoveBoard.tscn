@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://0mwxj873nos1"]
+[gd_scene format=3 uid="uid://0mwxj873nos1"]
 
 [ext_resource type="Script" uid="uid://c1trpr2kodejp" path="res://scripts/MoveBoard/MoveBoard.gd" id="1_0qfav"]
 [ext_resource type="PackedScene" uid="uid://by0hqbc5elxlt" path="res://scenes/RewardHandler.tscn" id="2_jx0mh"]
@@ -7,7 +7,8 @@
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kwyp2"]
 bg_color = Color(0, 0, 0, 1)
 
-[node name="MoveBoard" type="Control"]
+[node name="MoveBoard" type="Control" unique_id=1023886752]
+z_index = -1
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -17,13 +18,13 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_0qfav")
 
-[node name="Board" type="Control" parent="."]
+[node name="Board" type="Control" parent="." unique_id=1051618977]
 layout_mode = 1
 anchor_right = 0.5555556
 anchor_bottom = 1.0
 metadata/_edit_use_anchors_ = true
 
-[node name="MoveGrid" type="GridContainer" parent="Board"]
+[node name="MoveGrid" type="GridContainer" parent="Board" unique_id=1883852135]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.0875
@@ -32,7 +33,7 @@ anchor_right = 0.9125
 anchor_bottom = 0.90123445
 metadata/_edit_use_anchors_ = true
 
-[node name="Goal" type="RichTextLabel" parent="Board"]
+[node name="Goal" type="RichTextLabel" parent="Board" unique_id=2083156951]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.3
@@ -44,7 +45,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="Start" type="RichTextLabel" parent="Board"]
+[node name="Start" type="RichTextLabel" parent="Board" unique_id=1623949137]
 layout_mode = 0
 anchor_left = 0.3
 anchor_top = 0.8888889
@@ -56,7 +57,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="MoveCount" type="Control" parent="Board"]
+[node name="MoveCount" type="Control" parent="Board" unique_id=1351208033]
 layout_mode = 1
 anchor_left = 0.675
 anchor_top = 0.049382716
@@ -64,7 +65,7 @@ anchor_right = 0.975
 anchor_bottom = 0.086419754
 metadata/_edit_use_anchors_ = true
 
-[node name="MovesLeftLabel" type="RichTextLabel" parent="Board/MoveCount"]
+[node name="MovesLeftLabel" type="RichTextLabel" parent="Board/MoveCount" unique_id=1069457209]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 0.5
@@ -75,7 +76,7 @@ fit_content = true
 scroll_active = false
 metadata/_edit_use_anchors_ = true
 
-[node name="MovesLeftValue" type="RichTextLabel" parent="Board/MoveCount"]
+[node name="MovesLeftValue" type="RichTextLabel" parent="Board/MoveCount" unique_id=463479861]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5
@@ -88,14 +89,14 @@ scroll_active = false
 horizontal_alignment = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="MovesMinus" type="Control" parent="Board/MoveCount"]
+[node name="MovesMinus" type="Control" parent="Board/MoveCount" unique_id=183021697]
 layout_mode = 1
 anchor_left = 0.625
 anchor_right = 0.8333333
 anchor_bottom = 1.0
 metadata/_edit_use_anchors_ = true
 
-[node name="Minus" type="RichTextLabel" parent="Board/MoveCount/MovesMinus"]
+[node name="Minus" type="RichTextLabel" parent="Board/MoveCount/MovesMinus" unique_id=170272286]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 0.4
@@ -105,7 +106,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="StepsNeeded" type="RichTextLabel" parent="Board/MoveCount/MovesMinus"]
+[node name="StepsNeeded" type="RichTextLabel" parent="Board/MoveCount/MovesMinus" unique_id=1536263580]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.4
@@ -114,7 +115,7 @@ anchor_bottom = 1.0
 text = "0"
 metadata/_edit_use_anchors_ = true
 
-[node name="Area" type="Control" parent="Board"]
+[node name="Area" type="Control" parent="Board" unique_id=42754010]
 layout_mode = 1
 anchor_left = 0.0125
 anchor_top = 0.012345679
@@ -122,7 +123,7 @@ anchor_right = 0.1375
 anchor_bottom = 0.049382716
 metadata/_edit_use_anchors_ = true
 
-[node name="AreaLabel" type="RichTextLabel" parent="Board/Area"]
+[node name="AreaLabel" type="RichTextLabel" parent="Board/Area" unique_id=1960153856]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 0.5
@@ -130,7 +131,7 @@ anchor_bottom = 1.0
 text = "Area"
 metadata/_edit_use_anchors_ = true
 
-[node name="AreaValue" type="RichTextLabel" parent="Board/Area"]
+[node name="AreaValue" type="RichTextLabel" parent="Board/Area" unique_id=1226690123]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5
@@ -139,7 +140,7 @@ anchor_bottom = 1.0
 text = "1"
 metadata/_edit_use_anchors_ = true
 
-[node name="EventsCollectedLabel" type="RichTextLabel" parent="."]
+[node name="EventsCollectedLabel" type="RichTextLabel" parent="." unique_id=2007656116]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5555556
@@ -150,7 +151,7 @@ offset_top = -3.0517578e-05
 text = "Collected Events"
 metadata/_edit_use_anchors_ = true
 
-[node name="LandedEvents" type="GridContainer" parent="."]
+[node name="LandedEvents" type="GridContainer" parent="." unique_id=562357556]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5555556
@@ -160,7 +161,7 @@ anchor_bottom = 0.34567901
 columns = 4
 metadata/_edit_use_anchors_ = true
 
-[node name="EventText" type="RichTextLabel" parent="."]
+[node name="EventText" type="RichTextLabel" parent="." unique_id=344714900]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.30555555
@@ -171,15 +172,15 @@ mouse_filter = 2
 bbcode_enabled = true
 metadata/_edit_use_anchors_ = true
 
-[node name="RewardHandlerUI" parent="." instance=ExtResource("2_jx0mh")]
+[node name="RewardHandlerUI" parent="." unique_id=1076472773 instance=ExtResource("2_jx0mh")]
 visible = false
 layout_mode = 1
 
-[node name="Shop" parent="." instance=ExtResource("3_kwyp2")]
+[node name="Shop" parent="." unique_id=1347359065 instance=ExtResource("3_kwyp2")]
 visible = false
 layout_mode = 1
 
-[node name="Continue" type="Button" parent="."]
+[node name="Continue" type="Button" parent="." unique_id=1151639934]
 visible = false
 layout_mode = 1
 anchors_preset = -1
@@ -190,7 +191,7 @@ anchor_bottom = 0.9506173
 text = "Continue"
 metadata/_edit_use_anchors_ = true
 
-[node name="ToBoss" type="Button" parent="."]
+[node name="ToBoss" type="Button" parent="." unique_id=1515755143]
 visible = false
 layout_mode = 1
 anchors_preset = -1
@@ -201,7 +202,7 @@ anchor_bottom = 0.9506173
 text = "BOSS FIGHT"
 metadata/_edit_use_anchors_ = true
 
-[node name="GameOver" type="Panel" parent="."]
+[node name="GameOver" type="Panel" parent="." unique_id=496113660]
 visible = false
 layout_mode = 1
 anchors_preset = -1
@@ -212,7 +213,7 @@ anchor_bottom = 0.5308642
 theme_override_styles/panel = SubResource("StyleBoxFlat_kwyp2")
 metadata/_edit_use_anchors_ = true
 
-[node name="GameOverText" type="RichTextLabel" parent="GameOver"]
+[node name="GameOverText" type="RichTextLabel" parent="GameOver" unique_id=365770769]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0

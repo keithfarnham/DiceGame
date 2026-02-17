@@ -31,6 +31,10 @@ DieFaceData="res://scripts/GlobalData/DieFaceData.gd"
 
 DiceBag=""
 
+[gui]
+
+common/show_focus_state_on_pointer_event=2
+
 [input]
 
 ToggleDebug={

@@ -1,8 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://yn4qvc7d7h4c"]
+[gd_scene format=3 uid="uid://yn4qvc7d7h4c"]
 
 [ext_resource type="Script" uid="uid://tvce6m8hbtmv" path="res://scripts/FrontEnd/FrontEnd.gd" id="1_0uanh"]
 
-[node name="FrontEnd" type="Control"]
+[node name="FrontEnd" type="Control" unique_id=57842498]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -11,7 +11,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_0uanh")
 
-[node name="Start" type="Button" parent="."]
+[node name="Start" type="Button" parent="." unique_id=1775158799]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.25
@@ -20,11 +20,12 @@ anchor_right = 0.7482639
 anchor_bottom = 0.81635803
 grow_horizontal = 2
 grow_vertical = 2
+focus_mode = 0
 theme_override_font_sizes/font_size = 32
 text = "NEW GAME"
 metadata/_edit_use_anchors_ = true
 
-[node name="RichTextLabel" type="RichTextLabel" parent="."]
+[node name="RichTextLabel" type="RichTextLabel" parent="." unique_id=216879815]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.0017361111
@@ -41,7 +42,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="DEBUG_TOGGLE" type="CheckButton" parent="."]
+[node name="DEBUG_TOGGLE" type="CheckButton" parent="." unique_id=1108693747]
 layout_mode = 0
 anchor_left = 0.8819444
 anchor_top = 0.79012346

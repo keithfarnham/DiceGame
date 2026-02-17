@@ -1,8 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://lfit4m4bh0yk"]
+[gd_scene format=3 uid="uid://lfit4m4bh0yk"]
 
 [ext_resource type="Script" uid="uid://4nikf52r71vt" path="res://scripts/ChooseClass/ChooseClass.gd" id="1_nccj7"]
 
-[node name="ChooseClass" type="Control"]
+[node name="ChooseClass" type="Control" unique_id=714273166]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -11,7 +11,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_nccj7")
 
-[node name="ClassGrid" type="GridContainer" parent="."]
+[node name="ClassGrid" type="GridContainer" parent="." unique_id=604031507]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.048611112
@@ -23,32 +23,32 @@ theme_override_constants/v_separation = 12
 columns = 3
 metadata/_edit_use_anchors_ = true
 
-[node name="Standard" type="Button" parent="ClassGrid"]
+[node name="Standard" type="Button" parent="ClassGrid" unique_id=834377221]
 custom_minimum_size = Vector2(192, 152)
 layout_mode = 2
 text = "Standard Dice Class"
 metadata/_edit_use_anchors_ = true
 
-[node name="Dungeon Master" type="Button" parent="ClassGrid"]
+[node name="Dungeon Master" type="Button" parent="ClassGrid" unique_id=1758886935]
 custom_minimum_size = Vector2(192, 152)
 layout_mode = 2
 text = "Dungeon Master"
 metadata/_edit_use_anchors_ = true
 
-[node name="DiceLover" type="Button" parent="ClassGrid"]
+[node name="DiceLover" type="Button" parent="ClassGrid" unique_id=339910958]
 custom_minimum_size = Vector2(192, 152)
 layout_mode = 2
 text = "Dice Lover (Random)"
 metadata/_edit_use_anchors_ = true
 
-[node name="DEBUG_ALL_REWARDS" type="Button" parent="ClassGrid"]
+[node name="DEBUG_ALL_REWARDS" type="Button" parent="ClassGrid" unique_id=1520497153]
 custom_minimum_size = Vector2(192, 152)
 layout_mode = 2
 text = "DEBUG
 ONE OF EACH REWARD"
 metadata/_edit_use_anchors_ = true
 
-[node name="Continue" type="Button" parent="."]
+[node name="Continue" type="Button" parent="." unique_id=1694051392]
 layout_mode = 0
 anchor_left = 0.6666667
 anchor_top = 0.7407407
@@ -58,7 +58,7 @@ disabled = true
 text = "Select A Class"
 metadata/_edit_use_anchors_ = true
 
-[node name="ClassInfo" type="Control" parent="."]
+[node name="ClassInfo" type="Control" parent="." unique_id=1020703305]
 anchors_preset = 0
 anchor_left = 0.5789931
 anchor_top = 0.046296295
@@ -67,7 +67,7 @@ anchor_bottom = 0.654321
 offset_bottom = -3.0517578e-05
 metadata/_edit_use_anchors_ = true
 
-[node name="ClassName" type="RichTextLabel" parent="ClassInfo"]
+[node name="ClassName" type="RichTextLabel" parent="ClassInfo" unique_id=296050047]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.024070023
@@ -76,7 +76,7 @@ anchor_right = 0.6827133
 anchor_bottom = 0.13451776
 metadata/_edit_use_anchors_ = true
 
-[node name="ClassFeatures" type="RichTextLabel" parent="ClassInfo"]
+[node name="ClassFeatures" type="RichTextLabel" parent="ClassInfo" unique_id=1657611132]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.024070023
@@ -85,7 +85,7 @@ anchor_right = 0.73522973
 anchor_bottom = 0.65989846
 metadata/_edit_use_anchors_ = true
 
-[node name="ChooseAClass" type="RichTextLabel" parent="."]
+[node name="ChooseAClass" type="RichTextLabel" parent="." unique_id=7752383]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.049479168
